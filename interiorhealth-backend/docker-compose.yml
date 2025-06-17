@@ -3,15 +3,26 @@ version: '3.8'
 services:
   db:
     image: postgres:14
-    restart: always
     environment:
-      POSTGRES_DB: interior_db
-      POSTGRES_USER: interior_user
-      POSTGRES_PASSWORD: interior_pass
-    ports:
-      - "5432:5432"
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
 
 volumes:
   pgdata:
