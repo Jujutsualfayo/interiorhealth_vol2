@@ -12,8 +12,10 @@ WORKDIR /code
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    libpq-dev gcc netcat && \
-    apt-get clean
+    libpq-dev \
+    gcc \
+    netcat-openbsd \
+    && apt-get clean
 
 # Install Python dependencies
 COPY requirements.txt .
