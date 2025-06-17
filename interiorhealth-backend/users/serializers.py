@@ -2,7 +2,8 @@ from rest_framework import serializers
 from .models import User
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.password_validation import validate_password
-from users.email import send_verification_email  # ✅ Externalized email logic
+from users.email import send_verification_email  
+from rest_framework_simplejwt.exceptions import AuthenticationFailed
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
@@ -42,4 +43,10 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         # Use email as the login username
         attrs['username'] = attrs.get('email')
-        return super().validate(attrs)
+        data = super().validate(attrs)
+
+        if not self.user.is_active:
+            raise AuthenticationFailed("Please verify your email before logging in.", code="email_not_verified")
+
+        return data
+
