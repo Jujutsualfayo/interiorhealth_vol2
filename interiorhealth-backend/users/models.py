@@ -10,8 +10,19 @@ class User(AbstractUser):
 
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='patient')
 
+    # ✅ Email as unique identifier
+    email = models.EmailField(unique=True)
+
+    # ✅ Email verification status
+    is_verified = models.BooleanField(default=False)
+
     def __str__(self):
         return f"{self.username} ({self.role})"
+
+    class Meta:
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
+
 
 
 
