@@ -7,7 +7,8 @@ from rest_framework.response import Response
 from users.models import User
 from users.serializers import UserSerializer
 from users.permissions import IsAdminUser
-from users.serializers import RegisterSerializer
+from users.serializers import UserSerializer as RegisterSerializer
+
 
 
 class RegisterUserView(generics.CreateAPIView):
