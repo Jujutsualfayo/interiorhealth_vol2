@@ -114,3 +114,14 @@ STATIC_URL = "static/"
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Email verification settings
+FRONTEND_BASE_URL = config('FRONTEND_BASE_URL', default='http://localhost:3000')  # or your deployed React/Vite URL
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@interiorhealth.com')
+
+# SMTP Email Backend for production-ready emailing
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT', cast=int, default=587)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True
