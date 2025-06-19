@@ -16,12 +16,17 @@ class User(AbstractUser):
     # ✅ Email verification status
     is_verified = models.BooleanField(default=False)
 
+    # Remove username uniqueness constraint if not used for login
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']  # Django requires this to create superusers
+
     def __str__(self):
-        return f"{self.username} ({self.role})"
+        return f"{self.email} ({self.role})"
 
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
+
 
 
 

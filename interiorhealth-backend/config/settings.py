@@ -94,6 +94,12 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
+AUTHENTICATION_BACKENDS = [
+    'users.backends.EmailBackend',  # custom email-based login
+    'django.contrib.auth.backends.ModelBackend',  # fallback
+]
+
+
 
 # CORS (Cross-Origin Resource Sharing)
 CORS_ALLOW_ALL_ORIGINS = True  # Later restrict to only your frontend domain in production

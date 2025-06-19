@@ -36,35 +36,27 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-    username_field = 'email'  # Use email as login field
-
     def validate(self, attrs):
-        email = attrs.get('email')
-        password = attrs.get('password')
+        email = attrs.get("email")
+        password = attrs.get("password")
 
-        if not email or not password:
-            raise serializers.ValidationError("Email and password are required.")
-
-        user = authenticate(request=self.context.get('request'), email=email, password=password)
+        user = authenticate(
+            request=self.context.get("request"),
+            email=email,
+            password=password
+        )
 
         if not user:
-            raise AuthenticationFailed("Invalid credentials or email not verified.")
+            raise AuthenticationFailed("Invalid credentials or email not verified.", code="authentication_failed")
 
         if not user.is_active:
-            raise AuthenticationFailed("Please verify your email before logging in.")
+            raise AuthenticationFailed("Please verify your email before logging in.", code="email_not_verified")
 
         refresh = self.get_token(user)
 
         return {
-            'refresh': str(refresh),
-            'access': str(refresh.access_token),
-            'email': user.email,
-            'role': user.role,
+            "refresh": str(refresh),
+            "access": str(refresh.access_token),
+            "email": user.email,
+            "role": user.role,
         }
-
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        token['email'] = user.email
-        token['role'] = user.role
-        return token
