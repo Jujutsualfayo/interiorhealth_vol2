@@ -34,6 +34,11 @@ class UserSerializer(serializers.ModelSerializer):
 
         return user
 
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'username', 'first_name', 'last_name', 'role', 'is_verified']
+        read_only_fields = ['id', 'email', 'role', 'is_verified']
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
@@ -60,3 +65,4 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             "email": user.email,
             "role": user.role,
         }
+    

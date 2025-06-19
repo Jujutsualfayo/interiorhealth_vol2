@@ -4,6 +4,7 @@ from users.views.register import RegisterUserView, RegisterHealthWorkerView
 from users.views.token import CustomTokenObtainPairView
 from rest_framework_simplejwt.views import TokenBlacklistView
 from users.views.verify_email import VerifyEmailView
+from users.views.profile_view import UserProfileView 
 
 urlpatterns = [
     # Registration
@@ -17,4 +18,7 @@ urlpatterns = [
 
     # Email Verification
     path('verify-email/', VerifyEmailView.as_view(), name='verify-email'),
+
+    # ✅ Profile Management
+    path('me/', UserProfileView.as_view(), name='user-profile'),
 ]
