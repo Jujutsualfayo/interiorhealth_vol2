@@ -1,9 +1,12 @@
 from rest_framework import serializers
-from .models import User
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
-from users.email import send_verification_email  
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
+
+from .models import User
+from users.email import send_verification_email
+
 
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
@@ -33,20 +36,35 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    username_field = 'email'  # Use email as login field
+
+    def validate(self, attrs):
+        email = attrs.get('email')
+        password = attrs.get('password')
+
+        if not email or not password:
+            raise serializers.ValidationError("Email and password are required.")
+
+        user = authenticate(request=self.context.get('request'), email=email, password=password)
+
+        if not user:
+            raise AuthenticationFailed("Invalid credentials or email not verified.")
+
+        if not user.is_active:
+            raise AuthenticationFailed("Please verify your email before logging in.")
+
+        refresh = self.get_token(user)
+
+        return {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+            'email': user.email,
+            'role': user.role,
+        }
+
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
         token['email'] = user.email
         token['role'] = user.role
         return token
-
-    def validate(self, attrs):
-        # Use email as the login username
-        attrs['username'] = attrs.get('email')
-        data = super().validate(attrs)
-
-        if not self.user.is_active:
-            raise AuthenticationFailed("Please verify your email before logging in.", code="email_not_verified")
-
-        return data
-
