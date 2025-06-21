@@ -1,9 +1,12 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
-
+from users.email import send_password_reset_email 
 from users.email import send_verification_email
 
 User = get_user_model()
@@ -76,3 +79,22 @@ class ChangePasswordSerializer(serializers.Serializer):
         if attrs['new_password'] != attrs['new_password2']:
             raise serializers.ValidationError({"new_password": "Passwords must match."})
         return attrs
+    
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def validate_email(self, value):
+        try:
+            user = User.objects.get(email=value)
+        except User.DoesNotExist:
+            raise serializers.ValidationError("No user found with this email.")
+        return value
+
+    def save(self):
+        email = self.validated_data['email']
+        user = User.objects.get(email=email)
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        token = PasswordResetTokenGenerator().make_token(user)
+        request = self.context.get("request")
+
+        send_password_reset_email(user, uid, token, request)

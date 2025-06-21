@@ -6,6 +6,7 @@ from rest_framework_simplejwt.views import TokenBlacklistView
 from users.views.verify_email import VerifyEmailView
 from users.views.profile_view import UserProfileView 
 from users.views.change_password import ChangePasswordView
+from users.views.password_reset_request import PasswordResetRequestView
 
 urlpatterns = [
     # Registration
@@ -25,4 +26,7 @@ urlpatterns = [
 
     #Change password 
     path('change-password/', ChangePasswordView.as_view(), name='change-password'),
+
+    #reset password
+    path('forgot-password/', PasswordResetRequestView.as_view(), name='forgot-password'),
 ]
