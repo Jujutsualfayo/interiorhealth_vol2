@@ -5,6 +5,7 @@ from users.views.token import CustomTokenObtainPairView
 from rest_framework_simplejwt.views import TokenBlacklistView
 from users.views.verify_email import VerifyEmailView
 from users.views.profile_view import UserProfileView 
+from users.views.change_password import ChangePasswordView
 
 urlpatterns = [
     # Registration
@@ -21,4 +22,7 @@ urlpatterns = [
 
     # ✅ Profile Management
     path('me/', UserProfileView.as_view(), name='user-profile'),
+
+    #Change password 
+    path('change-password/', ChangePasswordView.as_view(), name='change-password'),
 ]
