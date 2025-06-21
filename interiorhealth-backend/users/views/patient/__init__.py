@@ -1,1 +1,2 @@
-init file
+# __init__.py for patient views
+
