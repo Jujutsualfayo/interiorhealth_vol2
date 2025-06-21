@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist", 
     "corsheaders",
+    "drf_spectacular",
     # Your apps
     "users",
 ]
@@ -79,6 +80,9 @@ DATABASES = {
 
 # REST Framework configuration
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': 
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
@@ -144,3 +148,12 @@ EMAIL_PORT = config('EMAIL_PORT', cast=int, default=587)
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
+
+#spectaluar settings
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Interior Health API',
+    'DESCRIPTION': 'API documentation for the Interior Health system.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
+
