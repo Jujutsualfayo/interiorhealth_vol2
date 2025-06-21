@@ -7,6 +7,7 @@ from users.views.verify_email import VerifyEmailView
 from users.views.profile_view import UserProfileView 
 from users.views.change_password import ChangePasswordView
 from users.views.password_reset_request import PasswordResetRequestView
+from users.views.password_reset_confirm import PasswordResetConfirmView
 
 urlpatterns = [
     # Registration
@@ -29,4 +30,7 @@ urlpatterns = [
 
     #reset password
     path('forgot-password/', PasswordResetRequestView.as_view(), name='forgot-password'),
+
+    #confirm reset passwd
+    path('reset-password/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password-reset-confirm'),
 ]
