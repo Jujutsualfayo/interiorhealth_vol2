@@ -5,5 +5,4 @@ from drugs.views.patients.drug_views import PatientDrugListView
 
 urlpatterns = [
     path('patients/', include('drugs.urls.patients')),
-    path('patients/', PatientDrugListView.as_view(), name='patient-drug-list'),
 ]
