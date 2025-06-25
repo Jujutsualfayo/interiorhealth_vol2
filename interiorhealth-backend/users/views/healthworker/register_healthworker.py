@@ -1,19 +1,21 @@
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework import status
 
-from users.serializers import RegisterSerializer
-from users.models import User
+from users.serializers import UserSerializer as RegisterSerializer
+from users.permissions import IsAdminUser 
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@authentication_classes([JWTAuthentication])
+@permission_classes([IsAuthenticated, IsAdminUser])  # Optional: Enforce admin-only
 def register_healthworker(request):
     data = request.data.copy()
     data['role'] = 'health_worker'
 
-    serializer = RegisterSerializer(data=data)
+    serializer = UserSerializer(data=data, context={'request': request})
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
