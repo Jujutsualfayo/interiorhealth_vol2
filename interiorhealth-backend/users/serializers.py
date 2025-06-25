@@ -19,25 +19,29 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'password', 'role']
-        read_only_fields = ('role',)
+        extra_kwargs = {
+            'role': {'write_only': True}  # Hide it from being publicly visible
+        }
 
     def create(self, validated_data):
+        role = validated_data.pop('role', 'patient')  # default to patient
         user = User.objects.create_user(
             username=validated_data.get('username', validated_data['email']),
             email=validated_data.get('email', ''),
             password=validated_data['password'],
             first_name=validated_data.get('first_name', ''),
             last_name=validated_data.get('last_name', ''),
-            role=validated_data.get('role', 'patient')
+            role=role
         )
-        user.is_active = False  # Deactivate user until email is verified
+        user.is_active = False
         user.save()
 
-        request = self.context.get('request')  # Needed to build absolute URL
+        request = self.context.get('request')
         if request:
-            send_verification_email(user, request)  # ✅ Sends email verification link
+            send_verification_email(user, request)
 
         return user
+
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
