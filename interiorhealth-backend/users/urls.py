@@ -1,6 +1,7 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenRefreshView
 from users.views.healthworker.register_healthworker import register_healthworker
+from users.views.patient.register_user import RegisterUserView
 from users.views.token import CustomTokenObtainPairView
 from rest_framework_simplejwt.views import TokenBlacklistView
 from users.views.verify_email import VerifyEmailView
