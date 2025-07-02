@@ -50,6 +50,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'email', 'role', 'is_verified']
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+
+    username_field = User.EMAIL_FIELD  # 👈 This is the critical fix
     def validate(self, attrs):
         email = attrs.get("email")
         password = attrs.get("password")
