@@ -1,6 +1,7 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenRefreshView
 from users.views.healthworker.register_healthworker import register_healthworker
+from users.views.healthworker.profile import HealthWorkerProfileView
 from users.views.patient.register_user import RegisterUserView
 from users.views.token import CustomTokenObtainPairView
 from rest_framework_simplejwt.views import TokenBlacklistView
@@ -25,6 +26,8 @@ urlpatterns = [
 
     # ✅ Profile Management
     path('me/', PatientProfileView.as_view(), name='user-profile'),
+    path('healthworker/me/', HealthWorkerProfileView.as_view(), name='healthworker-profile'),
+
 
     #Change password 
     path('change-password/', ChangePasswordView.as_view(), name='change-password'),
