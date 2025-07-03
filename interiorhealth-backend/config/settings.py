@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     # Your apps
     "users",
-    "drugs"
+    "drugs",
     "patients",
 ]
 
