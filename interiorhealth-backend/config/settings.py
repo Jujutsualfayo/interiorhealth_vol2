@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     # Your apps
     "users",
     "drugs"
+    "patients",
 ]
 
 # Tell Django to use the custom user model

@@ -16,6 +16,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('api/users/', include('users.urls')),
     path('api/drugs/', include('drugs.urls')),
+    path('api/patients/', include('patients.urls')),
 
 
     #api schema and docs
