@@ -5,4 +5,15 @@ from .models import Drug
 class DrugSerializer(serializers.ModelSerializer):
     class Meta:
         model = Drug
-        fields = ['id', 'name', 'description', 'price', 'stock', 'created_at', 'updated_at']
+        fields = [
+            'id',
+            'name',
+            'description',
+            'dosage_form',
+            'strength',
+            'quantity_available',
+            'price',
+            'is_active',
+            'created_at'
+        ]
+        read_only_fields = ['id', 'created_at']
