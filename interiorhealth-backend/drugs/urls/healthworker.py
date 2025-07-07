@@ -2,9 +2,8 @@
 from django.urls import path
 from drugs.views.health_worker.manage_drugs import DrugCreateView, DrugUpdateDeleteView
 
-
-
 urlpatterns = [
-    path('create/', DrugCreateView.as_view(), name='create-drug'),
-    path('<int:id>/', DrugUpdateDeleteView.as_view(), name='update-delete-drug'),
+    path('manage/', DrugCreateView.as_view(), name='drug-create'),
+    path('manage/<int:id>/', DrugUpdateDeleteView.as_view(), name='drug-update-delete'),
 ]
+

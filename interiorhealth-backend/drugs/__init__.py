@@ -1,1 +1,1 @@
-#initi file for drugs
+#initializer file for drugs file

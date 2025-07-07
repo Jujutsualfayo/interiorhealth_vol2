@@ -3,5 +3,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('patients/', include('drugs.urls.patients')),
-    path('manage/', include('drugs.urls.healthworker')),
+    path('healthworker/', include('drugs.urls.healthworker')),
 ]
