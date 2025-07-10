@@ -17,6 +17,8 @@ urlpatterns = [
     path('api/users/', include('users.urls')),
     path('api/drugs/', include('drugs.urls')),
     path('api/patients/', include('patients.urls')),
+    path('api/orders/', include('orders.urls')),
+
 
 
     #api schema and docs
