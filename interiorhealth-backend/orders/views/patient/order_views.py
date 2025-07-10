@@ -1,6 +1,6 @@
 # orders/views/patient/order_views.py
 from rest_framework import generics, permissions
-from .serializers import OrderSerializer
+from orders.serializers import OrderSerializer
 from orders.models import Order
 
 class OrderCreateView(generics.CreateAPIView):
