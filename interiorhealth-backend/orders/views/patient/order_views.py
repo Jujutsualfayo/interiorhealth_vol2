@@ -11,9 +11,8 @@ class OrderCreateView(generics.CreateAPIView):
         serializer.save(patient=self.request.user)
 
 class OrderListView(generics.ListAPIView):
-    serializer_class = OrderSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
+    ...
     def get_queryset(self):
-        return Order.objects.filter(patient=self.request.user).order_by('-ordered_at')
+        return Order.objects.filter(patient=self.request.user).order_by('-created_at')
+
 
