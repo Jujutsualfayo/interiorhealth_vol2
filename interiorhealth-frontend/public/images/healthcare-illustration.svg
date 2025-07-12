@@ -1,0 +1,3 @@
+<footer className="text-center text-xs mt-4 text-gray-500">
+  Illustration by <a href="https://storyset.com/health" className="underline hover:text-blue-500" target="_blank" rel="noopener noreferrer">Storyset</a>
+</footer>
