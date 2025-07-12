@@ -28,13 +28,12 @@ export default function HomePage() {
             </a>
           </div>
         </div>
-        <Image
-          src="/images/healthcare-illustration.svg"
-          alt="Healthcare illustration"
-          width={500}
-          height={500}
-          className="mt-10 md:mt-0"
-        />
+        {/* ✅ SVG Illustration Here */}
+      <img
+        src="/images/healthcare-illustration.svg"
+        alt="Healthcare Illustration"
+        className="w-[500px] h-auto mb-6"
+      />
       </section>
 
       <section id="about" className="bg-white py-20 px-6 md:px-20">
