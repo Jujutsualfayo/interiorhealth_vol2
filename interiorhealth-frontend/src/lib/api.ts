@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'http://localhost:8000/api/',
+  baseURL: 'https://psychic-journey-x55p7j9qq75vh645x-8000.app.github.dev/api/',
   headers: {
     'Content-Type': 'application/json',
   },
