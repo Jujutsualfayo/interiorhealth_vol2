@@ -113,6 +113,10 @@ AUTHENTICATION_BACKENDS = [
 # CORS (Cross-Origin Resource Sharing)
 CORS_ALLOW_ALL_ORIGINS = True  # Later restrict to only your frontend domain in production
 
+CORS_ALLOWED_ORIGINS = [
+    "https://psychic-journey-x55p7j9qq75vh645x-3000.app.github.dev",  # Your frontend URL
+]
+
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
