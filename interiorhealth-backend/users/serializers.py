@@ -50,8 +50,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'email', 'role', 'is_verified']
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-
     username_field = 'email'
+
     def validate(self, attrs):
         email = attrs.get("email")
         password = attrs.get("password")
@@ -75,6 +75,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             "email": user.email,
             "role": user.role,
         }
+
     
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)
