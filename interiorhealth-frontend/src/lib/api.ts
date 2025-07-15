@@ -7,6 +7,8 @@ const API = axios.create({
   },
 });
 
+API.defaults.withCredentials = true;
+
 // Automatically attach token if present
 API.interceptors.request.use((config) => {
   if (typeof window !== 'undefined') {
