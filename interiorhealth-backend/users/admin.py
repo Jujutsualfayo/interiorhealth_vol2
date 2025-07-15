@@ -3,13 +3,13 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from users.models import User
 
 class CustomUserAdmin(BaseUserAdmin):
-    list_display = ('email', 'role', 'is_active')
-    ordering = ('email',)
+    list_display = ('email', 'role', 'is_active')  # ✅ Removed 'username'
+    ordering = ('email',)  # ✅ Removed 'username'
     search_fields = ('email',)
 
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('username', 'first_name', 'last_name')}),
+        ('Personal info', {'fields': ('first_name', 'last_name')}),  # Optional
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('Role Info', {'fields': ('role',)}),
     )

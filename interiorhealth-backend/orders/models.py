@@ -1,7 +1,8 @@
-# orders/models.py
 from django.db import models
-from users.models import User
+from django.contrib.auth import get_user_model
 from drugs.models import Drug
+
+User = get_user_model()
 
 class Order(models.Model):
     STATUS_CHOICES = [
@@ -18,12 +19,11 @@ class Order(models.Model):
     def __str__(self):
         return f"Order #{self.id} by {self.patient.email}"
 
-
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     drug = models.ForeignKey(Drug, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)  # Price per unit
+    price = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
         return f"{self.quantity} x {self.drug.name} (Order #{self.order.id})"
