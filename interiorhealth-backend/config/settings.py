@@ -1,7 +1,6 @@
 from decouple import config
 from pathlib import Path
 from datetime import timedelta
-from corsheaders.defaults import default_headers
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -102,18 +101,9 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-# ✅ CORS settings
-CORS_ALLOWED_ORIGINS = [
-    "https://psychic-journey-x55p7j9qq75vh645x-3000.app.github.dev",
-]
-
+# ✅ CORS Settings for GitHub Codespaces (temporary dev config)
+CORS_ALLOW_ALL_ORIGINS = True  # Use this for testing only
 CORS_ALLOW_CREDENTIALS = True
-
-CORS_ALLOW_HEADERS = list(default_headers) + [
-    'authorization',
-    'content-type',
-    'access-control-allow-origin',
-]
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
