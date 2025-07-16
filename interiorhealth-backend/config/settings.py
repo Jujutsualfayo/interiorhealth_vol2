@@ -1,13 +1,14 @@
 from decouple import config
 from pathlib import Path
 from datetime import timedelta
+from corsheaders.defaults import default_headers
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', cast=bool)
-ALLOWED_HOSTS = ['*']  # You can restrict this in production
+ALLOWED_HOSTS = ['*']  # In production, change this to your domain
 
 # Installed apps
 INSTALLED_APPS = [
@@ -37,8 +38,8 @@ AUTH_USER_MODEL = 'users.User'
 
 # Middleware
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",  # Must be at the top
-    "django.middleware.common.CommonMiddleware",  # Required for CORS
+    "corsheaders.middleware.CorsMiddleware",  # ✅ Must be first
+    "django.middleware.common.CommonMiddleware",  # ✅ Second
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -101,9 +102,24 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-# ✅ CORS Settings for GitHub Codespaces (temporary dev config)
-CORS_ALLOW_ALL_ORIGINS = True  # Use this for testing only
+# ✅ CORS FIX FOR DEVELOPMENT
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'authorization',
+    'content-type',
+    'access-control-allow-origin',
+]
+
+CORS_EXPOSE_HEADERS = [
+    'Content-Type',
+    'X-CSRFToken',
+    'Authorization',
+]
+
+# ❌ Do NOT include this line anymore when using CORS_ALLOW_ALL_ORIGINS
+# CORS_ALLOWED_ORIGINS = [ "https://psychic-journey-x55p7j9qq75vh645x-3000.app.github.dev", ]
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
