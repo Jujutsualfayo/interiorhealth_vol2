@@ -121,6 +121,15 @@ CORS_EXPOSE_HEADERS = [
     'Authorization',
 ]
 
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
 # 🔐 CSRF trusted origin for frontend (esp. if doing forms later)
 CSRF_TRUSTED_ORIGINS = [
     "https://psychic-journey-x55p7j9qq75vh645x-3000.app.github.dev",
