@@ -76,6 +76,9 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             "role": user.role,
         }
 
+    class Meta:
+        model = User
+        fields = ['email', 'password']
     
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)
