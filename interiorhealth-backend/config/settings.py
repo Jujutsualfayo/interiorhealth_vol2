@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Security
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', cast=bool)
-ALLOWED_HOSTS = ['*']  # In production, change this to your domain
+ALLOWED_HOSTS = ['*']  # In production, update this to your actual domain
 
 # Installed apps
 INSTALLED_APPS = [
@@ -38,7 +38,7 @@ AUTH_USER_MODEL = 'users.User'
 
 # Middleware
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",  # ✅ Must be first
+    "corsheaders.middleware.CorsMiddleware",  # ✅ First
     "django.middleware.common.CommonMiddleware",  # ✅ Second
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -102,8 +102,11 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-# ✅ CORS FIX FOR DEVELOPMENT
-CORS_ALLOW_ALL_ORIGINS = True
+# ✅ CORRECT CORS CONFIG FOR NEXT.JS + CODESPACES
+CORS_ALLOWED_ORIGINS = [
+    "https://psychic-journey-x55p7j9qq75vh645x-3000.app.github.dev",  # Frontend (Next.js)
+    "https://psychic-journey-x55p7j9qq75vh645x-8000.app.github.dev",  # Backend (optional)
+]
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
@@ -118,8 +121,10 @@ CORS_EXPOSE_HEADERS = [
     'Authorization',
 ]
 
-# ❌ Do NOT include this line anymore when using CORS_ALLOW_ALL_ORIGINS
-# CORS_ALLOWED_ORIGINS = [ "https://psychic-journey-x55p7j9qq75vh645x-3000.app.github.dev", ]
+# 🔐 CSRF trusted origin for frontend (esp. if doing forms later)
+CSRF_TRUSTED_ORIGINS = [
+    "https://psychic-journey-x55p7j9qq75vh645x-3000.app.github.dev",
+]
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
