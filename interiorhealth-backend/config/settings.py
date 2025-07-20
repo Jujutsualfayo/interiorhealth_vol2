@@ -2,6 +2,7 @@ from decouple import config
 from pathlib import Path
 from datetime import timedelta
 from corsheaders.defaults import default_headers
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -178,4 +179,35 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'API documentation for the Interior Health system.',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,  # Keep Django's default loggers
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'login_debug.log'),
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'login': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
 }
