@@ -1,9 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // leave this empty or add other configs
+  // No need for experimental.appDir
 };
 
 export default nextConfig;
+
+
 
 
