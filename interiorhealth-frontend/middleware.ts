@@ -1,5 +1,3 @@
-// middleware.ts
-
 import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(request: NextRequest) {
@@ -9,28 +7,28 @@ export function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
   const pathname = url.pathname;
 
-  // If not logged in, redirect to login for protected routes
-  const isAuthRoute = pathname.startsWith('/(auth)');
-  const isDashboardRoute = pathname.startsWith('/(dashboard)');
+  // These are real public route paths — not the folder names with (dashboard)
+  const isDashboardRoute = ["/admin", "/patient", "/healthworker"].some(p =>
+    pathname.startsWith(p)
+  );
 
   if (!token && isDashboardRoute) {
     url.pathname = '/(auth)/login';
     return NextResponse.redirect(url);
   }
 
-  // If logged in, check role access
   if (token && isDashboardRoute) {
-    if (pathname.includes('/admin') && role !== 'admin') {
+    if (pathname.startsWith('/admin') && role !== 'admin') {
       url.pathname = '/unauthorized';
       return NextResponse.redirect(url);
     }
 
-    if (pathname.includes('/patient') && role !== 'patient') {
+    if (pathname.startsWith('/patient') && role !== 'patient') {
       url.pathname = '/unauthorized';
       return NextResponse.redirect(url);
     }
 
-    if (pathname.includes('/healthworker') && role !== 'healthworker') {
+    if (pathname.startsWith('/healthworker') && role !== 'healthworker') {
       url.pathname = '/unauthorized';
       return NextResponse.redirect(url);
     }
@@ -40,5 +38,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/(dashboard)/:path*"], // 👈 valid here, not in next.config.ts
+  matcher: ["/admin/:path*", "/patient/:path*", "/healthworker/:path*"], // match public URLs
 };
