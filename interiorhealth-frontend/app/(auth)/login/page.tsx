@@ -1,4 +1,3 @@
-// app/(auth)/login/page.tsx
 "use client";
 
 import { useState } from "react";
@@ -17,24 +16,34 @@ export default function LoginPage() {
 
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/users/login/`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/login/`,
         { email, password },
-        { withCredentials: true } // for cookie-based sessions
+        { withCredentials: true }
       );
 
-      // Store token in localStorage (or secure cookie later)
       const { access, role } = response.data;
+
+      // Store credentials
       localStorage.setItem("token", access);
       localStorage.setItem("role", role);
 
-      // Redirect based on role
-      if (role === "admin") router.push("/(dashboard)/admin");
-      else if (role === "patient") router.push("/(dashboard)/patient");
-      else if (role === "healthworker") router.push("/(dashboard)/healthworker");
-      else router.push("/");
+      // Redirect based on user role
+      switch (role) {
+        case "admin":
+          router.push("/(dashboard)/admin");
+          break;
+        case "patient":
+          router.push("/(dashboard)/patient");
+          break;
+        case "healthworker":
+          router.push("/(dashboard)/healthworker");
+          break;
+        default:
+          router.push("/");
+      }
     } catch (err: any) {
       console.error(err);
-      setError("Invalid credentials.");
+      setError("Invalid email or password. Please try again.");
     }
   };
 
@@ -45,7 +54,9 @@ export default function LoginPage() {
         className="w-full max-w-md space-y-6 rounded-lg bg-white p-8 shadow-lg"
       >
         <h1 className="text-2xl font-semibold text-center">Login</h1>
-        {error && <p className="text-sm text-red-500">{error}</p>}
+
+        {error && <p className="text-sm text-red-500 text-center">{error}</p>}
+
         <input
           type="email"
           placeholder="Email"
@@ -54,6 +65,7 @@ export default function LoginPage() {
           className="w-full rounded border px-3 py-2"
           required
         />
+
         <input
           type="password"
           placeholder="Password"
@@ -62,6 +74,7 @@ export default function LoginPage() {
           className="w-full rounded border px-3 py-2"
           required
         />
+
         <button
           type="submit"
           className="w-full rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
