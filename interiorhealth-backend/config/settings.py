@@ -183,7 +183,7 @@ SPECTACULAR_SETTINGS = {
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': False,  # Keep Django's default loggers
+    'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
             'format': '{levelname} {asctime} {module} {message}',
@@ -191,7 +191,7 @@ LOGGING = {
         },
     },
     'handlers': {
-        'file': {
+        'login_file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': os.path.join(BASE_DIR, 'login_debug.log'),
@@ -199,15 +199,15 @@ LOGGING = {
         },
     },
     'loggers': {
-        'django.request': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
         'login': {
-            'handlers': ['file'],
+            'handlers': ['login_file'],
             'level': 'DEBUG',
             'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['login_file'],
+            'level': 'DEBUG',
+            'propagate': True,
         },
     },
 }
