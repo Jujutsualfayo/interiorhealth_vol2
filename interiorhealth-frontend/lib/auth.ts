@@ -5,22 +5,23 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-// Utility to get token and role from localStorage
-export const getAuthToken = () => {
+// Utility: Get token from localStorage
+export const getAuthToken = (): string | null => {
   if (typeof window !== "undefined") {
     return localStorage.getItem("token");
   }
   return null;
 };
 
-export const getUserRole = () => {
+// Utility: Get role from localStorage
+export const getUserRole = (): string | null => {
   if (typeof window !== "undefined") {
     return localStorage.getItem("role");
   }
   return null;
 };
 
-// Hook to use auth state and role-based redirection
+// Hook: Access auth token and role
 export function useAuth() {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState<string | null>(null);
@@ -38,15 +39,21 @@ export function useAuth() {
   return { token, role, loading };
 }
 
-// Redirect unauthenticated users or users with wrong roles
-export function useAuthRedirect(allowedRoles: string[]) {
+// Hook: Redirect users not in allowed roles
+export function useAuthRedirect(allowedRoles: string | string[]) {
   const router = useRouter();
   const { token, role, loading } = useAuth();
 
   useEffect(() => {
     if (!loading) {
-      if (!token || !role || !allowedRoles.includes(role)) {
+      const rolesArray = Array.isArray(allowedRoles)
+        ? allowedRoles
+        : [allowedRoles];
+
+      if (!token) {
         router.replace("/(auth)/login");
+      } else if (!role || !rolesArray.includes(role)) {
+        router.replace("/unauthorized"); // Optional fallback page
       }
     }
   }, [token, role, loading, router, allowedRoles]);
