@@ -10,18 +10,14 @@ export function useAuthRedirect(allowedRoles: string[]) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = Cookies.get("token");
     const role = Cookies.get("role");
 
-    console.log("🔐 Cookie token:", token);
     console.log("🎭 Cookie role:", role);
 
-    if (!token) {
-      router.replace("/auth/login");
-    } else if (!role || !allowedRoles.includes(role)) {
-      router.replace("/unauthorized"); // or /auth/login if you want
+    if (!role || !allowedRoles.includes(role)) {
+      router.replace("/unauthorized");
     } else {
-      setLoading(false); // All good
+      setLoading(false);
     }
   }, [allowedRoles, router]);
 
