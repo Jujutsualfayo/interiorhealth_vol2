@@ -13,7 +13,7 @@ export function middleware(request: NextRequest) {
   );
 
   if (!token && isDashboardRoute) {
-    url.pathname = '/(auth)/login';
+    url.pathname = '/auth/login';
     return NextResponse.redirect(url);
   }
 

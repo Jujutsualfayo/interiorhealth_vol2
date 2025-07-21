@@ -10,7 +10,7 @@ export function useLogout() {
   const logout = () => {
     Cookies.remove('token');
     Cookies.remove('role');
-    router.push('/(auth)/login'); // Redirect to login page
+    router.push('/auth/login'); // Redirect to login page
   };
 
   return logout;

@@ -10,7 +10,7 @@ export default function UnauthorizedPage() {
         You do not have permission to access this page.
       </p>
       <Link
-        href="/(auth)/login"
+        href="/auth/login"
         className="mt-6 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
       >
         Go to Login

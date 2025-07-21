@@ -51,7 +51,7 @@ export function useAuthRedirect(allowedRoles: string | string[]) {
         : [allowedRoles];
 
       if (!token) {
-        router.replace("/(auth)/login");
+        router.replace("/auth/login");
       } else if (!role || !rolesArray.includes(role)) {
         router.replace("/unauthorized"); // Optional fallback page
       }
