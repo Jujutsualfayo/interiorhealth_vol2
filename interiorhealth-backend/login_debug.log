@@ -10,3 +10,5 @@ WARNING 2025-07-20 09:22:00,258 login Failed login attempt for email: superadmin
 WARNING 2025-07-20 09:22:00,258 log Unauthorized: /api/users/login/
 DEBUG 2025-07-20 09:28:09,558 login Login POST request received
 INFO 2025-07-20 09:28:09,957 login User admin2@interiorhealth.com logged in successfully
+WARNING 2025-07-21 12:11:28,516 log Not Found: /
+WARNING 2025-07-21 12:11:29,538 log Not Found: /favicon.ico
