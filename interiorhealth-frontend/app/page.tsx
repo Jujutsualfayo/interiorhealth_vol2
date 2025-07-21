@@ -1,22 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { getCookie } from 'cookies-next';
 import Link from 'next/link';
 
 export default function HomePage() {
-  const router = useRouter();
-
-  useEffect(() => {
-    const token = getCookie('token');
-    const role = getCookie('role');
-
-    if (token && role) {
-      router.push(`/dashboard/${role}`);
-    }
-  }, []);
-
   return (
     <main className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-r from-green-100 via-white to-green-100">
       <div className="text-center max-w-2xl px-6">
