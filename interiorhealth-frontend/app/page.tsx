@@ -28,7 +28,7 @@ export default function HomePage() {
 
         <div className="flex justify-center space-x-6">
           <Link
-            href="/login"
+            href="/auth/login"
             className="bg-green-600 text-white px-6 py-3 rounded-lg shadow hover:bg-green-700 transition"
           >
             Login
