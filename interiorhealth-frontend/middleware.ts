@@ -7,28 +7,28 @@ export function middleware(request: NextRequest) {
   const url = request.nextUrl.clone();
   const pathname = url.pathname;
 
-  // These are real public route paths — not the folder names with (dashboard)
-  const isDashboardRoute = ["/admin", "/patient", "/healthworker"].some(p =>
-    pathname.startsWith(p)
-  );
+  // Check if the route is a protected dashboard route
+  const isDashboardRoute = pathname.startsWith('/dashboard');
 
   if (!token && isDashboardRoute) {
+    // Redirect unauthenticated users to login
     url.pathname = '/auth/login';
     return NextResponse.redirect(url);
   }
 
   if (token && isDashboardRoute) {
-    if (pathname.startsWith('/admin') && role !== 'admin') {
+    // Role-based redirection for protected dashboard routes
+    if (pathname.startsWith('/dashboard/admin') && role !== 'admin') {
       url.pathname = '/unauthorized';
       return NextResponse.redirect(url);
     }
 
-    if (pathname.startsWith('/patient') && role !== 'patient') {
+    if (pathname.startsWith('/dashboard/patient') && role !== 'patient') {
       url.pathname = '/unauthorized';
       return NextResponse.redirect(url);
     }
 
-    if (pathname.startsWith('/healthworker') && role !== 'healthworker') {
+    if (pathname.startsWith('/dashboard/healthworker') && role !== 'healthworker') {
       url.pathname = '/unauthorized';
       return NextResponse.redirect(url);
     }
@@ -37,6 +37,7 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
+// Apply middleware only to dashboard routes
 export const config = {
-  matcher: ["/admin/:path*", "/patient/:path*", "/healthworker/:path*"], // match public URLs
+  matcher: ['/dashboard/:path*'],
 };
