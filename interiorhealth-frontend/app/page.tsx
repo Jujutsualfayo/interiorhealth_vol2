@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCookie } from 'cookies-next';
+import Link from 'next/link';
 
 export default function HomePage() {
   const router = useRouter();
@@ -26,18 +27,18 @@ export default function HomePage() {
         </p>
 
         <div className="flex justify-center space-x-6">
-          <a
-            href="/auth/login"
+          <Link
+            href="/login"
             className="bg-green-600 text-white px-6 py-3 rounded-lg shadow hover:bg-green-700 transition"
           >
             Login
-          </a>
-          <a
+          </Link>
+          <Link
             href="/register"
             className="border border-green-600 text-green-700 px-6 py-3 rounded-lg hover:bg-green-50 transition"
           >
             Register
-          </a>
+          </Link>
         </div>
 
         <div className="mt-12 text-sm text-gray-500">
