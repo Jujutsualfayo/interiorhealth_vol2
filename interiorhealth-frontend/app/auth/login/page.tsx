@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
@@ -20,16 +19,13 @@ export default function LoginPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
+        credentials: 'include', // This allows the browser to store the server-set cookies
       });
 
       const data = await res.json();
 
       if (res.ok) {
-        // Set cookies
-        Cookies.set('token', data.token, { path: '/', sameSite: 'Lax' });
-        Cookies.set('role', data.role, { path: '/', sameSite: 'Lax' });
-
-        // Redirect based on role
+        // Redirect user based on role returned by the API
         switch (data.role) {
           case 'admin':
             router.push('/dashboard/admin');
