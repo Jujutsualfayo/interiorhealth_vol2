@@ -1,14 +1,11 @@
 // app/api/login/route.ts
-
 import { NextRequest, NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { email, password } = body;
 
-    // Mock user check - replace with real DB logic
     const mockUser = {
       email: 'admin@example.com',
       password: 'admin123',
@@ -17,11 +14,19 @@ export async function POST(req: NextRequest) {
     };
 
     if (email === mockUser.email && password === mockUser.password) {
-      const cookieStore = await cookies(); // ✅ Fix
-      cookieStore.set('token', mockUser.token, { httpOnly: true });
-      cookieStore.set('role', mockUser.role);
+      const response = NextResponse.json({ success: true, role: mockUser.role });
 
-      return NextResponse.json({ success: true, role: mockUser.role });
+      // ✅ Set cookies on the response (this is the correct way!)
+      response.cookies.set('token', mockUser.token, {
+        httpOnly: true,
+        path: '/',
+      });
+
+      response.cookies.set('role', mockUser.role, {
+        path: '/',
+      });
+
+      return response;
     }
 
     return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
