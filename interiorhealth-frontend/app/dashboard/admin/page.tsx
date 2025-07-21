@@ -1,13 +1,13 @@
-import { useAuthRedirect } from "@/lib/auth";
-
+import AuthGate from "@/components/AuthGate";
 
 export default function AdminDashboard() {
-  useAuthRedirect(["admin"]);
-
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-      <p>Only accessible by Admins</p>
-    </div>
+    <>
+      <AuthGate allowedRoles={["admin"]} />
+      <div className="p-8">
+        <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+        <p>Only accessible by Admins</p>
+      </div>
+    </>
   );
 }
