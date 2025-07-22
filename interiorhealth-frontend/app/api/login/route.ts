@@ -1,4 +1,3 @@
-// app/api/login/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
@@ -6,23 +5,42 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { email, password } = body;
 
-    const mockUser = {
-      email: 'admin@example.com',
-      password: 'admin123',
-      role: 'admin',
-      token: 'mock-jwt-token-123',
-    };
+    // Mock users
+    const mockUsers = [
+      {
+        email: 'admin@example.com',
+        password: 'admin123',
+        role: 'admin',
+        token: 'mock-admin-token-123',
+      },
+      {
+        email: 'healthworker@example.com',
+        password: 'health123',
+        role: 'healthworker',
+        token: 'mock-health-token-456',
+      },
+      {
+        email: 'patient@example.com',
+        password: 'patient123',
+        role: 'patient',
+        token: 'mock-patient-token-789',
+      },
+    ];
 
-    if (email === mockUser.email && password === mockUser.password) {
-      const response = NextResponse.json({ success: true, role: mockUser.role });
+    // Find matching user
+    const user = mockUsers.find(
+      (u) => u.email === email && u.password === password
+    );
 
-      // ✅ Set cookies on the response (this is the correct way!)
-      response.cookies.set('token', mockUser.token, {
+    if (user) {
+      const response = NextResponse.json({ success: true, role: user.role });
+
+      response.cookies.set('token', user.token, {
         httpOnly: true,
         path: '/',
       });
 
-      response.cookies.set('role', mockUser.role, {
+      response.cookies.set('role', user.role, {
         path: '/',
       });
 
