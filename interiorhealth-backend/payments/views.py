@@ -1,49 +1,74 @@
-import uuid
-import json
-import requests
-from django.http import JsonResponse
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse, HttpResponse
+import requests
+import json
+from .models import MpesaPayment
 from django.conf import settings
+import base64
+from datetime import datetime
+from django.urls import reverse
+
+
+def get_access_token():
+    consumer_key = settings.MPESA_CONSUMER_KEY
+    consumer_secret = settings.MPESA_CONSUMER_SECRET
+    api_URL = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
+
+    r = requests.get(api_URL, auth=(consumer_key, consumer_secret))
+    mpesa_access_token = json.loads(r.text)
+    return mpesa_access_token['access_token']
+
 
 @csrf_exempt
 def initiate_mpesa_payment(request):
-    if request.method != "POST":
-        return JsonResponse({"error": "Only POST method allowed"}, status=405)
+    if request.method == 'POST':
+        phone_number = request.POST.get('phone')
+        amount = request.POST.get('amount')
 
-    try:
-        data = json.loads(request.body)
-        phone = data.get("phone_number")
-        amount = data.get("amount")
-        email = data.get("email", "test@example.com")
-        name = data.get("name", "Interior Health User")
+        access_token = get_access_token()
 
-        tx_ref = f"INT-HEALTH-{uuid.uuid4()}"
+        # Lipa na Mpesa credentials
+        business_shortCode = settings.MPESA_BUSINESS_SHORTCODE
+        lipa_na_mpesa_passkey = settings.MPESA_PASSKEY
+        timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+        data_to_encode = business_shortCode + lipa_na_mpesa_passkey + timestamp
+        online_password = base64.b64encode(data_to_encode.encode()).decode('utf-8')
 
+        api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
         headers = {
-            "Authorization": f"Bearer {settings.FLW_CLIENT_SECRET}",
+            "Authorization": "Bearer %s" % access_token,
             "Content-Type": "application/json"
         }
 
         payload = {
-            "tx_ref": tx_ref,
-            "amount": amount,
-            "currency": "KES",
-            "redirect_url": "https://yourdomain.com/payment-success",
-            "payment_options": "mpesa",
-            "customer": {
-                "email": email,
-                "phonenumber": phone,
-                "name": name
-            },
-            "customizations": {
-                "title": "Interior Health",
-                "description": "Drug order payment"
-            }
+            "BusinessShortCode": business_shortCode,
+            "Password": online_password,
+            "Timestamp": timestamp,
+            "TransactionType": "CustomerPayBillOnline",
+            "Amount": amount,
+            "PartyA": phone_number,
+            "PartyB": business_shortCode,
+            "PhoneNumber": phone_number,
+            "CallBackURL": settings.MPESA_CALLBACK_URL,
+            "AccountReference": "InteriorHealth",
+            "TransactionDesc": "Payment for Drugs"
         }
 
-        url = f"{settings.FLW_BASE_URL}/payments"
-        response = requests.post(url, headers=headers, json=payload)
-        return JsonResponse(response.json(), status=response.status_code)
+        response = requests.post(api_url, json=payload, headers=headers)
+        res_data = response.json()
 
-    except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)
+        # Optionally store initial transaction data
+        MpesaPayment.objects.create(
+            phone_number=phone_number,
+            amount=amount,
+            checkout_request_id=res_data.get("CheckoutRequestID", "")
+        )
+
+        return redirect(reverse("payment-success"))
+
+    return render(request, "payments/initiate_payment.html")
+
+
+def payment_success(request):
+    return render(request, "payments/payment_success.html")
