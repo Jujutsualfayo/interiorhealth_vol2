@@ -1,25 +1,23 @@
 from django.db import models
-from users.models import CustomUser  
-import uuid
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
 class Payment(models.Model):
     PAYMENT_STATUS_CHOICES = [
-        ('pending', 'Pending'),
-        ('successful', 'Successful'),
-        ('failed', 'Failed'),
+        ("pending", "Pending"),
+        ("successful", "Successful"),
+        ("failed", "Failed"),
     ]
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='payments')
+    patient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='payments')
+    transaction_id = models.CharField(max_length=100, unique=True)
+    reference = models.CharField(max_length=100, unique=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    currency = models.CharField(max_length=10, default='KES')
-    transaction_id = models.CharField(max_length=100, unique=True)  # Flutterwave tx_ref
-    flutterwave_tx_id = models.CharField(max_length=100, blank=True, null=True)  # tx_id returned from Flutterwave
-    status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default='pending')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    currency = models.CharField(max_length=10, default="KES")
+    payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default="pending")
+    payment_method = models.CharField(max_length=50, blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.email} - {self.transaction_id} - {self.status}"
-
+        return f"{self.patient.username} - {self.transaction_id} - {self.payment_status}"
