@@ -1,7 +1,8 @@
 # orders/urls/patient.py
 from django.urls import path
 from orders.views.patient.order_views import OrderCreateView, OrderListView
-from views import initiate_payment
+from orders.views.patient import initiate_payment
+
 
 urlpatterns = [
     path('create/', OrderCreateView.as_view(), name='order-create'),
