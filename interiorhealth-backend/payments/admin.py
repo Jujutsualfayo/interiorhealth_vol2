@@ -1,5 +1,4 @@
 from django.contrib import admin
-from .models import Payment
+from .models import MpesaPayment
 
-admin.site.register(Payment)
-
+admin.site.register(MpesaPayment)

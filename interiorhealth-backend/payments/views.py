@@ -1,13 +1,11 @@
-from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 import requests
 import json
 from .models import MpesaPayment
 from django.conf import settings
 import base64
 from datetime import datetime
-from django.urls import reverse
 
 
 def get_access_token():
@@ -26,6 +24,9 @@ def initiate_mpesa_payment(request):
         phone_number = request.POST.get('phone')
         amount = request.POST.get('amount')
 
+        if not phone_number or not amount:
+            return JsonResponse({"error": "Phone number and amount are required."}, status=400)
+
         access_token = get_access_token()
 
         # Lipa na Mpesa credentials
@@ -37,7 +38,7 @@ def initiate_mpesa_payment(request):
 
         api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
         headers = {
-            "Authorization": "Bearer %s" % access_token,
+            "Authorization": f"Bearer {access_token}",
             "Content-Type": "application/json"
         }
 
@@ -58,17 +59,26 @@ def initiate_mpesa_payment(request):
         response = requests.post(api_url, json=payload, headers=headers)
         res_data = response.json()
 
-        # Optionally store initial transaction data
+        # Save initial transaction details
         MpesaPayment.objects.create(
             phone_number=phone_number,
             amount=amount,
             checkout_request_id=res_data.get("CheckoutRequestID", "")
         )
 
-        return redirect(reverse("payment-success"))
+        return JsonResponse({
+            "message": "STK push initiated",
+            "checkoutRequestID": res_data.get("CheckoutRequestID", ""),
+            "response": res_data
+        })
 
-    return render(request, "payments/initiate_payment.html")
+    return JsonResponse({"error": "Invalid request method."}, status=405)
 
 
+@csrf_exempt
 def payment_success(request):
-    return render(request, "payments/payment_success.html")
+    """
+    Just a placeholder endpoint to confirm payment success.
+    Your frontend should hit this endpoint or use it for redirection logic.
+    """
+    return JsonResponse({"message": "Payment successful"})
