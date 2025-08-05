@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "drugs",
     "patients",
     "orders",
+    "payments",
 ]
 
 # Custom user model
@@ -161,6 +162,12 @@ USE_TZ = True
 # Static files
 STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+#Flutterwave config
+FLW_CLIENT_ID = config("FLW_CLIENT_ID")
+FLW_CLIENT_SECRET = config("FLW_CLIENT_SECRET")
+FLW_ENCRYPTION_KEY = config("FLW_ENCRYPTION_KEY")
+FLW_BASE_URL = config("FLW_BASE_URL")
 
 # Email
 FRONTEND_BASE_URL = config('FRONTEND_BASE_URL', default='http://localhost:3000')
