@@ -7,7 +7,10 @@ from django.conf import settings
 
 @csrf_exempt
 def initiate_mpesa_payment(request):
-    if request.method == "POST":
+    if request.method != "POST":
+        return JsonResponse({"error": "Only POST method allowed"}, status=405)
+
+    try:
         data = json.loads(request.body)
         phone = data.get("phone_number")
         amount = data.get("amount")
@@ -40,5 +43,7 @@ def initiate_mpesa_payment(request):
 
         url = f"{settings.FLW_BASE_URL}/payments"
         response = requests.post(url, headers=headers, json=payload)
-        return JsonResponse(response.json())
+        return JsonResponse(response.json(), status=response.status_code)
 
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
