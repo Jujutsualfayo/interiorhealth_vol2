@@ -8,11 +8,12 @@ while ! nc -z "$POSTGRES_HOST" "$POSTGRES_PORT"; do
 done
 
 echo "✅ Postgres is up. Applying migrations..."
-python manage.py migrate --noinput
+python interiorhealth-backend/manage.py migrate --noinput
 
 # Optional: Collect static files
-# echo "📦 Collecting static files..."
-# python manage.py collectstatic --noinput
+# python interiorhealth-backend/manage.py collectstatic --noinput
 
 echo "🚀 Starting Gunicorn server..."
-exec gunicorn config.wsgi:application --bind 0.0.0.0:${PORT:-8000}
+exec gunicorn config.wsgi:application \
+  --chdir interiorhealth-backend \
+  --bind 0.0.0.0:${PORT:-8000}
