@@ -33,6 +33,8 @@ INSTALLED_APPS = [
     'patients',
 ]
 
+AUTH_USER_MODEL = 'users.User'
+
 # Middleware
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # CORS should be at the top
