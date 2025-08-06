@@ -18,3 +18,4 @@ services:
         value: "interiorhealth-backend.onrender.com,localhost,127.0.0.1"
       - key: DATABASE_URL
         value: postgres://postgres:UkoIY7QfW7qckN1F@db.ssevjtwsulbgorgdojgw.supabase.co:5432/postgres
+
