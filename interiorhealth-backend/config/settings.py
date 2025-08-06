@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'drugs',
     'orders',
     'payments',
+    'patients',
 ]
 
 # Middleware
