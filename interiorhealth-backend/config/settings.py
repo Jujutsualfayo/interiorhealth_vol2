@@ -1,16 +1,18 @@
 import os
 from pathlib import Path
+from decouple import config
+import dj_database_url
+from datetime import timedelta
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Paths
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get("SECRET_KEY", "unsafe-default-secret-key")
+# SECURITY
+SECRET_KEY = config("SECRET_KEY", default="unsafe-secret-key")
+DEBUG = config("DEBUG", default=True, cast=bool)
+ALLOWED_HOSTS = ["*"]
 
-DEBUG = os.environ.get("DEBUG", "False").lower() in ["true", "1", "yes"]
-
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost 127.0.0.1").split()
-
-# Application definition
+# Installed apps
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -18,15 +20,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Local apps
+
+    # Third-party
+    'rest_framework',
+    'corsheaders',
+
+    # Your apps
     'users',
-    'patients',
-    'orders',
     'drugs',
+    'orders',
     'payments',
 ]
 
+# Middleware
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # CORS should be at the top
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -36,12 +44,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'config.urls'
+ROOT_URLCONF = 'interiorhealth.urls'
 
+# Templates
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # if using templates folder
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -54,49 +63,52 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'config.wsgi.application'
+WSGI_APPLICATION = 'interiorhealth.wsgi.application'
 
 # Database
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get("POSTGRES_DB", "postgres"),
-        'USER': os.environ.get("POSTGRES_USER", "postgres"),
-        'PASSWORD': os.environ.get("POSTGRES_PASSWORD", "postgres"),
-        'HOST': os.environ.get("POSTGRES_HOST", "db"),
-        'PORT': os.environ.get("POSTGRES_PORT", "5432"),
-    }
+    'default': dj_database_url.config(
+        default=f"postgres://{config('POSTGRES_USER')}:{config('POSTGRES_PASSWORD')}@db:5432/{config('POSTGRES_DB')}"
+    )
 }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
+
+# REST Framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+}
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Nairobi'
 USE_I18N = True
+USE_L10N = True
 USE_TZ = True
 
 # Static files
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Default primary key field type
+# Default primary key field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# CORS
+CORS_ALLOW_ALL_ORIGINS = True
