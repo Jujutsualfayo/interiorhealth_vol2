@@ -8,7 +8,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Security
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*', cast=Csv)
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost,web', cast=Csv)
+
 
 # Installed apps
 INSTALLED_APPS = [
