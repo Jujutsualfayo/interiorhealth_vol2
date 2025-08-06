@@ -6,29 +6,26 @@ services:
       pip install -r requirements.txt
     startCommand: gunicorn config.wsgi:application
     runtime: python
-    region: oregon  # Change to your preferred region
-    plan: free  # Or "starter", "pro" based on your needs
+    region: oregon
+    plan: free
     envVars:
       - key: DJANGO_SETTINGS_MODULE
         value: config.settings
       - key: SECRET_KEY
-        value: your_secret_key
+        value: "i$ig1#8mxhom3%b&ed%zty%l5=!^frdfc2rud$p14p+&wa%wj+"
       - key: DEBUG
         value: 'False'
       - key: ALLOWED_HOSTS
-        value: your-render-subdomain.onrender.com,localhost,127.0.0.1
+        value: interiorhealth-backend.onrender.com,localhost,127.0.0.1
       - key: POSTGRES_DB
         value: postgres
       - key: POSTGRES_USER
         value: postgres
       - key: POSTGRES_PASSWORD
-        value: your_password
+        value: UkoIY7QfW7qckN1F
       - key: POSTGRES_HOST
         value: db.ssevjtwsulbgorgdojgw.supabase.co
       - key: POSTGRES_PORT
         value: 5432
       - key: DATABASE_URL
-        value: postgres://postgres:your_password@db.ssevjtwsulbgorgdojgw.supabase.co:5432/postgres
-      - key: ALLOWED_CORS_ORIGINS
-        value: https://your-frontend-url.com
-
+        value: postgres://postgres:UkoIY7QfW7qckN1F@db.ssevjtwsulbgorgdojgw.supabase.co:5432/postgres
