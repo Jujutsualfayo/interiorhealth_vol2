@@ -15,9 +15,10 @@ echo "✅ Postgres is up. Applying migrations..."
 python manage.py migrate --noinput
 
 # Collect static files (optional, if you plan to serve them)
-# echo "📦 Collecting static files..."
+# echo "�� Collecting static files..."
 # python manage.py collectstatic --noinput
 
 # Start the Django development server
 echo "🚀 Starting Django development server..."
 exec python manage.py runserver 0.0.0.0:8000
+
