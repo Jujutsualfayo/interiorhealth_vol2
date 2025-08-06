@@ -1,6 +1,8 @@
 from decouple import config
 from pathlib import Path
 from datetime import timedelta
+import dj_database_url
+from dotenv import load_dotenv
 from corsheaders.defaults import default_headers
 import os
 
@@ -217,4 +219,10 @@ LOGGING = {
             'propagate': True,
         },
     },
+}
+
+load_dotenv()
+
+DATABASES = {
+    'default': dj_database_url.parse(os.getenv("DATABASE_URL"))
 }
