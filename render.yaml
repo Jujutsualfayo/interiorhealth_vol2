@@ -4,7 +4,7 @@ services:
     env: python
     buildCommand: |
       pip install -r requirements.txt
-    startCommand: gunicorn config.wsgi:application
+    startCommand: gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
     region: oregon
     plan: free
     envVars:
