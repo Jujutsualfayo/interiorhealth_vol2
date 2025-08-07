@@ -1,10 +1,7 @@
 services:
   - type: web
     name: interiorhealth-backend
-    env: python
-    buildCommand: |
-      pip install -r requirements.txt
-    startCommand: gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
+    env: docker
     region: oregon
     plan: free
     envVars:
@@ -18,4 +15,3 @@ services:
         value: "interiorhealth-backend.onrender.com,localhost,127.0.0.1"
       - key: DATABASE_URL
         value: postgres://postgres:UkoIY7QfW7qckN1F@db.ssevjtwsulbgorgdojgw.supabase.co:5432/postgres
-
