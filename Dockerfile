@@ -1,5 +1,3 @@
-# Dockerfile
-
 FROM python:3.12-slim
 
 # Set environment variables
@@ -25,6 +23,9 @@ COPY . .
 # Add entrypoint
 COPY ./entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+
+# Expose the port Django will run on
+EXPOSE 8000
 
 ENTRYPOINT ["/entrypoint.sh"]
 
