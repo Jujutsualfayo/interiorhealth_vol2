@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 echo "PWD: $(pwd)"
 echo "Listing files in current directory:"
@@ -17,12 +17,21 @@ while ! nc -z "$POSTGRES_HOST" "$POSTGRES_PORT"; do
 done
 
 echo "✅ Postgres is up. Applying migrations..."
-python interiorhealth-backend/manage.py migrate --noinput || { echo "❌ Migration failed"; sleep 600; exit 1; }
+if ! python interiorhealth-backend/manage.py migrate --noinput; then
+  echo "❌ Migration failed"
+  sleep 600
+  exit 1
+fi
 
 # Optional: Collect static files
+# echo "Collecting static files..."
 # python interiorhealth-backend/manage.py collectstatic --noinput
 
 echo "🚀 Starting Gunicorn server..."
-exec gunicorn config.wsgi:application \
+if ! exec gunicorn config.wsgi:application \
   --chdir interiorhealth-backend \
-  --bind 0.0.0.0:${PORT:-8000} || { echo "❌ Gunicorn failed"; sleep 600; exit 1; }
+  --bind 0.0.0.0:${PORT:-8000}; then
+  echo "❌ Gunicorn failed"
+  sleep 600
+  exit 1
+fi
