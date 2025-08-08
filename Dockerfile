@@ -1,8 +1,8 @@
 FROM python:3.12-slim
 
 # Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 WORKDIR /code
 
@@ -28,4 +28,5 @@ RUN chmod +x /entrypoint.sh
 EXPOSE 8000
 
 ENTRYPOINT ["/entrypoint.sh"]
+
 

@@ -1,15 +1,21 @@
 #!/bin/bash
 
-set -ex
+set -ex  # Print commands and fail on error
 
-echo "PWD: $(pwd)"
-echo "Listing files in current directory:"
+echo "📁 PWD: $(pwd)"
+echo "📄 Listing files in current directory:"
 ls -la
 
-echo "Environment variables:"
+echo "🌐 Environment variables:"
 env
 
-echo "PORT variable is: ${PORT}"
+# 🚨 Check PORT is set (Railway sets this, but let's be safe)
+if [ -z "$PORT" ]; then
+  echo "❌ Error: \$PORT is not set."
+  exit 1
+fi
+
+echo "🔌 PORT variable is: $PORT"
 
 echo "⏳ Waiting for Postgres at $POSTGRES_HOST:$POSTGRES_PORT..."
 while ! nc -z "$POSTGRES_HOST" "$POSTGRES_PORT"; do
@@ -24,14 +30,10 @@ if ! python interiorhealth-backend/manage.py migrate --noinput; then
 fi
 
 # Optional: Collect static files
-# echo "Collecting static files..."
+# echo "📦 Collecting static files..."
 # python interiorhealth-backend/manage.py collectstatic --noinput
 
-echo "🚀 Starting Gunicorn server..."
-if ! exec gunicorn config.wsgi:application \
+echo "🚀 Starting Gunicorn server on port $PORT"
+exec gunicorn config.wsgi:application \
   --chdir interiorhealth-backend \
-  --bind 0.0.0.0:${PORT:-8000}; then
-  echo "❌ Gunicorn failed"
-  sleep 600
-  exit 1
-fi
+  --bind 0.0.0.0:$PORT
