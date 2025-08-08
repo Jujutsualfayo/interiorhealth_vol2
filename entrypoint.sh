@@ -17,12 +17,11 @@ fi
 
 echo "🔌 PORT variable is: $PORT"
 
-echo "⏳ Waiting for Postgres at $POSTGRES_HOST:$POSTGRES_PORT..."
-while ! nc -z "$POSTGRES_HOST" "$POSTGRES_PORT"; do
-  sleep 1
-done
+# ⏳ Simple wait for DB to be ready (no POSTGRES_HOST/PORT check needed)
+echo "⏳ Giving the database a few seconds to be ready..."
+sleep 5
 
-echo "✅ Postgres is up. Applying migrations..."
+echo "✅ Applying Django migrations..."
 if ! python interiorhealth-backend/manage.py migrate --noinput; then
   echo "❌ Migration failed"
   sleep 600
