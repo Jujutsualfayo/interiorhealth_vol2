@@ -1,27 +1,39 @@
+<img width="500" height="500" alt="shared image" src="https://github.com/user-attachments/assets/d133ab66-8767-42ab-9545-678b6df5e1dc" />
+
+
+
 Interior Health
 A digital health logistics and ordering platform designed to improve medicine accessibility in rural and underserved communities by connecting patients, health workers, and clinics.
 
 Overview
 Interior Health addresses the challenge of limited access to essential medicines in remote areas by digitizing the drug ordering, tracking, and payment processes. The platform empowers Community Health Extension Workers (CHEWs) to place orders on behalf of patients, manage deliveries, and ensure timely availability of drugs.
 
-Features
+Features:
 Role-Based Access Control: Three main user roles — Admin, Health Worker, and Patient — each with specific permissions.
 
-Drug Catalog: Patients and health workers can browse and select drugs from an updated catalog.
+Drug Catalog:
+Patients and health workers can browse and select drugs from an updated catalog.
 
-Order Management: Health workers can place and track orders for patients, with real-time status updates.
+Order Management:
+Health workers can place and track orders for patients, with real-time status updates.
 
-Payment Integration: Seamless mobile payments via M-Pesa integrated directly into the platform.
+Payment Integration:
+Seamless mobile payments via M-Pesa integrated directly into the platform.
 
-Real-Time Updates: Uses WebSocket for live order status notifications and communications.
+Real-Time Updates:
+Uses WebSocket for live order status notifications and communications.
 
-Secure Authentication: JWT-based login and token management ensuring secure access.
+Secure Authentication:
+JWT-based login and token management ensuring secure access.
 
-Responsive Frontend: Built with React and Tailwind CSS for an accessible and intuitive user experience.
+Responsive Frontend:
+Built with React and Tailwind CSS for an accessible and intuitive user experience.
 
-Scalable Backend: Django REST Framework API with PostgreSQL database for robust data handling.
+Scalable Backend:
+Django REST Framework API with PostgreSQL database for robust data handling.
 
-Containerized Deployment: Dockerized backend and frontend for easy deployment and scaling.
+Containerized Deployment:
+Dockerized backend and frontend for easy deployment and scaling.
 
 Technology Stack
 Layer	Technology
@@ -29,7 +41,7 @@ Backend API	Django REST Framework (Python)
 Frontend	React.js, Tailwind CSS
 Database	PostgreSQL
 Real-Time	WebSocket
-Payments	Flutterwave & M-Pesa Integration
+Payments	Flutterwave 
 Deployment	Backend on Railway, Frontend on Vercel, CI/CD via GitHub Actions
 Containerization	Docker
 
@@ -93,4 +105,4 @@ Contact
 Benjamin Otieno Alfayo
 Email: benjaminalfayo90@gmail.com
 GitHub: Jujutsualfayo
-Portfolio: Benjamin Alfayo | Portfolio
+phone:254769753994
