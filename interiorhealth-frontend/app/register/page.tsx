@@ -16,7 +16,9 @@ export default function RegisterPage() {
 
   const [error, setError] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -46,8 +48,12 @@ export default function RegisterPage() {
       if (role === 'admin') router.push('/dashboard/admin');
       else if (role === 'healthworker') router.push('/dashboard/healthworker');
       else router.push('/dashboard/patient');
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred.');
+      }
     }
   };
 
