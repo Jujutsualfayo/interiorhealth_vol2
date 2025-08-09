@@ -33,7 +33,7 @@ export default function DrugsPage() {
 
   const handlePlaceOrder = async () => {
     const items: OrderItem[] = Object.entries(quantities)
-      .filter(([_, quantity]) => quantity > 0)
+      .filter(([, quantity]) => quantity > 0)
       .map(([drugId, quantity]) => ({
         drug: parseInt(drugId),
         quantity,
@@ -62,7 +62,7 @@ export default function DrugsPage() {
         const error = await res.json();
         setMessage(error.detail || 'Order failed.');
       }
-    } catch (err) {
+    } catch  {
       setMessage('An error occurred.');
     } finally {
       setIsSubmitting(false);
