@@ -3,6 +3,12 @@
 import os
 import sys
 
+# Add this block to load .env from the root of your repo
+from dotenv import load_dotenv
+
+# This gets the parent directory of interiorhealth-backend (the repo root)
+dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
+load_dotenv(dotenv_path)
 
 def main():
     """Run administrative tasks."""
@@ -16,7 +22,6 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     execute_from_command_line(sys.argv)
-
 
 if __name__ == "__main__":
     main()
