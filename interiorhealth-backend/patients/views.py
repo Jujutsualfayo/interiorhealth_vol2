@@ -1,7 +1,7 @@
 from django.db.models import Q
 from users.models import User
 from rest_framework.views import APIView
-from rest_framework import status
+from rest_framework import status, permissions
 
 class PatientRequestHelpView(APIView):
     permission_classes = [permissions.IsAuthenticated]
