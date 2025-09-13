@@ -85,9 +85,31 @@ def mpesa_callback(request):
 
             payment.payment_status = "successful" if result_code == 0 else "failed"
             payment.checkout_request_id = checkout_request_id or payment.checkout_request_id
-            # Optionally save receipt_number, add a field if needed
             payment.save()
             logger.info(f"Payment {payment.id} updated to {payment.payment_status}")
+
+            # Notification logic
+            try:
+                user = payment.patient
+                if user and user.email:
+                    from django.core.mail import send_mail
+                    subject = f"Mpesa Payment {'Success' if payment.payment_status == 'successful' else 'Failure'}"
+                    message = (
+                        f"Dear {user.first_name or user.username},\n\n"
+                        f"Your Mpesa payment of KES {payment.amount} has been marked as {payment.payment_status}.\n"
+                        f"If you have any questions, contact support.\n\n"
+                        f"Regards,\nInteriorHealth Team"
+                    )
+                    send_mail(
+                        subject,
+                        message,
+                        settings.DEFAULT_FROM_EMAIL,
+                        [user.email],
+                        fail_silently=True
+                    )
+                    logger.info(f"Payment notification sent to {user.email}")
+            except Exception as notify_err:
+                logger.error(f"Failed to send payment notification: {notify_err}")
         else:
             logger.error(f"No matching payment found for callback: checkout_request_id={checkout_request_id}, phone={phone_number}, amount={amount}")
             return Response({"ResultCode": 1, "ResultDesc": "Payment record not found"}, status=404)
