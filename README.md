@@ -41,7 +41,7 @@ Backend API	Django REST Framework (Python)
 Frontend	React.js, Tailwind CSS
 Database	PostgreSQL
 Real-Time	WebSocket
-Payments	Flutterwave 
+Payments	Mpesa
 Deployment	Backend on Railway, Frontend on Vercel, CI/CD via GitHub Actions
 Containerization	Docker
 
