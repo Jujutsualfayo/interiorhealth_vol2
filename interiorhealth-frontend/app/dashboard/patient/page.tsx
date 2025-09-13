@@ -48,113 +48,101 @@ export default function PatientDashboard() {
 
   return (
     <AuthGate allowedRoles={["patient"]}>
-      <div className="min-h-screen bg-blue-50 flex flex-col">
-        <header className="bg-white shadow-md p-6">
-          <h1 className="text-3xl font-bold text-blue-700">Patient Dashboard</h1>
-          <p className="text-gray-500 mt-1">
-            Welcome to your health space, stay informed and in control.
-          </p>
-        </header>
+      <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="p-10">
+          <h1 className="text-3xl font-bold text-green-700 mb-2">Welcome, Patient!</h1>
+          <p className="text-gray-500 mb-8">Your health dashboard at a glance.</p>
 
-        <main className="flex-1 p-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* View Medications */}
-            <div className="bg-white rounded-lg shadow p-6 hover:shadow-md transition">
-              <h2 className="text-xl font-semibold text-gray-800 mb-2">🩺 View Medications</h2>
-              <p className="text-gray-600">Browse available drugs and read their descriptions.</p>
-              <a
-                href="#"
-                className="inline-block mt-4 text-blue-600 hover:underline font-medium"
-              >
-                Explore Medications →
-              </a>
+          {/* Dashboard Widgets */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+            {/* Orders Summary */}
+            <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center">
+              <span className="text-4xl mb-2">🛒</span>
+              <div className="text-2xl font-bold text-green-700">3</div>
+              <div className="text-gray-600">Active Orders</div>
+              <a href="/dashboard/patient/orders" className="mt-4 text-green-600 hover:underline font-medium">View Orders</a>
             </div>
 
-            {/* Place Order - Add Payment Button Here */}
-            <div className="bg-white rounded-lg shadow p-6 hover:shadow-md transition">
-              <h2 className="text-xl font-semibold text-gray-800 mb-2">🛒 Place Order</h2>
-              <p className="text-gray-600">Easily order the medicines you need from our inventory.</p>
-              <button
-                className="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-                onClick={() => setShowModal(true)}
-              >
+            {/* Quick Actions */}
+            <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center">
+              <span className="text-4xl mb-2">⚡</span>
+              <div className="text-lg font-semibold text-green-700 mb-2">Quick Actions</div>
+              <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mb-2" onClick={() => setShowModal(true)}>
                 Pay with Mpesa
               </button>
+              <a href="/dashboard/patient/drugs" className="text-green-600 hover:underline font-medium">Order Medication</a>
             </div>
 
-            {/* Mpesa Payment Modal */}
-            {showModal && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-                <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md relative">
-                  <button
-                    className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
-                    onClick={() => setShowModal(false)}
-                  >
-                    &times;
-                  </button>
-                  <h3 className="text-xl font-bold mb-4 text-green-700">Mpesa Payment</h3>
-                  <form onSubmit={handlePayment} className="space-y-4">
-                    <div>
-                      <label className="block text-gray-700 mb-1">Phone Number</label>
-                      <input
-                        type="text"
-                        value={phone}
-                        onChange={e => setPhone(e.target.value)}
-                        className="w-full border rounded px-3 py-2"
-                        placeholder="e.g. 0700123456"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-gray-700 mb-1">Amount (KES)</label>
-                      <input
-                        type="number"
-                        value={amount}
-                        onChange={e => setAmount(e.target.value)}
-                        className="w-full border rounded px-3 py-2"
-                        placeholder="e.g. 500"
-                        required
-                      />
-                    </div>
-                    <button
-                      type="submit"
-                      className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
-                      disabled={loading}
-                    >
-                      {loading ? "Processing..." : "Pay Now"}
-                    </button>
-                  </form>
-                  {feedback && (
-                    <div className="mt-4 text-center text-sm text-blue-700">
-                      {feedback}
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
+            {/* Health Tips */}
+            <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center">
+              <span className="text-4xl mb-2">💡</span>
+              <div className="text-lg font-semibold text-green-700 mb-2">Health Tip</div>
+              <p className="text-gray-700 text-center">Stay hydrated, take your medication as prescribed, and don’t skip meals.</p>
+            </div>
 
-            {/* Track Delivery */}
-            <div className="bg-white rounded-lg shadow p-6 hover:shadow-md transition">
-              <h2 className="text-xl font-semibold text-gray-800 mb-2">🚚 Track Delivery</h2>
-              <p className="text-gray-600">Monitor the status and location of your current orders.</p>
-              <a
-                href="#"
-                className="inline-block mt-4 text-blue-600 hover:underline font-medium"
-              >
-                Track Now →
-              </a>
+            {/* Recent Activity */}
+            <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center">
+              <span className="text-4xl mb-2">📋</span>
+              <div className="text-lg font-semibold text-green-700 mb-2">Recent Activity</div>
+              <ul className="text-gray-600 text-sm list-disc list-inside">
+                <li>Order #1234 placed</li>
+                <li>Payment of KES 500 successful</li>
+                <li>Order #1233 delivered</li>
+              </ul>
             </div>
           </div>
 
-          {/* Health Tip */}
-          <section className="mt-12 bg-white p-6 rounded-lg shadow text-center">
-            <h3 className="text-2xl font-bold text-green-600 mb-2">💡 Health Tip</h3>
-            <p className="text-gray-700">
-              Stay hydrated, take your medication as prescribed, and don’t skip meals.
-              A healthy routine is key to recovery.
-            </p>
-          </section>
-        </main>
+          {/* Mpesa Payment Modal */}
+          {showModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+              <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md relative">
+                <button
+                  className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+                  onClick={() => setShowModal(false)}
+                >
+                  &times;
+                </button>
+                <h3 className="text-xl font-bold mb-4 text-green-700">Mpesa Payment</h3>
+                <form onSubmit={handlePayment} className="space-y-4">
+                  <div>
+                    <label className="block text-gray-700 mb-1">Phone Number</label>
+                    <input
+                      type="text"
+                      value={phone}
+                      onChange={e => setPhone(e.target.value)}
+                      className="w-full border rounded px-3 py-2"
+                      placeholder="e.g. 0700123456"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 mb-1">Amount (KES)</label>
+                    <input
+                      type="number"
+                      value={amount}
+                      onChange={e => setAmount(e.target.value)}
+                      className="w-full border rounded px-3 py-2"
+                      placeholder="e.g. 500"
+                      required
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
+                    disabled={loading}
+                  >
+                    {loading ? "Processing..." : "Pay Now"}
+                  </button>
+                </form>
+                {feedback && (
+                  <div className="mt-4 text-center text-sm text-blue-700">
+                    {feedback}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </AuthGate>
   );
