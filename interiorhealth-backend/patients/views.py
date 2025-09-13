@@ -26,6 +26,7 @@ class PatientRequestHelpView(APIView):
             "health_worker_name": getattr(health_worker, "full_name", "Health Worker"),
         }, status=status.HTTP_200_OK)
 from rest_framework import generics, permissions
+from rest_framework.views import APIView
 from patients.models import PatientAssignment
 from patients.models import PatientProfile, MedicalHistory, PatientInteraction
 from patients.serializers import PatientAssignmentSerializer, PatientProfileSerializer, MedicalHistorySerializer, PatientInteractionSerializer
