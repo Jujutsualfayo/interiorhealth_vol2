@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import api from "@/services/api";
 import AuthGate from "@/components/AuthGate";
 
 export default function PatientDashboard() {
+  const router = useRouter();
   const config = {
     public_key: "FLWPUBK_TEST-42fdd6fa880919189b9c653c358a96ef-X",
     tx_ref: "IH_" + Date.now(),
@@ -46,7 +48,23 @@ export default function PatientDashboard() {
     setLoading(false);
   };
 
-  return (
+  // Request Help handler
+  const [helpLoading, setHelpLoading] = useState(false);
+  const [helpError, setHelpError] = useState<string | null>(null);
+
+  const handleRequestHelp = async () => {
+    setHelpLoading(true);
+    setHelpError(null);
+    try {
+      const res = await api.post("/patients/request-help/");
+      const hwId = res.data.health_worker_id;
+      // Redirect to health worker dashboard or chat (customize as needed)
+      router.push(`/dashboard/healthworker/${hwId}`);
+    } catch (err: any) {
+      setHelpError(err?.response?.data?.error || "Could not connect to a health worker. Try again.");
+    }
+    setHelpLoading(false);
+  };
     <AuthGate allowedRoles={["patient"]}>
       <div className="min-h-screen bg-gray-50 flex flex-col">
         <div className="p-10">
@@ -58,7 +76,14 @@ export default function PatientDashboard() {
             <div className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center">
               <span className="text-4xl mb-4">🤒</span>
               <div className="text-lg font-semibold text-green-700 mb-2">I'm feeling unwell</div>
-              <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 font-bold mb-2">Request Help</button>
+              <button
+                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 font-bold mb-2"
+                onClick={handleRequestHelp}
+                disabled={helpLoading}
+              >
+                {helpLoading ? "Connecting..." : "Request Help"}
+              </button>
+              {helpError && <p className="text-red-500 text-sm mt-2">{helpError}</p>}
               <p className="text-gray-500 text-sm">Get quick assistance from a health worker.</p>
             </div>
             <div className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center">
