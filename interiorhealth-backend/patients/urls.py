@@ -1,5 +1,6 @@
 from django.urls import path
 from patients.views import (
+    PatientRequestHelpView,
     AssignPatientView, AssignedPatientsListView,
     PatientProfileListCreateView, PatientProfileRetrieveUpdateView,
     MedicalHistoryListCreateView, MedicalHistoryRetrieveUpdateView,
@@ -10,6 +11,7 @@ from patients.views import (
 urlpatterns = [
     path('assign/', AssignPatientView.as_view(), name='assign-patient'),
     path('assigned/', AssignedPatientsListView.as_view(), name='assigned-patients'),
+    path('request-help/', PatientRequestHelpView.as_view(), name='patient-request-help'),
 
     # Patient profile CRUD
     path('profiles/', PatientProfileListCreateView.as_view(), name='patient-profile-list-create'),

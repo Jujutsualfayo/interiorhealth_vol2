@@ -1,3 +1,30 @@
+from django.db.models import Q
+from users.models import User
+# Patient request help view
+from rest_framework import status
+
+class PatientRequestHelpView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        # Find an available health worker (simple round-robin or first available)
+        health_worker = User.objects.filter(role="health_worker").order_by('id').first()
+        if not health_worker:
+            return Response({"error": "No health worker available."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Assign patient to health worker if not already assigned
+        patient = request.user
+        assignment, created = PatientAssignment.objects.get_or_create(patient=patient, defaults={"health_worker": health_worker})
+        if not created and assignment.health_worker != health_worker:
+            assignment.health_worker = health_worker
+            assignment.save()
+
+        # Return health worker info for frontend redirection
+        return Response({
+            "health_worker_id": health_worker.id,
+            "health_worker_email": health_worker.email,
+            "health_worker_name": getattr(health_worker, "full_name", "Health Worker"),
+        }, status=status.HTTP_200_OK)
 from rest_framework import generics, permissions
 from patients.models import PatientAssignment
 from patients.models import PatientProfile, MedicalHistory, PatientInteraction
