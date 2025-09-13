@@ -50,40 +50,41 @@ export default function PatientDashboard() {
     <AuthGate allowedRoles={["patient"]}>
       <div className="min-h-screen bg-gray-50 flex flex-col">
         <div className="p-10">
-          <h1 className="text-3xl font-bold text-green-700 mb-2">Welcome, Patient!</h1>
-          <p className="text-gray-500 mb-8">Your health dashboard at a glance.</p>
+          <h1 className="text-3xl font-bold text-green-700 mb-4">How can we help you today?</h1>
+          <p className="text-gray-600 mb-8 text-lg">We're here to support your health. Please choose an option below:</p>
 
-          {/* Dashboard Widgets */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
-            {/* Orders Summary */}
-            <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center">
-              <span className="text-4xl mb-2">🛒</span>
-              <div className="text-2xl font-bold text-green-700">3</div>
-              <div className="text-gray-600">Active Orders</div>
-              <a href="/dashboard/patient/orders" className="mt-4 text-green-600 hover:underline font-medium">View Orders</a>
+            {/* Actionable Buttons */}
+            <div className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center">
+              <span className="text-4xl mb-4">🤒</span>
+              <div className="text-lg font-semibold text-green-700 mb-2">I'm feeling unwell</div>
+              <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 font-bold mb-2">Request Help</button>
+              <p className="text-gray-500 text-sm">Get quick assistance from a health worker.</p>
             </div>
-
-            {/* Quick Actions */}
-            <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center">
-              <span className="text-4xl mb-2">⚡</span>
-              <div className="text-lg font-semibold text-green-700 mb-2">Quick Actions</div>
-              <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mb-2" onClick={() => setShowModal(true)}>
-                Pay with Mpesa
-              </button>
-              <a href="/dashboard/patient/drugs" className="text-green-600 hover:underline font-medium">Order Medication</a>
+            <div className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center">
+              <span className="text-4xl mb-4">👨‍⚕️</span>
+              <div className="text-lg font-semibold text-green-700 mb-2">Talk to a Doctor</div>
+              <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-bold mb-2">Start Chat</button>
+              <p className="text-gray-500 text-sm">Connect with a medical professional now.</p>
             </div>
-
-            {/* Health Tips */}
-            <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center">
-              <span className="text-4xl mb-2">💡</span>
-              <div className="text-lg font-semibold text-green-700 mb-2">Health Tip</div>
-              <p className="text-gray-700 text-center">Stay hydrated, take your medication as prescribed, and don’t skip meals.</p>
+            <div className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center">
+              <span className="text-4xl mb-4">💊</span>
+              <div className="text-lg font-semibold text-green-700 mb-2">Order Medication</div>
+              <a href="/dashboard/patient/drugs" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 font-bold mb-2">Order Now</a>
+              <p className="text-gray-500 text-sm">Browse and order from our drug catalog.</p>
             </div>
+            <div className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center">
+              <span className="text-4xl mb-4">💡</span>
+              <div className="text-lg font-semibold text-green-700 mb-2">Health Tips</div>
+              <a href="/dashboard/patient/health-tips" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-bold mb-2">View Tips</a>
+              <p className="text-gray-500 text-sm">Get advice for a healthier lifestyle.</p>
+            </div>
+          </div>
 
-            {/* Recent Activity */}
-            <div className="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center">
-              <span className="text-4xl mb-2">📋</span>
-              <div className="text-lg font-semibold text-green-700 mb-2">Recent Activity</div>
+          {/* Recent Activity */}
+          <div className="mt-12">
+            <h2 className="text-xl font-bold text-green-700 mb-4">Recent Activity</h2>
+            <div className="bg-white rounded-xl shadow-lg p-6">
               <ul className="text-gray-600 text-sm list-disc list-inside">
                 <li>Order #1234 placed</li>
                 <li>Payment of KES 500 successful</li>
