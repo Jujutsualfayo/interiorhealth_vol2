@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from users.models import User
 from patients.models import PatientAssignment
+from patients.models import PatientProfile, MedicalHistory, PatientInteraction
 from users.serializers import UserProfileSerializer
 
 class PatientAssignmentSerializer(serializers.ModelSerializer):
@@ -38,17 +39,57 @@ class PatientAssignmentSerializer(serializers.ModelSerializer):
         if patient.role != "patient":
             raise serializers.ValidationError(f"User '{patient.email}' is not a valid patient.")
 
-        if health_worker.role != "health_worker":
-            raise serializers.ValidationError(f"User '{health_worker.email}' is not a valid health worker.")
 
-        if PatientAssignment.objects.filter(patient=patient).exists():
-            raise serializers.ValidationError(f"Patient '{patient.email}' is already assigned to a health worker.")
+# Serializer for PatientProfile
+class PatientProfileSerializer(serializers.ModelSerializer):
+    user_email = serializers.EmailField(source='user.email', read_only=True)
 
-        return data
+    class Meta:
+        model = PatientProfile
+        fields = [
+            'id',
+            'user',
+            'user_email',
+            'full_name',
+            'date_of_birth',
+            'contact_number',
+            'address',
+            'emergency_contact',
+            'created_at',
+            'updated_at',
+        ]
+        read_only_fields = ['created_at', 'updated_at', 'user_email']
 
-    def create(self, validated_data):
-        patient_id = validated_data.pop('patient_id')
-        health_worker_id = validated_data.pop('health_worker_id')
-        patient = User.objects.get(id=patient_id)
-        health_worker = User.objects.get(id=health_worker_id)
-        return PatientAssignment.objects.create(patient=patient, health_worker=health_worker)
+# Serializer for MedicalHistory
+class MedicalHistorySerializer(serializers.ModelSerializer):
+    patient_name = serializers.CharField(source='patient.full_name', read_only=True)
+
+    class Meta:
+        model = MedicalHistory
+        fields = [
+            'id',
+            'patient',
+            'patient_name',
+            'description',
+            'date_recorded',
+        ]
+        read_only_fields = ['date_recorded', 'patient_name']
+
+# Serializer for PatientInteraction
+class PatientInteractionSerializer(serializers.ModelSerializer):
+    patient_name = serializers.CharField(source='patient.full_name', read_only=True)
+    health_worker_email = serializers.EmailField(source='health_worker.email', read_only=True)
+
+    class Meta:
+        model = PatientInteraction
+        fields = [
+            'id',
+            'patient',
+            'patient_name',
+            'health_worker',
+            'health_worker_email',
+            'note',
+            'date',
+        ]
+        read_only_fields = ['date', 'patient_name', 'health_worker_email']
+
