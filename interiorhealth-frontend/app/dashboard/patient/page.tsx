@@ -1,6 +1,7 @@
 "use client";
 
-import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
+import { useState } from "react";
+import api from "@/services/api";
 import AuthGate from "@/components/AuthGate";
 
 export default function PatientDashboard() {
@@ -22,7 +23,28 @@ export default function PatientDashboard() {
     },
   };
 
-  // Remove Flutterwave payment logic
+  // Mpesa payment modal state
+  const [showModal, setShowModal] = useState(false);
+  const [phone, setPhone] = useState("");
+  const [amount, setAmount] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [feedback, setFeedback] = useState<string | null>(null);
+
+  const handlePayment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setFeedback(null);
+    try {
+      const res = await api.post("/payments/initiate-payment/", {
+        phone,
+        amount,
+      });
+      setFeedback(res.data.message || "STK push initiated. Check your phone to complete payment.");
+    } catch (err: any) {
+      setFeedback(err?.response?.data?.error || "Payment failed. Try again.");
+    }
+    setLoading(false);
+  };
 
   return (
     <AuthGate allowedRoles={["patient"]}>
@@ -52,8 +74,64 @@ export default function PatientDashboard() {
             <div className="bg-white rounded-lg shadow p-6 hover:shadow-md transition">
               <h2 className="text-xl font-semibold text-gray-800 mb-2">🛒 Place Order</h2>
               <p className="text-gray-600">Easily order the medicines you need from our inventory.</p>
-              <p className="text-gray-600">Payment integration has been removed.</p>
+              <button
+                className="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                onClick={() => setShowModal(true)}
+              >
+                Pay with Mpesa
+              </button>
             </div>
+
+            {/* Mpesa Payment Modal */}
+            {showModal && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+                <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md relative">
+                  <button
+                    className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+                    onClick={() => setShowModal(false)}
+                  >
+                    &times;
+                  </button>
+                  <h3 className="text-xl font-bold mb-4 text-green-700">Mpesa Payment</h3>
+                  <form onSubmit={handlePayment} className="space-y-4">
+                    <div>
+                      <label className="block text-gray-700 mb-1">Phone Number</label>
+                      <input
+                        type="text"
+                        value={phone}
+                        onChange={e => setPhone(e.target.value)}
+                        className="w-full border rounded px-3 py-2"
+                        placeholder="e.g. 0700123456"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-gray-700 mb-1">Amount (KES)</label>
+                      <input
+                        type="number"
+                        value={amount}
+                        onChange={e => setAmount(e.target.value)}
+                        className="w-full border rounded px-3 py-2"
+                        placeholder="e.g. 500"
+                        required
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
+                      disabled={loading}
+                    >
+                      {loading ? "Processing..." : "Pay Now"}
+                    </button>
+                  </form>
+                  {feedback && (
+                    <div className="mt-4 text-center text-sm text-blue-700">
+                      {feedback}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
 
             {/* Track Delivery */}
             <div className="bg-white rounded-lg shadow p-6 hover:shadow-md transition">
