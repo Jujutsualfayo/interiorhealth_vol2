@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import LogoutButton from '@/components/LogoutButton';
 
 export default function PatientLayout({
@@ -6,6 +7,7 @@ export default function PatientLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
@@ -19,25 +21,30 @@ export default function PatientLayout({
             </div>
           </div>
           <nav className="flex flex-col space-y-4">
-            <Link href="/dashboard/patient">
-              <span className="flex items-center gap-2 px-3 py-2 rounded hover:bg-green-300 transition cursor-pointer font-medium text-green-900">
+            <Link href="/dashboard/patient" legacyBehavior>
+              <a className={`flex items-center gap-2 px-3 py-2 rounded hover:bg-green-300 transition cursor-pointer font-medium ${pathname === "/dashboard/patient" ? "text-green-700 font-bold" : "text-green-900"}`}>
                 <span>🏠</span> Home
-              </span>
+              </a>
             </Link>
-            <Link href="/dashboard/patient/orders">
-              <span className="flex items-center gap-2 px-3 py-2 rounded hover:bg-green-300 transition cursor-pointer font-medium text-green-900">
-                <span>🛒</span> My Orders
-              </span>
+            <Link href="/dashboard/patient/orders" legacyBehavior>
+              <a className={`px-3 py-2 rounded hover:bg-green-300 transition cursor-pointer font-medium ${pathname === "/dashboard/patient/orders" ? "text-green-700 font-bold" : "text-green-900"}`}>
+                My Orders
+              </a>
             </Link>
-            <Link href="/dashboard/patient/account">
-              <span className="flex items-center gap-2 px-3 py-2 rounded hover:bg-green-300 transition cursor-pointer font-medium text-green-900">
-                <span>👤</span> My Account
-              </span>
+            <Link href="/dashboard/patient/account" legacyBehavior>
+              <a className={`px-3 py-2 rounded hover:bg-green-300 transition cursor-pointer font-medium ${pathname === "/dashboard/patient/account" ? "text-green-700 font-bold" : "text-green-900"}`}>
+                My Account
+              </a>
             </Link>
-            <Link href="/dashboard/patient/health-tips">
-              <span className="flex items-center gap-2 px-3 py-2 rounded hover:bg-green-300 transition cursor-pointer font-medium text-green-900">
-                <span>💡</span> Health Tips
-              </span>
+            <Link href="/dashboard/patient/health-tips" legacyBehavior>
+              <a className={`px-3 py-2 rounded hover:bg-green-300 transition cursor-pointer font-medium ${pathname === "/dashboard/patient/health-tips" ? "text-green-700 font-bold" : "text-green-900"}`}>
+                Health Tips
+              </a>
+            </Link>
+            <Link href="/dashboard/patient/drugs" legacyBehavior>
+              <a className={`px-3 py-2 rounded hover:bg-green-300 transition cursor-pointer font-medium ${pathname === "/dashboard/patient/drugs" ? "text-green-700 font-bold" : "text-green-900"}`}>
+                Drug Catalog
+              </a>
             </Link>
           </nav>
         </div>
