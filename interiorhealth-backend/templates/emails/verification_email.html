@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Verify Your InteriorHealth Account</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f8fafc; color: #222; }
+        .container { max-width: 500px; margin: 0 auto; background: #fff; padding: 32px; border-radius: 8px; box-shadow: 0 2px 8px #e2e8f0; }
+        .logo { text-align: center; margin-bottom: 24px; }
+        .btn { display: inline-block; background: #2563eb; color: #fff; padding: 12px 24px; border-radius: 4px; text-decoration: none; font-weight: bold; }
+        .footer { margin-top: 32px; font-size: 12px; color: #888; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="https://yourdomain.com/logo.png" alt="InteriorHealth Logo" width="80" />
+        </div>
+        <h2>Welcome to InteriorHealth!</h2>
+        <p>Hi {{ user.first_name|default:user.username }},</p>
+        <p>Thank you for registering at InteriorHealth.</p>
+        <p>Please verify your email by clicking the button below:</p>
+        <p style="text-align:center;">
+            <a href="{{ verification_url }}" class="btn">Verify Email</a>
+        </p>
+        <p>If you didn’t sign up, please ignore this email.</p>
+        <div class="footer">
+            &copy; {{ year }} InteriorHealth. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>

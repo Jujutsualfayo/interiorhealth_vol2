@@ -5,33 +5,33 @@ from django.urls import reverse
 from users.utils import generate_email_verification_token
 
 def send_verification_email(user, request):
+    from django.template.loader import render_to_string
+    from django.core.mail import EmailMultiAlternatives
+    from datetime import datetime
+
     token = generate_email_verification_token(user)
-    frontend_url = request.build_absolute_uri(
+    verification_url = request.build_absolute_uri(
         reverse('verify-email') + f'?token={token}'
     )
 
     subject = 'Verify your InteriorHealth account'
-    message = f"""
-    Hi {user.first_name or user.username},
+    year = datetime.now().year
+    context = {
+        'user': user,
+        'verification_url': verification_url,
+        'year': year,
+    }
+    html_message = render_to_string('emails/verification_email.html', context)
+    text_message = f"Hi {user.first_name or user.username},\n\nThank you for registering at InteriorHealth.\n\nPlease verify your email by clicking the link below:\n{verification_url}\n\nIf you didn’t sign up, please ignore this email.\n\nRegards,\nInteriorHealth Team"
 
-    Thank you for registering at InteriorHealth.
-
-    Please verify your email by clicking the link below:
-    {frontend_url}
-
-    If you didn’t sign up, please ignore this email.
-
-    Regards,
-    InteriorHealth Team
-    """
-
-    send_mail(
+    email = EmailMultiAlternatives(
         subject,
-        message,
+        text_message,
         settings.DEFAULT_FROM_EMAIL,
         [user.email],
-        fail_silently=False,
     )
+    email.attach_alternative(html_message, "text/html")
+    email.send(fail_silently=False)
 
 def send_password_reset_email(user, uid, token, request):
     reset_link = f"{settings.FRONTEND_BASE_URL}/reset-password?uid={uid}&token={token}"
