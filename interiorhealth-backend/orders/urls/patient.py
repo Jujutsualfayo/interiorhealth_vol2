@@ -1,7 +1,7 @@
 # orders/urls/patient.py
 from django.urls import path
 from orders.views.patient.order_views import OrderCreateView, OrderListView
-from payments.views import initiate_mpesa_payment as initiate_payment
+from payments.views import initiate_payment
 
 
 urlpatterns = [
