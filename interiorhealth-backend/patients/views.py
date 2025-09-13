@@ -1,6 +1,6 @@
 from django.db.models import Q
 from users.models import User
-# Patient request help view
+from rest_framework.views import APIView
 from rest_framework import status
 
 class PatientRequestHelpView(APIView):
