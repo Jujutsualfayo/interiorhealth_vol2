@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import initiate_mpesa_payment, payment_success
+from .views import initiate_mpesa_payment, payment_success, mpesa_callback
 
 urlpatterns = [
     path("initiate-payment/", initiate_mpesa_payment, name="initiate-mpesa-payment"),
