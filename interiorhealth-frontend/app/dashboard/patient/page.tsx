@@ -65,6 +65,8 @@ export default function PatientDashboard() {
     }
     setHelpLoading(false);
   };
+
+  return (
     <AuthGate allowedRoles={["patient"]}>
       <div className="min-h-screen bg-gray-50 flex flex-col">
         <div className="p-10">
