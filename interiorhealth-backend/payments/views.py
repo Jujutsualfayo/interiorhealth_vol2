@@ -75,10 +75,35 @@ def initiate_mpesa_payment(request):
     return JsonResponse({"error": "Invalid request method."}, status=405)
 
 
+
+# Robust Mpesa callback handler
 @csrf_exempt
-def payment_success(request):
-    """
-    Just a placeholder endpoint to confirm payment success.
-    Your frontend should hit this endpoint or use it for redirection logic.
-    """
-    return JsonResponse({"message": "Payment successful"})
+def mpesa_callback(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body.decode("utf-8"))
+            # Safaricom sends callback data in 'Body' > 'stkCallback'
+            callback = data.get("Body", {}).get("stkCallback", {})
+            checkout_request_id = callback.get("CheckoutRequestID")
+            result_code = callback.get("ResultCode")
+            result_desc = callback.get("ResultDesc")
+
+            # Find payment record
+            payment = MpesaPayment.objects.filter(checkout_request_id=checkout_request_id).first()
+            if not payment:
+                return JsonResponse({"error": "Payment not found."}, status=404)
+
+            # Update payment status
+            if result_code == 0:
+                payment.payment_status = "successful"
+            else:
+                payment.payment_status = "failed"
+            payment.save()
+
+            # Optionally, save more details (amount, phone, etc.) from callback
+            # You can parse 'CallbackMetadata' for more info
+
+            return JsonResponse({"message": "Callback processed.", "status": payment.payment_status, "desc": result_desc})
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+    return JsonResponse({"error": "Invalid request method."}, status=405)
