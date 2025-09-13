@@ -22,7 +22,7 @@ export default function PatientDashboard() {
     },
   };
 
-  const handleFlutterPayment = useFlutterwave(config);
+  // Remove Flutterwave payment logic
 
   return (
     <AuthGate allowedRoles={["patient"]}>
@@ -52,23 +52,7 @@ export default function PatientDashboard() {
             <div className="bg-white rounded-lg shadow p-6 hover:shadow-md transition">
               <h2 className="text-xl font-semibold text-gray-800 mb-2">🛒 Place Order</h2>
               <p className="text-gray-600">Easily order the medicines you need from our inventory.</p>
-              <button
-                onClick={() =>
-                  handleFlutterPayment({
-                    callback: (response) => {
-                      console.log("Payment response:", response);
-                      closePaymentModal(); // closes the modal programmatically
-                      alert("Payment complete! Transaction: " + response.transaction_id);
-                    },
-                    onClose: () => {
-                      console.log("Payment closed.");
-                    },
-                  })
-                }
-                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-              >
-                Pay Now →
-              </button>
+              <p className="text-gray-600">Payment integration has been removed.</p>
             </div>
 
             {/* Track Delivery */}
