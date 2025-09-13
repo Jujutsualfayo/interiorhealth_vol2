@@ -95,9 +95,8 @@ export default function RegisterPage() {
           onChange={handleChange}
           className="w-full px-4 py-2 border rounded"
         >
-          <option value="patient">Patient</option>
-          <option value="healthworker">Health Worker</option>
-          <option value="admin">Admin</option>
+            <option value="patient">Patient</option>
+            <option value="healthworker">Health Worker</option>
         </select>
         <button
           type="submit"

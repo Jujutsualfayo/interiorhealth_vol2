@@ -24,23 +24,25 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
-        role = validated_data.pop('role', 'patient')  # default to patient
-        user = User.objects.create_user(
-            username=validated_data.get('username', validated_data['email']),
-            email=validated_data.get('email', ''),
-            password=validated_data['password'],
-            first_name=validated_data.get('first_name', ''),
-            last_name=validated_data.get('last_name', ''),
-            role=role
-        )
-        user.is_active = False
-        user.save()
+            role = validated_data.pop('role', 'patient')  # default to patient
+            if role not in ['patient', 'health_worker']:
+                raise serializers.ValidationError({'role': 'Invalid role for public registration.'})
+            user = User.objects.create_user(
+                username=validated_data.get('username', validated_data['email']),
+                email=validated_data.get('email', ''),
+                password=validated_data['password'],
+                first_name=validated_data.get('first_name', ''),
+                last_name=validated_data.get('last_name', ''),
+                role=role
+            )
+            user.is_active = False
+            user.save()
 
-        request = self.context.get('request')
-        if request:
-            send_verification_email(user, request)
+            request = self.context.get('request')
+            if request:
+                send_verification_email(user, request)
 
-        return user
+            return user
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
