@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from drugs.models import InventoryItem
-from orders.models import Order
+from orders.models import Order, OrderItem
 from patients.models import PatientProfile
 import random
 
@@ -73,20 +73,31 @@ class Command(BaseCommand):
             items.append(item)
         self.stdout.write(self.style.SUCCESS(f"Created {len(items)} inventory items."))
 
-        # Create Orders
+        # Create Orders and OrderItems
+        status_choices = ["pending", "confirmed", "delivered"]
         for patient in patients:
             for _ in range(2):
-                product = random.choice(items)
-                officer = random.choice(health_officers)
-                order, created = Order.objects.get_or_create(
-                    patient=patient,
-                    product=product,
-                    health_worker=officer,
-                    defaults={
-                        "quantity": random.randint(1, 5),
-                        "status": "placed",
-                    }
+                order = Order.objects.create(
+                    patient=patient.user,
+                    status=random.choice(status_choices),
+                    total_amount=0,
                 )
+                order_items = []
+                total = 0
+                for _ in range(random.randint(1, 3)):
+                    item = random.choice(items)
+                    quantity = random.randint(1, 5)
+                    price = item.price * quantity
+                    order_item = OrderItem.objects.create(
+                        order=order,
+                        item=item,
+                        quantity=quantity,
+                        price=item.price,
+                    )
+                    order_items.append(order_item)
+                    total += price
+                order.total_amount = total
+                order.save()
         self.stdout.write(self.style.SUCCESS("Sample orders created for patients."))
 
         self.stdout.write(self.style.SUCCESS("Seeding complete!"))
