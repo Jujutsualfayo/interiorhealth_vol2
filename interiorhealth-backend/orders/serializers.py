@@ -1,7 +1,7 @@
 # orders/serializers.py
 from rest_framework import serializers
 from .models import Order, OrderItem
-from drugs.models import Drug
+from drugs.models import InventoryItem
 
 class OrderItemSerializer(serializers.ModelSerializer):
     drug_name = serializers.ReadOnlyField(source='drug.name')
