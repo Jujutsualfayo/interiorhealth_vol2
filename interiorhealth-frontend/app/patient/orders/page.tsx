@@ -25,14 +25,35 @@ export default function OrderHistoryPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch('/api/orders/my-orders/', { credentials: 'include' })
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to fetch orders');
-        return res.json();
-      })
-      .then((data) => setOrders(data))
-      .catch(() => setError('Could not load orders.'))
-      .finally(() => setLoading(false));
+    const fetchOrders = async () => {
+      setLoading(true);
+      setError('');
+      try {
+        const res = await fetch('/api/orders/my-orders/', { credentials: 'include' });
+        if (!res.ok) {
+          let errorMsg = 'Failed to fetch orders.';
+          try {
+            const errData = await res.json();
+            if (errData && errData.error) errorMsg = errData.error;
+          } catch {}
+          throw new Error(errorMsg);
+        }
+        const data = await res.json();
+        if (!Array.isArray(data)) {
+          throw new Error('Unexpected response from server.');
+        }
+        setOrders(data);
+      } catch (err: any) {
+        if (err.message && err.message.includes('Network')) {
+          setError('Network error. Please check your connection.');
+        } else {
+          setError(err.message || 'Could not load orders.');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchOrders();
   }, []);
 
   return (
