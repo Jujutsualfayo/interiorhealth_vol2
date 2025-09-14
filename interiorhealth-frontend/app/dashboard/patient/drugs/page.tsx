@@ -1,11 +1,21 @@
 "use client";
+
 import React, { useState, useEffect } from "react";
 import api from "@/services/api";
 
+type InventoryItem = {
+  id: number;
+  name: string;
+  description: string;
+  category: string;
+  price: number;
+  [key: string]: any;
+};
 
-  const [inventory, setInventory] = useState<any[]>([]);
+export default function InventoryPage() {
+  const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -28,8 +38,8 @@ import api from "@/services/api";
   }, []);
 
   // Group items by category
-  const categories = Array.from(new Set(inventory.map(item => item.category)));
-  const currentItems = inventory.filter(item => item.category === selectedCategory);
+  const categories = Array.from(new Set(inventory.map((item: InventoryItem) => item.category)));
+  const currentItems = inventory.filter((item: InventoryItem) => item.category === selectedCategory);
 
   return (
     <div className="max-w-4xl mx-auto p-8">
@@ -39,7 +49,7 @@ import api from "@/services/api";
       {!loading && !error && (
         <>
           <div className="flex gap-4 mb-8 flex-wrap">
-            {categories.map((cat) => (
+            {categories.map((cat: string) => (
               <button
                 key={cat}
                 className={`px-4 py-2 rounded font-semibold border transition ${selectedCategory === cat ? "bg-green-600 text-white" : "bg-white text-green-700 border-green-600"}`}
@@ -50,7 +60,7 @@ import api from "@/services/api";
             ))}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {currentItems.map((item) => (
+            {currentItems.map((item: InventoryItem) => (
               <div key={item.id} className="bg-white rounded-xl shadow-lg p-6 flex flex-col">
                 <div className="font-bold text-lg text-gray-800 mb-2">{item.name}</div>
                 <div className="text-gray-600 mb-2">{item.description}</div>
