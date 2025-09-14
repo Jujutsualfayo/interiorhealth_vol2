@@ -11,7 +11,9 @@ export async function POST(req: NextRequest) {
 
     let backendRes;
     try {
-      backendRes = await fetch('http://localhost:8000/api/users/login/', {
+      const base = process.env.NEXT_PUBLIC_API_BASE_URL || '';
+      const url = base ? `${base.replace(/\/$/, '')}/api/users/login/` : `/api/users/login/`;
+      backendRes = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
