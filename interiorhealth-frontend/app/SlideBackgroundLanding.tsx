@@ -9,17 +9,17 @@ export default function SlideBackgroundLanding() {
       <div className="absolute inset-0 z-0 pointer-events-none">
         {/* Slide 1 */}
         <div
-          className="absolute top-1/4 left-0 w-1/3 h-2/3 bg-green-300 opacity-30 blur-2xl rounded-full"
+          className="absolute top-1/4 left-0 w-1/3 h-2/3 bg-green-300 opacity-80 rounded-full border-4 border-green-700"
           style={{ animation: "slide-x 12s ease-in-out infinite, slide-y 8s ease-in-out infinite" }}
         />
         {/* Slide 2 */}
         <div
-          className="absolute top-1/2 left-1/3 w-1/3 h-2/3 bg-green-500 opacity-20 blur-3xl rounded-full"
+          className="absolute top-1/2 left-1/3 w-1/3 h-2/3 bg-green-500 opacity-80 rounded-full border-4 border-green-900"
           style={{ animation: "slide-x 12s ease-in-out infinite, slide-y-reverse 10s ease-in-out infinite" }}
         />
         {/* Slide 3 */}
         <div
-          className="absolute top-1/3 left-2/3 w-1/3 h-2/3 bg-green-200 opacity-40 blur-2xl rounded-full"
+          className="absolute top-1/3 left-2/3 w-1/3 h-2/3 bg-green-200 opacity-80 rounded-full border-4 border-green-400"
           style={{ animation: "slide-x 12s ease-in-out infinite, slide-y 8s ease-in-out infinite" }}
         />
       </div>
