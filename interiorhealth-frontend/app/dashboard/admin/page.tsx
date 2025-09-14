@@ -1,47 +1,75 @@
 import AuthGate from "@/components/AuthGate";
+import Link from "next/link";
+
+const sidebarLinks = [
+  { href: "/dashboard/admin", label: "Dashboard", icon: "🏠" },
+  { href: "/dashboard/admin/users", label: "Users", icon: "👥" },
+  { href: "/dashboard/admin/orders", label: "Orders", icon: "📦" },
+  { href: "/dashboard/admin/drugs", label: "Drugs", icon: "🧪" },
+];
 
 export default function AdminDashboard() {
   return (
     <AuthGate allowedRoles={["admin"]}>
       <div className="min-h-screen bg-gray-100 flex">
         {/* Sidebar */}
-        <aside className="w-64 bg-white shadow-md">
+        <aside className="w-72 bg-white shadow-lg flex flex-col">
           <div className="p-6 border-b">
-            <h2 className="text-xl font-bold text-blue-600">InteriorHealth</h2>
+            <h2 className="text-2xl font-bold text-slate-800">InteriorHealth</h2>
           </div>
-          <nav className="p-4 space-y-2">
-            <a href="#" className="block px-4 py-2 rounded hover:bg-blue-100 text-gray-700">Dashboard</a>
-            <a href="#" className="block px-4 py-2 rounded hover:bg-blue-100 text-gray-700">Users</a>
-            <a href="#" className="block px-4 py-2 rounded hover:bg-blue-100 text-gray-700">Orders</a>
-            <a href="#" className="block px-4 py-2 rounded hover:bg-blue-100 text-gray-700">Drugs</a>
-            <a href="#" className="block px-4 py-2 rounded hover:bg-red-100 text-red-600">Logout</a>
+          <nav className="p-4 flex-1 space-y-2">
+            {sidebarLinks.map(link => (
+              <Link key={link.href} href={link.href} className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-slate-100 text-slate-700 font-medium transition">
+                <span className="text-xl">{link.icon}</span>
+                {link.label}
+              </Link>
+            ))}
+            <button className="flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-red-100 text-red-600 font-medium transition mt-8">
+              <span className="text-xl">🚪</span> Logout
+            </button>
           </nav>
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-8">
-          <header className="mb-6">
-            <h1 className="text-3xl font-bold text-gray-800">Admin Dashboard</h1>
-            <p className="text-gray-500">Welcome, Admin. Manage the system efficiently.</p>
+        <main className="flex-1 py-10 px-6 md:px-12">
+          <header className="mb-8">
+            <h1 className="text-3xl font-semibold text-slate-800">Admin Dashboard</h1>
+            <p className="text-slate-500 text-lg">Welcome, Admin. Manage the system efficiently.</p>
           </header>
 
           {/* Dashboard Widgets */}
-          <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="bg-white p-6 rounded shadow">
-              <h3 className="text-lg font-semibold text-gray-700">Total Users</h3>
-              <p className="mt-2 text-2xl font-bold text-blue-600">142</p>
-            </div>
-            <div className="bg-white p-6 rounded shadow">
-              <h3 className="text-lg font-semibold text-gray-700">Pending Orders</h3>
-              <p className="mt-2 text-2xl font-bold text-yellow-500">37</p>
-            </div>
-            <div className="bg-white p-6 rounded shadow">
-              <h3 className="text-lg font-semibold text-gray-700">Available Drugs</h3>
-              <p className="mt-2 text-2xl font-bold text-green-600">215</p>
-            </div>
+          <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <WidgetCard
+              icon="👥"
+              title="Total Users"
+              value="142"
+              color="bg-slate-100"
+            />
+            <WidgetCard
+              icon="📦"
+              title="Pending Orders"
+              value="37"
+              color="bg-slate-100"
+            />
+            <WidgetCard
+              icon="🧪"
+              title="Available Drugs"
+              value="215"
+              color="bg-slate-100"
+            />
           </section>
         </main>
       </div>
     </AuthGate>
+  );
+}
+
+function WidgetCard({ icon, title, value, color }: { icon: string; title: string; value: string; color?: string }) {
+  return (
+    <div className={`rounded-2xl ${color || "bg-slate-100"} p-8 flex flex-col items-center shadow-sm hover:shadow-md transition`}>
+      <span className="text-4xl mb-4">{icon}</span>
+      <div className="text-lg font-medium text-slate-800 mb-2 text-center">{title}</div>
+      <div className="text-3xl font-bold text-slate-700 mb-2">{value}</div>
+    </div>
   );
 }
