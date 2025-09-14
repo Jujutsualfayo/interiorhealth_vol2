@@ -1,0 +1,69 @@
+import React from "react";
+import Link from "next/link";
+
+export default function SlideBackgroundLanding() {
+  return (
+    <main className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden bg-gradient-to-br from-green-100 via-white to-green-200">
+      {/* Animated Slides Background */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="w-full h-full flex animate-slide-x">
+          <div className="w-1/3 h-full bg-green-300 opacity-30 blur-2xl rounded-full mx-4 animate-slide-y" />
+          <div className="w-1/3 h-full bg-green-500 opacity-20 blur-3xl rounded-full mx-4 animate-slide-y-reverse" />
+          <div className="w-1/3 h-full bg-green-200 opacity-40 blur-2xl rounded-full mx-4 animate-slide-y" />
+        </div>
+      </div>
+      {/* Content */}
+      <div className="relative z-10 text-center max-w-2xl px-6 py-12 bg-white/80 rounded-xl shadow-xl backdrop-blur-md">
+        <h1 className="text-5xl font-extrabold mb-4 text-green-700 drop-shadow-lg">Welcome to Interior Health</h1>
+        <p className="text-lg text-gray-700 mb-8">
+          Bridging the gap in healthcare access for interior communities.<br />
+          Affordable, accessible, and essential medical support at your fingertips.
+        </p>
+        <div className="flex justify-center space-x-6 mb-8">
+          <Link
+            href="/auth/login"
+            className="bg-green-600 text-white px-6 py-3 rounded-lg shadow hover:bg-green-700 transition"
+          >
+            Login
+          </Link>
+          <Link
+            href="/register"
+            className="border border-green-600 text-green-700 px-6 py-3 rounded-lg hover:bg-green-50 transition"
+          >
+            Register
+          </Link>
+        </div>
+        <div className="mt-8 text-sm text-gray-500">
+          &copy; {new Date().getFullYear()} Interior Health. All rights reserved.
+        </div>
+      </div>
+      {/* Keyframes for slide animation */}
+      <style jsx>{`
+        @keyframes slide-x {
+          0% { transform: translateX(-10%); }
+          50% { transform: translateX(10%); }
+          100% { transform: translateX(-10%); }
+        }
+        @keyframes slide-y {
+          0% { transform: translateY(-10%); }
+          50% { transform: translateY(10%); }
+          100% { transform: translateY(-10%); }
+        }
+        @keyframes slide-y-reverse {
+          0% { transform: translateY(10%); }
+          50% { transform: translateY(-10%); }
+          100% { transform: translateY(10%); }
+        }
+        .animate-slide-x {
+          animation: slide-x 12s ease-in-out infinite;
+        }
+        .animate-slide-y {
+          animation: slide-y 8s ease-in-out infinite;
+        }
+        .animate-slide-y-reverse {
+          animation: slide-y-reverse 10s ease-in-out infinite;
+        }
+      `}</style>
+    </main>
+  );
+}
