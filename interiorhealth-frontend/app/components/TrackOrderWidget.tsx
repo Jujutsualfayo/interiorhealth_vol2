@@ -12,11 +12,19 @@ export default function TrackOrderWidget() {
     setError("");
     setLoading(true);
     setOrder(null);
+    if (!orderId.trim()) {
+      setError("Please enter a valid Order ID.");
+      setLoading(false);
+      return;
+    }
     try {
-      // Fetch all orders for the logged-in patient
       const res = await axios.get("/api/orders/my-orders/");
       const orders = res.data;
-      // Find order by entered ID
+      if (!Array.isArray(orders)) {
+        setError("Unexpected response from server. Please try again later.");
+        setLoading(false);
+        return;
+      }
       const found = orders.find((o: any) => String(o.id) === orderId.trim());
       if (found) {
         setOrder(found);
@@ -24,7 +32,13 @@ export default function TrackOrderWidget() {
         setError("Order not found. Please check your Order ID.");
       }
     } catch (err: any) {
-      setError("Could not fetch orders. Please try again.");
+      if (err.response && err.response.data && err.response.data.error) {
+        setError(`Server error: ${err.response.data.error}`);
+      } else if (err.message && err.message.includes('Network')) {
+        setError("Network error. Please check your connection.");
+      } else {
+        setError("Could not fetch orders. Please try again.");
+      }
     }
     setLoading(false);
   };
