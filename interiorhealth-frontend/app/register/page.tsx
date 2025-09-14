@@ -27,7 +27,11 @@ export default function RegisterPage() {
     setError('');
 
     try {
-      const res = await fetch('http://localhost:8000/api/users/register/', {
+      const base = process.env.NEXT_PUBLIC_API_BASE_URL || '';
+      // If NEXT_PUBLIC_API_BASE_URL is set to backend origin (e.g. https://api.example.com),
+      // ensure the path joins correctly. If empty, use relative path which will proxy to same origin.
+      const url = base ? `${base.replace(/\/$/, '')}/api/users/register/` : `/api/users/register/`;
+      const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -52,7 +56,10 @@ export default function RegisterPage() {
       else if (data.role === 'healthworker') router.push('/dashboard/healthworker');
       else router.push('/dashboard/patient');
     } catch (err: unknown) {
-      if (err instanceof Error) {
+      // Network errors (like CORS or DNS) surface as TypeError("Failed to fetch") in browsers
+      if (err instanceof TypeError) {
+        setError(`Network error: ${err.message}. Check backend URL, CORS, and network connectivity.`);
+      } else if (err instanceof Error) {
         setError(err.message);
       } else {
         setError('An unknown error occurred.');
