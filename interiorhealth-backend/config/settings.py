@@ -118,7 +118,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CORS
 CORS_ALLOWED_ORIGINS = [
     "https://interiorhealth-vol2.vercel.app",
+    # Frontend deployed on Render (alternate deployment); add its origin so preflight succeeds.
+    "https://interiorhealth-vol2-2.onrender.com",
 ]
+# Allow cookies/credentials to be included in cross-origin requests (if using cookie-based auth)
+CORS_ALLOW_CREDENTIALS = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # Email (Gmail SMTP)
