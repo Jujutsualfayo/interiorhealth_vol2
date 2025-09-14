@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unable to reach registration server.' }, { status: 502 })
     }
 
-    let data: any
+    let data: unknown
     try {
       data = await backendRes.json()
     } catch (jsonError) {
@@ -35,7 +35,10 @@ export async function POST(req: NextRequest) {
     }
 
     if (!backendRes.ok) {
-      return NextResponse.json({ error: data.message || data.error || 'Registration failed' }, { status: backendRes.status })
+      const errMsg = typeof data === 'object' && data !== null && 'message' in data
+        ? (data as { message?: string }).message
+        : undefined
+      return NextResponse.json({ error: errMsg || 'Registration failed' }, { status: backendRes.status })
     }
 
     // Mirror backend response and set cookies if present
@@ -49,8 +52,13 @@ export async function POST(req: NextRequest) {
     }
 
     const response = NextResponse.json(data, { status: 200 })
-    if (data.token) response.cookies.set('token', data.token, cookieOptions)
-    if (data.role) response.cookies.set('role', data.role, { ...cookieOptions, httpOnly: false })
+    // Safely read token/role if present
+    if (typeof data === 'object' && data !== null) {
+      const payload = data as { token?: string; role?: string }
+      if (payload.token) response.cookies.set('token', payload.token, cookieOptions)
+      // role cookie is readable by JS so httpOnly=false
+      if (payload.role) response.cookies.set('role', payload.role, { ...cookieOptions, httpOnly: false })
+    }
 
     return response
   } catch (error) {

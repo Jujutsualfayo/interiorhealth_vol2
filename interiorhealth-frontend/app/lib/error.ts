@@ -11,9 +11,9 @@ export function extractErrorMessage(err: unknown): string {
     }
     if (anyErr.message && typeof anyErr.message === "string") return anyErr.message;
     return String(anyErr);
-  } catch (e) {
+  } catch (_e) {
     // If extracting the error message fails for any reason, return a generic message.
-    // We intentionally keep `e` in the signature in case future logging is added.
+    // `_e` kept for future debugging without triggering lint rules about unused variables.
     return "An unknown error occurred.";
   }
 }
