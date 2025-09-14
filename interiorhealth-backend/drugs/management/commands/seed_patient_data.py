@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from drugs.models import InventoryItem
 from orders.models import Order
-from patients.models import Patient
+from patients.models import PatientProfile
 import random
 
 User = get_user_model()
@@ -37,8 +37,17 @@ class Command(BaseCommand):
                     "is_active": True,
                 }
             )
-            patient, created = Patient.objects.get_or_create(user=user)
-            patients.append(patient)
+            patient_profile, created = PatientProfile.objects.get_or_create(
+                user=user,
+                defaults={
+                    "full_name": f"Patient {i+1}",
+                    "date_of_birth": None,
+                    "contact_number": f"07000000{i+1}",
+                    "address": f"Address {i+1}",
+                    "emergency_contact": f"Emergency {i+1}",
+                }
+            )
+            patients.append(patient_profile)
         self.stdout.write(self.style.SUCCESS(f"Created {len(patients)} patients."))
 
         # Create Inventory Items
