@@ -22,30 +22,20 @@ export default function PatientLayout({
             </div>
           </div>
           <nav className="flex flex-col space-y-4">
-            <Link href="/dashboard/patient" legacyBehavior>
-              <a className={`flex items-center gap-2 px-3 py-2 rounded hover:bg-green-300 transition cursor-pointer font-medium ${pathname === "/dashboard/patient" ? "text-green-700 font-bold" : "text-green-900"}`}>
-                <span>🏠</span> Home
-              </a>
+            <Link href="/dashboard/patient" className={`flex items-center gap-2 px-3 py-2 rounded hover:bg-green-300 transition cursor-pointer font-medium ${pathname === "/dashboard/patient" ? "text-green-700 font-bold" : "text-green-900"}`}>
+              <span>🏠</span> Home
             </Link>
-            <Link href="/dashboard/patient/orders" legacyBehavior>
-              <a className={`px-3 py-2 rounded hover:bg-green-300 transition cursor-pointer font-medium ${pathname === "/dashboard/patient/orders" ? "text-green-700 font-bold" : "text-green-900"}`}>
-                My Orders
-              </a>
+            <Link href="/dashboard/patient/orders" className={`px-3 py-2 rounded hover:bg-green-300 transition cursor-pointer font-medium ${pathname === "/dashboard/patient/orders" ? "text-green-700 font-bold" : "text-green-900"}`}>
+              My Orders
             </Link>
-            <Link href="/dashboard/patient/account" legacyBehavior>
-              <a className={`px-3 py-2 rounded hover:bg-green-300 transition cursor-pointer font-medium ${pathname === "/dashboard/patient/account" ? "text-green-700 font-bold" : "text-green-900"}`}>
-                My Account
-              </a>
+            <Link href="/dashboard/patient/account" className={`px-3 py-2 rounded hover:bg-green-300 transition cursor-pointer font-medium ${pathname === "/dashboard/patient/account" ? "text-green-700 font-bold" : "text-green-900"}`}>
+              My Account
             </Link>
-            <Link href="/dashboard/patient/health-tips" legacyBehavior>
-              <a className={`px-3 py-2 rounded hover:bg-green-300 transition cursor-pointer font-medium ${pathname === "/dashboard/patient/health-tips" ? "text-green-700 font-bold" : "text-green-900"}`}>
-                Health Tips
-              </a>
+            <Link href="/dashboard/patient/health-tips" className={`px-3 py-2 rounded hover:bg-green-300 transition cursor-pointer font-medium ${pathname === "/dashboard/patient/health-tips" ? "text-green-700 font-bold" : "text-green-900"}`}>
+              Health Tips
             </Link>
-            <Link href="/dashboard/patient/drugs" legacyBehavior>
-              <a className={`px-3 py-2 rounded hover:bg-green-300 transition cursor-pointer font-medium ${pathname === "/dashboard/patient/drugs" ? "text-green-700 font-bold" : "text-green-900"}`}>
-                Drug Catalog
-              </a>
+            <Link href="/dashboard/patient/drugs" className={`px-3 py-2 rounded hover:bg-green-300 transition cursor-pointer font-medium ${pathname === "/dashboard/patient/drugs" ? "text-green-700 font-bold" : "text-green-900"}`}>
+              Drug Catalog
             </Link>
           </nav>
         </div>
