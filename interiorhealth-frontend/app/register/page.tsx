@@ -58,10 +58,10 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-20 p-8 border rounded shadow">
-      <h1 className="text-2xl font-bold mb-6">Create Account</h1>
-      {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="max-w-md mx-auto mt-20 p-8 rounded-xl shadow-lg bg-gray-900 border border-gray-800">
+      <h1 className="text-3xl font-extrabold mb-6 text-white text-center">Create Account</h1>
+      {error && <p className="text-red-400 text-sm mb-4 text-center">{error}</p>}
+      <form onSubmit={handleSubmit} className="space-y-5">
         <input
           type="text"
           name="name"
@@ -69,7 +69,7 @@ export default function RegisterPage() {
           value={formData.name}
           onChange={handleChange}
           required
-          className="w-full px-4 py-2 border rounded"
+          className="w-full px-4 py-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
         />
         <input
           type="email"
@@ -78,7 +78,7 @@ export default function RegisterPage() {
           value={formData.email}
           onChange={handleChange}
           required
-          className="w-full px-4 py-2 border rounded"
+          className="w-full px-4 py-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
         />
         <input
           type="password"
@@ -87,20 +87,20 @@ export default function RegisterPage() {
           value={formData.password}
           onChange={handleChange}
           required
-          className="w-full px-4 py-2 border rounded"
+          className="w-full px-4 py-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
         />
         <select
           name="role"
           value={formData.role}
           onChange={handleChange}
-          className="w-full px-4 py-2 border rounded"
+          className="w-full px-4 py-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
         >
             <option value="patient">Patient</option>
             <option value="healthworker">Health Worker</option>
         </select>
         <button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition duration-200"
         >
           Register
         </button>
