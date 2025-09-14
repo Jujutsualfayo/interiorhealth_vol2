@@ -61,12 +61,7 @@ export default function InventoryPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {currentItems.map((item: InventoryItem) => (
-              <div key={item.id} className="bg-white rounded-xl shadow-lg p-6 flex flex-col">
-                <div className="font-bold text-lg text-gray-800 mb-2">{item.name}</div>
-                <div className="text-gray-600 mb-2">{item.description}</div>
-                <div className="text-green-700 font-bold mb-4">KES {item.price}</div>
-                <button className="mt-auto bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 font-bold">Order</button>
-              </div>
+              <OrderProductCard key={item.id} item={item} />
             ))}
           </div>
         </>
