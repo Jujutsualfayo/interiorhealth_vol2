@@ -7,11 +7,21 @@ export default function SlideBackgroundLanding() {
     <main className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden bg-gradient-to-br from-green-100 via-white to-green-200">
       {/* Animated Slides Background */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="w-full h-full flex animate-slide-x">
-          <div className="w-1/3 h-full bg-green-300 opacity-30 blur-2xl rounded-full mx-4 animate-slide-y" />
-          <div className="w-1/3 h-full bg-green-500 opacity-20 blur-3xl rounded-full mx-4 animate-slide-y-reverse" />
-          <div className="w-1/3 h-full bg-green-200 opacity-40 blur-2xl rounded-full mx-4 animate-slide-y" />
-        </div>
+        {/* Slide 1 */}
+        <div
+          className="absolute top-1/4 left-0 w-1/3 h-2/3 bg-green-300 opacity-30 blur-2xl rounded-full"
+          style={{ animation: "slide-x 12s ease-in-out infinite, slide-y 8s ease-in-out infinite" }}
+        />
+        {/* Slide 2 */}
+        <div
+          className="absolute top-1/2 left-1/3 w-1/3 h-2/3 bg-green-500 opacity-20 blur-3xl rounded-full"
+          style={{ animation: "slide-x 12s ease-in-out infinite, slide-y-reverse 10s ease-in-out infinite" }}
+        />
+        {/* Slide 3 */}
+        <div
+          className="absolute top-1/3 left-2/3 w-1/3 h-2/3 bg-green-200 opacity-40 blur-2xl rounded-full"
+          style={{ animation: "slide-x 12s ease-in-out infinite, slide-y 8s ease-in-out infinite" }}
+        />
       </div>
       {/* Content */}
       <div className="relative z-10 text-center max-w-2xl px-6 py-12 bg-white/80 rounded-xl shadow-xl backdrop-blur-md">
