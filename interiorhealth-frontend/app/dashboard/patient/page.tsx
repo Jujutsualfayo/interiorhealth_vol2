@@ -150,7 +150,7 @@ export default function PatientDashboard() {
             {/* Other widgets remain unchanged */}
             <div className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center">
               <span className="text-4xl mb-4">�</span>
-              <div className="text-lg font-semibold text-green-700 mb-2">INVENTORY</div>
+              <div className="text-lg font-semibold text-green-700 mb-2">Inventory</div>
               <a href="/dashboard/patient/drugs" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 font-bold mb-2">View Products</a>
               <p className="text-gray-500 text-sm">Browse and order from our inventory: medical drugs, health supplies, and more.</p>
             </div>
