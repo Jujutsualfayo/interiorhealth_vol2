@@ -6,6 +6,7 @@ import api from "@/services/api";
 import AuthGate from "@/components/AuthGate";
 import LocationsWidget from "../../components/LocationsWidget";
 import TrackOrderWidget from "../../components/TrackOrderWidget";
+import { extractErrorMessage } from "@/app/lib/error";
 
 export default function PatientDashboard() {
   // Illness categories (static for now)
@@ -50,8 +51,8 @@ export default function PatientDashboard() {
       if (selectedCategory && selectedCategory !== "All") params.append("category", selectedCategory);
       const res = await api.get(`/doctors/search/?${params.toString()}`);
       setDoctorResults(res.data.results || []);
-    } catch (err: any) {
-      setDoctorError(err instanceof Error ? err.message : "Could not fetch doctors. Try again.");
+    } catch (err: unknown) {
+      setDoctorError(extractErrorMessage(err) || "Could not fetch doctors. Try again.");
     }
     setDoctorLoading(false);
   };
@@ -62,23 +63,6 @@ export default function PatientDashboard() {
     setShowDoctorModal(false);
   };
   const router = useRouter();
-  const config = {
-    public_key: "FLWPUBK_TEST-42fdd6fa880919189b9c653c358a96ef-X",
-    tx_ref: "IH_" + Date.now(),
-    amount: 100,
-    currency: "KES",
-    payment_options: "card, mobilemoney",
-    customer: {
-      email: "patient@example.com",
-      phone_number: "0700000000",
-      name: "Benjamin Alfayo",
-    },
-    customizations: {
-      title: "Interior Health App",
-      description: "Drug Order Payment",
-      logo: "https://yourdomain.com/logo.png",
-    },
-  };
 
   // Mpesa payment modal state
   const [showModal, setShowModal] = useState(false);
@@ -97,8 +81,8 @@ export default function PatientDashboard() {
         amount,
       });
       setFeedback(res.data.message || "STK push initiated. Check your phone to complete payment.");
-    } catch (err: any) {
-      setFeedback(err?.response?.data?.error || "Payment failed. Try again.");
+    } catch (err: unknown) {
+      setFeedback(extractErrorMessage(err) || "Payment failed. Try again.");
     }
     setLoading(false);
   };
@@ -117,13 +101,14 @@ export default function PatientDashboard() {
       }
       const hwId = res.data.health_worker_id;
       router.push(`/dashboard/healthworker/${hwId}`);
-    } catch (err: any) {
-      if (err?.response?.data?.error) {
-        setHelpError(`Server error: ${err.response.data.error}`);
-      } else if (err.message && err.message.includes('Network')) {
+    } catch (err: unknown) {
+      const msg = extractErrorMessage(err);
+      if (msg && msg.toLowerCase().includes("network")) {
         setHelpError("Network error. Please check your connection.");
+      } else if (msg) {
+        setHelpError(msg);
       } else {
-        setHelpError(err.message || "Could not connect to a health worker. Try again.");
+        setHelpError("Could not connect to a health worker. Try again.");
       }
     }
     setHelpLoading(false);
@@ -135,7 +120,7 @@ export default function PatientDashboard() {
       <div className="min-h-screen bg-gray-100 flex flex-col">
         <div className="p-8 md:p-12 lg:p-16">
           <h1 className="text-3xl font-semibold text-slate-800 mb-4">How can we help you today?</h1>
-          <p className="text-slate-600 mb-8 text-lg">We're here to support your health. Please choose an option below:</p>
+          <p className="text-slate-600 mb-8 text-lg">We&apos;re here to support your health. Please choose an option below:</p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
             {/* Virtual Clinic Widget */}
@@ -236,7 +221,7 @@ export default function PatientDashboard() {
                     <p className="text-gray-500 text-sm">No doctors found. Try searching above.</p>
                   ) : (
                     <ul className="divide-y">
-                      {doctorResults.map((doc: any) => (
+                      {doctorResults.map((doc) => (
                         <li key={doc.id} className="py-3 flex items-center justify-between">
                           <div>
                             <div className="font-semibold text-green-700">{doc.name}</div>
@@ -244,7 +229,7 @@ export default function PatientDashboard() {
                           </div>
                           <button
                             className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm font-bold"
-                            onClick={() => handleStartChat(doc.id)}
+                            onClick={() => handleStartChat(String(doc.id))}
                           >
                             Start Chat
                           </button>

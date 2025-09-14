@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import api from "@/services/api";
 import type { InventoryItem } from "@/app/lib/types";
+import { extractErrorMessage } from "@/app/lib/error";
 
 export default function OrderProductCard({ item }: { item: InventoryItem }) {
   const [quantity, setQuantity] = useState<number>(1);
@@ -29,13 +30,7 @@ export default function OrderProductCard({ item }: { item: InventoryItem }) {
       });
       setMessage("Order placed successfully.");
     } catch (err: unknown) {
-      const msg =
-        err && typeof err === "object" && "response" in err && (err as any).response?.data?.error
-          ? (err as any).response.data.error
-          : err instanceof Error
-          ? err.message
-          : "Failed to place order.";
-      setError(msg);
+      setError(extractErrorMessage(err) || "Failed to place order.");
     } finally {
       setLoading(false);
     }
