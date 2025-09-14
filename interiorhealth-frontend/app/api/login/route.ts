@@ -9,10 +9,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Email and password are required.' }, { status: 400 });
     }
 
+    // Prefer a server-only env var for the backend origin to avoid exposing it publicly.
+    // Fall back to the public var if needed, then finally to localhost for dev.
+    const serverBase = process.env.API_BASE_URL || process.env.NEXT_PUBLIC_API_BASE_URL || '';
+    const url = serverBase
+      ? `${serverBase.replace(/\/$/, '')}/api/users/login/`
+      : 'http://localhost:8000/api/users/login/';
+
     let backendRes;
     try {
-      const base = process.env.NEXT_PUBLIC_API_BASE_URL || '';
-      const url = base ? `${base.replace(/\/$/, '')}/api/users/login/` : `/api/users/login/`;
       backendRes = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -39,15 +44,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Authentication failed: missing token or role.' }, { status: 500 });
     }
 
-    // Set JWT token and role in cookies
-    const response = NextResponse.json({ success: true, role: data.role });
-    response.cookies.set('token', data.token, {
+    // Set JWT token and role in cookies on the frontend domain.
+    const isProd = process.env.NODE_ENV === 'production';
+    const cookieOptions = {
+      path: '/',
       httpOnly: true,
-      path: '/',
-    });
-    response.cookies.set('role', data.role, {
-      path: '/',
-    });
+      secure: isProd,
+      sameSite: 'lax' as const,
+      // 7 days
+      maxAge: 60 * 60 * 24 * 7,
+    };
+
+    const response = NextResponse.json({ success: true, role: data.role });
+    // httpOnly token
+    response.cookies.set('token', data.token, cookieOptions);
+    // non-httpOnly role (client-side code may read it)
+    response.cookies.set('role', data.role, { ...cookieOptions, httpOnly: false });
     return response;
   } catch (error) {
     console.error('Login error:', error);
