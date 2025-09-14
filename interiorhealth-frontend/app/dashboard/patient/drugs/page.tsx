@@ -23,7 +23,7 @@ export default function InventoryPage() {
       setLoading(true);
       setError(null);
       try {
-        const res = await api.get("/drugs/patients/inventory/");
+  const res = await api.get("/api/drugs/patients/inventory/");
         setInventory(res.data);
         // Default to first category
         if (res.data.length > 0) {
