@@ -30,7 +30,11 @@ export default function RegisterPage() {
       const base = process.env.NEXT_PUBLIC_API_BASE_URL || '';
       // If NEXT_PUBLIC_API_BASE_URL is set to backend origin (e.g. https://api.example.com),
       // ensure the path joins correctly. If empty, use relative path which will proxy to same origin.
-      const url = base ? `${base.replace(/\/$/, '')}/api/users/register/` : `/api/users/register/`;
+      // Use server-side proxy `/api/register` when no public base is set. If a public API base
+      // is provided (e.g. in deployed environment), call the backend origin directly.
+      const url = base
+        ? `${base.replace(/\/$/, '')}/api/users/register/`
+        : `/api/register`;
       const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
