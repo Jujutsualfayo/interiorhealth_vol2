@@ -86,7 +86,7 @@ export default function PatientDashboard() {
                 {helpLoading ? "Connecting..." : "Find a Doctor"}
               </button>
               {helpError && <p className="text-red-500 text-sm mt-2">{helpError}</p>}
-              <p className="text-gray-500 text-base text-center mt-2">Search for a doctor, request help, or start a chat with a medical professional—all in one place.</p>
+              <p className="text-gray-500 text-base text-center mt-2">Search for a doctor, request help, or start a chat with a medical professional all in one place.</p>
             </div>
             {/* Other widgets remain unchanged */}
             <div className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center">
