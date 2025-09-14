@@ -1,0 +1,85 @@
+from django.core.management.base import BaseCommand
+from django.contrib.auth import get_user_model
+from drugs.models import InventoryItem
+from orders.models import Order
+from patients.models import Patient
+import random
+
+User = get_user_model()
+
+class Command(BaseCommand):
+    help = 'Seed patient, health officer, inventory, and order data for testing.'
+
+    def handle(self, *args, **options):
+        # Create Health Officers
+        health_officers = []
+        for i in range(3):
+            officer, created = User.objects.get_or_create(
+                email=f"healthofficer{i+1}@test.com",
+                defaults={
+                    "username": f"healthofficer{i+1}",
+                    "role": "health_worker",
+                    "is_staff": True,
+                    "is_active": True,
+                }
+            )
+            health_officers.append(officer)
+        self.stdout.write(self.style.SUCCESS(f"Created {len(health_officers)} health officers."))
+
+        # Create Patients
+        patients = []
+        for i in range(5):
+            user, created = User.objects.get_or_create(
+                email=f"patient{i+1}@test.com",
+                defaults={
+                    "username": f"patient{i+1}",
+                    "role": "patient",
+                    "is_active": True,
+                }
+            )
+            patient, created = Patient.objects.get_or_create(user=user)
+            patients.append(patient)
+        self.stdout.write(self.style.SUCCESS(f"Created {len(patients)} patients."))
+
+        # Create Inventory Items
+        inventory_data = [
+            {"name": "Paracetamol", "description": "Pain relief tablet", "category": "drug", "dosage_form": "Tablet", "strength": "500mg", "quantity_available": 200, "price": 50.00},
+            {"name": "Amoxicillin", "description": "Antibiotic capsule", "category": "drug", "dosage_form": "Capsule", "strength": "250mg", "quantity_available": 150, "price": 120.00},
+            {"name": "Surgical Mask", "description": "Disposable mask", "category": "supply", "dosage_form": "", "strength": "", "quantity_available": 500, "price": 10.00},
+            {"name": "Glucose Meter", "description": "Blood sugar device", "category": "device", "dosage_form": "", "strength": "", "quantity_available": 30, "price": 2500.00},
+            {"name": "Vitamin C", "description": "Supplement tablet", "category": "drug", "dosage_form": "Tablet", "strength": "1000mg", "quantity_available": 100, "price": 80.00},
+        ]
+        items = []
+        for data in inventory_data:
+            item, created = InventoryItem.objects.get_or_create(
+                name=data["name"],
+                defaults={
+                    "description": data["description"],
+                    "category": data["category"],
+                    "dosage_form": data["dosage_form"],
+                    "strength": data["strength"],
+                    "quantity_available": data["quantity_available"],
+                    "price": data["price"],
+                    "is_active": True,
+                }
+            )
+            items.append(item)
+        self.stdout.write(self.style.SUCCESS(f"Created {len(items)} inventory items."))
+
+        # Create Orders
+        for patient in patients:
+            for _ in range(2):
+                product = random.choice(items)
+                officer = random.choice(health_officers)
+                order, created = Order.objects.get_or_create(
+                    patient=patient,
+                    product=product,
+                    health_worker=officer,
+                    defaults={
+                        "quantity": random.randint(1, 5),
+                        "status": "placed",
+                    }
+                )
+        self.stdout.write(self.style.SUCCESS("Sample orders created for patients."))
+
+        self.stdout.write(self.style.SUCCESS("Seeding complete!"))
