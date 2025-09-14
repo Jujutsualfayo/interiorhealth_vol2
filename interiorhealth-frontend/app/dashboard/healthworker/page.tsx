@@ -53,15 +53,6 @@ export default function HealthworkerDashboard() {
               />
             </div>
           </div>
-function WidgetStatCard({ icon, title, value, color }: { icon: string; title: string; value: string; color?: string }) {
-  return (
-    <div className={`rounded-2xl ${color || "bg-blue-50"} p-6 flex flex-col items-center shadow-sm hover:shadow-md transition`}>
-      <span className="text-3xl mb-2">{icon}</span>
-      <div className="text-base font-medium text-slate-700 mb-1 text-center">{title}</div>
-      <div className="text-2xl font-bold text-blue-900 mb-1">{value}</div>
-    </div>
-  );
-}
         </div>
       </div>
     </AuthGate>
