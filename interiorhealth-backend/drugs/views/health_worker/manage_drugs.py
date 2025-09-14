@@ -1,7 +1,7 @@
 from rest_framework import generics, permissions
-from drugs.models import Drug
+from drugs.models import InventoryItem
 from drugs.serializers import DrugSerializer
-from users.permissions import IsAdminUser  # Ensure this is defined
+from users.permissions import IsAdminUser  
 
 class DrugCreateView(generics.CreateAPIView):
     queryset = Drug.objects.all()

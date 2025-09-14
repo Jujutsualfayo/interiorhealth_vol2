@@ -19,6 +19,8 @@ class Order(models.Model):
     def __str__(self):
         return f"Order #{self.id} by {self.patient.email}"
 
+
+class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
     item = models.ForeignKey(InventoryItem, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
