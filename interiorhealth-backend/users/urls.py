@@ -11,6 +11,10 @@ from users.views.password_reset_request import PasswordResetRequestView
 from users.views.password_reset_confirm import PasswordResetConfirmView
 
 urlpatterns = [
+    # Doctor Search
+    path('doctors/search/',
+         __import__('users.views.healthworker.search_doctors').views.healthworker.search_doctors.DoctorSearchView.as_view(),
+         name='doctor-search'),
     # Registration
     path('register/', RegisterUserView.as_view(), name='register'),
     path('register/healthworker/', register_healthworker, name='register_health_worker'),
