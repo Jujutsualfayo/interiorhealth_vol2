@@ -74,26 +74,21 @@ export default function PatientDashboard() {
           <p className="text-gray-600 mb-8 text-lg">We're here to support your health. Please choose an option below:</p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
-            {/* Actionable Buttons */}
-            <div className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center">
-              <span className="text-4xl mb-4">🤒</span>
-              <div className="text-lg font-semibold text-green-700 mb-2">I'm feeling unwell</div>
+            {/* Virtual Clinic Widget */}
+            <div className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center col-span-1 md:col-span-2 lg:col-span-2">
+              <span className="text-5xl mb-4">🏥</span>
+              <div className="text-2xl font-bold text-green-700 mb-2">Virtual Clinic</div>
               <button
-                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 font-bold mb-2"
+                className="bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700 font-bold mb-2 text-lg"
                 onClick={handleRequestHelp}
                 disabled={helpLoading}
               >
-                {helpLoading ? "Connecting..." : "Request Help"}
+                {helpLoading ? "Connecting..." : "Find a Doctor"}
               </button>
               {helpError && <p className="text-red-500 text-sm mt-2">{helpError}</p>}
-              <p className="text-gray-500 text-sm">Get quick assistance from a health worker.</p>
+              <p className="text-gray-500 text-base text-center mt-2">Search for a doctor, request help, or start a chat with a medical professional—all in one place.</p>
             </div>
-            <div className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center">
-              <span className="text-4xl mb-4">👨‍⚕️</span>
-              <div className="text-lg font-semibold text-green-700 mb-2">Talk to a Doctor</div>
-              <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-bold mb-2">Start Chat</button>
-              <p className="text-gray-500 text-sm">Connect with a medical professional now.</p>
-            </div>
+            {/* Other widgets remain unchanged */}
             <div className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center">
               <span className="text-4xl mb-4">💊</span>
               <div className="text-lg font-semibold text-green-700 mb-2">Order Medication</div>
