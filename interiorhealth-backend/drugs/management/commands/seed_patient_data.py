@@ -60,17 +60,15 @@ class Command(BaseCommand):
         ]
         items = []
         for data in inventory_data:
-            item, created = InventoryItem.objects.get_or_create(
+            item = InventoryItem.objects.create(
                 name=data["name"],
-                defaults={
-                    "description": data["description"],
-                    "category": data["category"],
-                    "dosage_form": data["dosage_form"],
-                    "strength": data["strength"],
-                    "quantity_available": data["quantity_available"],
-                    "price": data["price"],
-                    "is_active": True,
-                }
+                description=data["description"],
+                category=data["category"],
+                dosage_form=data["dosage_form"],
+                strength=data["strength"],
+                quantity_available=data["quantity_available"],
+                price=data["price"],
+                is_active=True,
             )
             items.append(item)
         self.stdout.write(self.style.SUCCESS(f"Created {len(items)} inventory items."))
