@@ -8,19 +8,32 @@ export default function SlideBackgroundLanding() {
       {/* Animated Slides Background */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         {/* Slide 1 */}
-        <div
-          className="absolute top-1/4 left-0 w-1/3 h-2/3 bg-green-300 opacity-80 rounded-full border-4 border-green-700"
+        <img
+          src="/landingpage1.jpg"
+          alt="Slide 1"
+          className="absolute top-1/4 left-0 w-1/4 h-2/3 object-cover rounded-2xl border-4 border-green-700 shadow-lg"
           style={{ animation: "slide-x 12s ease-in-out infinite, slide-y 8s ease-in-out infinite" }}
         />
         {/* Slide 2 */}
-        <div
-          className="absolute top-1/2 left-1/3 w-1/3 h-2/3 bg-green-500 opacity-80 rounded-full border-4 border-green-900"
+        <img
+          src="/landingpage2.jpg"
+          alt="Slide 2"
+          className="absolute top-1/2 left-1/4 w-1/4 h-2/3 object-cover rounded-2xl border-4 border-green-900 shadow-lg"
           style={{ animation: "slide-x 12s ease-in-out infinite, slide-y-reverse 10s ease-in-out infinite" }}
         />
         {/* Slide 3 */}
-        <div
-          className="absolute top-1/3 left-2/3 w-1/3 h-2/3 bg-green-200 opacity-80 rounded-full border-4 border-green-400"
+        <img
+          src="/landingpage3.jpg"
+          alt="Slide 3"
+          className="absolute top-1/3 left-2/4 w-1/4 h-2/3 object-cover rounded-2xl border-4 border-green-400 shadow-lg"
           style={{ animation: "slide-x 12s ease-in-out infinite, slide-y 8s ease-in-out infinite" }}
+        />
+        {/* Slide 4 */}
+        <img
+          src="/landingpage4.jpg"
+          alt="Slide 4"
+          className="absolute top-1/4 left-3/4 w-1/4 h-2/3 object-cover rounded-2xl border-4 border-green-500 shadow-lg"
+          style={{ animation: "slide-x 14s ease-in-out infinite, slide-y-reverse 12s ease-in-out infinite" }}
         />
       </div>
       {/* Content */}
