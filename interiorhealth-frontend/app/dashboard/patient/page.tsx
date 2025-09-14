@@ -121,52 +121,54 @@ export default function PatientDashboard() {
 
   return (
     <AuthGate allowedRoles={["patient"]}>
-      <div className="min-h-screen bg-gray-50 flex flex-col">
-        <div className="p-10">
-          <h1 className="text-3xl font-bold text-green-700 mb-4">How can we help you today?</h1>
-          <p className="text-gray-600 mb-8 text-lg">We're here to support your health. Please choose an option below:</p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+      <div className="min-h-screen bg-gray-100 flex flex-col">
+        <div className="p-8 md:p-12 lg:p-16">
+          <h1 className="text-3xl font-semibold text-slate-800 mb-4">How can we help you today?</h1>
+          <p className="text-slate-600 mb-8 text-lg">We're here to support your health. Please choose an option below:</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
             {/* Virtual Clinic Widget */}
-            <div className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center col-span-1 md:col-span-2 lg:col-span-2">
+            <div className="bg-white rounded-2xl shadow-md p-8 flex flex-col items-center md:col-span-2">
               <span className="text-5xl mb-4">🏥</span>
-              <div className="text-2xl font-bold text-green-700 mb-2">Virtual Clinic</div>
+              <div className="text-xl font-medium text-slate-700 mb-2">Virtual Clinic</div>
               <button
-                className="bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700 font-bold mb-2 text-lg"
+                className="bg-slate-800 text-white px-6 py-3 rounded-lg hover:bg-slate-700 font-medium mb-2 text-lg transition"
                 onClick={handleOpenDoctorModal}
               >
                 Find a Doctor
               </button>
               <button
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-bold mb-2 text-base"
+                className="bg-slate-600 text-white px-4 py-2 rounded-lg hover:bg-slate-700 font-medium mb-2 text-base transition"
                 onClick={handleRequestHelp}
                 disabled={helpLoading}
               >
                 {helpLoading ? "Connecting..." : "Request Help"}
               </button>
               {helpError && <p className="text-red-500 text-sm mt-2">{helpError}</p>}
-              <p className="text-gray-500 text-base text-center mt-2">Search for a doctor, request help, or start a chat with a medical professional all in one place.</p>
+              <p className="text-slate-500 text-base text-center mt-2">Search for a doctor, request help, or start a chat with a medical professional all in one place.</p>
             </div>
-            {/* Other widgets remain unchanged */}
-            <div className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center">
-              <span className="text-4xl mb-4">�</span>
-              <div className="text-lg font-semibold text-green-700 mb-2">Inventory</div>
-              <a href="/dashboard/patient/drugs" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 font-bold mb-2">View Products</a>
-              <p className="text-gray-500 text-sm">Browse and order from our inventory: medical drugs, health supplies, and more.</p>
+            {/* Inventory Widget */}
+            <div className="bg-white rounded-2xl shadow-md p-8 flex flex-col items-center">
+              <span className="text-4xl mb-4">🧪</span>
+              <div className="text-lg font-medium text-slate-700 mb-2">Inventory</div>
+              <a href="/dashboard/patient/drugs" className="bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700 font-medium mb-2 transition">View Products</a>
+              <p className="text-slate-500 text-sm text-center">Browse and order from our inventory: medical drugs, health supplies, and more.</p>
             </div>
-            <div className="bg-white rounded-xl shadow-lg p-8 flex flex-col items-center">
+            {/* Health Tips Widget */}
+            <div className="bg-white rounded-2xl shadow-md p-8 flex flex-col items-center">
               <span className="text-4xl mb-4">💡</span>
-              <div className="text-lg font-semibold text-green-700 mb-2">Health Tips</div>
-              <a href="/dashboard/patient/health-tips" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-bold mb-2">View Tips</a>
-              <p className="text-gray-500 text-sm">Get advice for a healthier lifestyle.</p>
+              <div className="text-lg font-medium text-slate-700 mb-2">Health Tips</div>
+              <a href="/dashboard/patient/health-tips" className="bg-slate-600 text-white px-4 py-2 rounded-lg hover:bg-slate-700 font-medium mb-2 transition">View Tips</a>
+              <p className="text-slate-500 text-sm text-center">Get advice for a healthier lifestyle.</p>
             </div>
           </div>
 
           {/* Recent Activity */}
           <div className="mt-12">
-            <h2 className="text-xl font-bold text-green-700 mb-4">Recent Activity</h2>
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <ul className="text-gray-600 text-sm list-disc list-inside">
+            <h2 className="text-xl font-semibold text-slate-800 mb-4">Recent Activity</h2>
+            <div className="bg-white rounded-2xl shadow-md p-6">
+              <ul className="text-slate-600 text-sm list-disc list-inside">
                 <li>Order #1234 placed</li>
                 <li>Payment of KES 500 successful</li>
                 <li>Order #1233 delivered</li>
