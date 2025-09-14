@@ -1,14 +1,16 @@
+
 # drugs/serializers.py
 from rest_framework import serializers
-from .models import Drug
+from .models import InventoryItem
 
-class DrugSerializer(serializers.ModelSerializer):
+class InventoryItemSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Drug
+        model = InventoryItem
         fields = [
             'id',
             'name',
             'description',
+            'category',
             'dosage_form',
             'strength',
             'quantity_available',

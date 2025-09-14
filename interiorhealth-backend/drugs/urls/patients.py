@@ -1,8 +1,9 @@
 # drugs/urls/patients.py
+
 from django.urls import path
-from drugs.views.patients.drug_views import PatientDrugListView
+from drugs.views.patients.drug_views import PatientInventoryListView
 
 urlpatterns = [
-    path('drugs/', PatientDrugListView.as_view(), name='patient-drug-list'),
+    path('inventory/', PatientInventoryListView.as_view(), name='patient-inventory-list'),
 ]
 

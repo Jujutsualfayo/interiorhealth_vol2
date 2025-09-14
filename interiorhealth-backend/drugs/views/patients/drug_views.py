@@ -1,9 +1,10 @@
+
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from drugs.models import Drug
-from drugs.serializers import DrugSerializer
+from drugs.models import InventoryItem
+from drugs.serializers import InventoryItemSerializer
 
-class PatientDrugListView(generics.ListAPIView):
-    queryset = Drug.objects.all()
-    serializer_class = DrugSerializer
+class PatientInventoryListView(generics.ListAPIView):
+    queryset = InventoryItem.objects.all()
+    serializer_class = InventoryItemSerializer
     permission_classes = [IsAuthenticated]
