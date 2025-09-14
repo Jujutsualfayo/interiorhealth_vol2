@@ -9,16 +9,16 @@ export default function HealthworkerLayout({
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
-      <aside className="w-48 bg-slate-900 p-4 flex flex-col">
-        <h2 className="text-base font-semibold mb-6 text-slate-100">Healthworker</h2>
+      <aside className="w-48 bg-blue-900 p-4 flex flex-col">
+        <h2 className="text-base font-semibold mb-6 text-blue-100">Healthworker</h2>
         <nav className="flex flex-col space-y-2">
-          <Link href="/dashboard/healthworker" className="px-3 py-2 rounded text-slate-200 hover:bg-slate-800 transition">
+          <Link href="/dashboard/healthworker" className="px-3 py-2 rounded text-blue-100 hover:bg-blue-800 transition">
             Home
           </Link>
-          <Link href="/dashboard/healthworker/orders" className="px-3 py-2 rounded text-slate-200 hover:bg-slate-800 transition">
+          <Link href="/dashboard/healthworker/orders" className="px-3 py-2 rounded text-blue-100 hover:bg-blue-800 transition">
             Orders
           </Link>
-          <Link href="/dashboard/healthworker/patients" className="px-3 py-2 rounded text-slate-200 hover:bg-slate-800 transition">
+          <Link href="/dashboard/healthworker/patients" className="px-3 py-2 rounded text-blue-100 hover:bg-blue-800 transition">
             Patients
           </Link>
         </nav>
