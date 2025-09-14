@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import api from "@/services/api";
 import AuthGate from "@/components/AuthGate";
 import LocationsWidget from "../../components/LocationsWidget";
+import TrackOrderWidget from "../../components/TrackOrderWidget";
 
 export default function PatientDashboard() {
   // Illness categories (static for now)
@@ -165,8 +166,12 @@ export default function PatientDashboard() {
             </div>
           </div>
 
+
           {/* Locations Widget */}
           <LocationsWidget />
+
+          {/* Track Order Widget */}
+          <TrackOrderWidget />
 
           {/* Recent Activity */}
           <div className="mt-12">
