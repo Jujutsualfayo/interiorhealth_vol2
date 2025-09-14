@@ -24,11 +24,51 @@ export default function InventoryPage() {
       setLoading(true);
       setError(null);
       try {
-  const res = await api.get("/api/drugs/patients/inventory/");
-        setInventory(res.data);
-        // Default to first category
-        if (res.data.length > 0) {
-          setSelectedCategory(res.data[0].category);
+        const res = await api.get("/api/drugs/patients/inventory/");
+        let data = res.data;
+        // If backend returns no products, use static demo data
+        if (!data || data.length === 0) {
+          data = [
+            {
+              id: 1,
+              name: "Paracetamol",
+              description: "Pain relief tablet",
+              category: "drug",
+              price: 50.00,
+            },
+            {
+              id: 2,
+              name: "Amoxicillin",
+              description: "Antibiotic capsule",
+              category: "drug",
+              price: 120.00,
+            },
+            {
+              id: 3,
+              name: "Surgical Mask",
+              description: "Disposable mask",
+              category: "supply",
+              price: 10.00,
+            },
+            {
+              id: 4,
+              name: "Glucose Meter",
+              description: "Blood sugar device",
+              category: "device",
+              price: 2500.00,
+            },
+            {
+              id: 5,
+              name: "Vitamin C",
+              description: "Supplement tablet",
+              category: "drug",
+              price: 80.00,
+            },
+          ];
+        }
+        setInventory(data);
+        if (data.length > 0) {
+          setSelectedCategory(data[0].category);
         }
       } catch (err: any) {
         setError("Could not fetch inventory.");
