@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import OrderProductCard from "./OrderProductCard";
 import api from "@/services/api";
 
 type InventoryItem = {
