@@ -6,6 +6,40 @@ import api from "@/services/api";
 import AuthGate from "@/components/AuthGate";
 
 export default function PatientDashboard() {
+  // Doctor search/chat modal state
+  const [showDoctorModal, setShowDoctorModal] = useState(false);
+  const [doctorSearch, setDoctorSearch] = useState("");
+  const [doctorResults, setDoctorResults] = useState<any[]>([]);
+  const [doctorLoading, setDoctorLoading] = useState(false);
+  const [doctorError, setDoctorError] = useState<string | null>(null);
+
+  // Open modal when Find a Doctor is clicked
+  const handleOpenDoctorModal = () => {
+    setShowDoctorModal(true);
+    setDoctorResults([]);
+    setDoctorSearch("");
+    setDoctorError(null);
+  };
+
+  // Search doctors API call
+  const handleDoctorSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setDoctorLoading(true);
+    setDoctorError(null);
+    try {
+      const res = await api.get(`/doctors/search/?q=${doctorSearch}`);
+      setDoctorResults(res.data.results || []);
+    } catch (err: any) {
+      setDoctorError("Could not fetch doctors. Try again.");
+    }
+    setDoctorLoading(false);
+  };
+
+  // Start chat with doctor
+  const handleStartChat = (doctorId: string) => {
+    router.push(`/dashboard/chat/${doctorId}`);
+    setShowDoctorModal(false);
+  };
   const router = useRouter();
   const config = {
     public_key: "FLWPUBK_TEST-42fdd6fa880919189b9c653c358a96ef-X",
@@ -80,10 +114,16 @@ export default function PatientDashboard() {
               <div className="text-2xl font-bold text-green-700 mb-2">Virtual Clinic</div>
               <button
                 className="bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700 font-bold mb-2 text-lg"
+                onClick={handleOpenDoctorModal}
+              >
+                Find a Doctor
+              </button>
+              <button
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-bold mb-2 text-base"
                 onClick={handleRequestHelp}
                 disabled={helpLoading}
               >
-                {helpLoading ? "Connecting..." : "Find a Doctor"}
+                {helpLoading ? "Connecting..." : "Request Help"}
               </button>
               {helpError && <p className="text-red-500 text-sm mt-2">{helpError}</p>}
               <p className="text-gray-500 text-base text-center mt-2">Search for a doctor, request help, or start a chat with a medical professional all in one place.</p>
@@ -116,6 +156,59 @@ export default function PatientDashboard() {
           </div>
 
           {/* Mpesa Payment Modal */}
+          {/* Doctor Search/Chat Modal */}
+          {showDoctorModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+              <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-lg relative">
+                <button
+                  className="absolute top-2 right-2 text-gray-400 hover:text-gray-600"
+                  onClick={() => setShowDoctorModal(false)}
+                >
+                  &times;
+                </button>
+                <h3 className="text-xl font-bold mb-4 text-green-700">Find a Doctor</h3>
+                <form onSubmit={handleDoctorSearch} className="flex gap-2 mb-4">
+                  <input
+                    type="text"
+                    value={doctorSearch}
+                    onChange={e => setDoctorSearch(e.target.value)}
+                    className="border rounded px-3 py-2 w-full"
+                    placeholder="Search by name, specialty..."
+                  />
+                  <button
+                    type="submit"
+                    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                    disabled={doctorLoading}
+                  >
+                    {doctorLoading ? "Searching..." : "Search"}
+                  </button>
+                </form>
+                {doctorError && <p className="text-red-500 text-sm mb-2">{doctorError}</p>}
+                <div>
+                  {doctorResults.length === 0 && !doctorLoading ? (
+                    <p className="text-gray-500 text-sm">No doctors found. Try searching above.</p>
+                  ) : (
+                    <ul className="divide-y">
+                      {doctorResults.map((doc: any) => (
+                        <li key={doc.id} className="py-3 flex items-center justify-between">
+                          <div>
+                            <div className="font-semibold text-green-700">{doc.name}</div>
+                            <div className="text-gray-600 text-sm">{doc.specialty}</div>
+                          </div>
+                          <button
+                            className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-sm font-bold"
+                            onClick={() => handleStartChat(doc.id)}
+                          >
+                            Start Chat
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
           {showModal && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
               <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md relative">
