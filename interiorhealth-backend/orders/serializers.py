@@ -16,14 +16,14 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['id', 'patient_email', 'status', 'total_amount', 'created_at', 'items']
+        fields = ['id', 'patient_email', 'status', 'total_amount', 'address', 'created_at', 'items']
         read_only_fields = ['patient_email', 'items', 'total_amount', 'created_at']
-
 
     def create(self, validated_data):
         items_data = validated_data.pop('items')
+        address = validated_data.get('address', None)
         patient = self.context['request'].user
-        order = Order.objects.create(patient=patient, **validated_data)
+        order = Order.objects.create(patient=patient, address=address, **validated_data)
         for item_data in items_data:
             OrderItem.objects.create(order=order, **item_data)
         return order

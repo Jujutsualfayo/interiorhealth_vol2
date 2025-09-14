@@ -8,8 +8,7 @@ class OrderCreateView(generics.CreateAPIView):
     serializer_class = OrderSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-    def perform_create(self, serializer):
-        serializer.save(patient=self.request.user)
+    # The serializer's create method now handles patient and address
 
 class OrderListView(generics.ListAPIView):
     serializer_class = OrderSerializer
