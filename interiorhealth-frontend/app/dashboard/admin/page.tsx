@@ -1,3 +1,4 @@
+"use client"
 import AuthGate from "@/components/AuthGate";
 import Link from "next/link";
 import { useState } from "react";
