@@ -6,6 +6,21 @@ import api from "@/services/api";
 import AuthGate from "@/components/AuthGate";
 
 export default function PatientDashboard() {
+  // Illness categories (static for now)
+  const illnessCategories = [
+    "All",
+    "Chronic",
+    "Headache",
+    "Diabetes",
+    "Hypertension",
+    "Asthma",
+    "Mental Health",
+    "Infectious Disease",
+    "Pediatrics",
+    "Dermatology",
+    "Other"
+  ];
+  const [selectedCategory, setSelectedCategory] = useState("All");
   // Doctor search/chat modal state
   const [showDoctorModal, setShowDoctorModal] = useState(false);
   const [doctorSearch, setDoctorSearch] = useState("");
@@ -27,7 +42,11 @@ export default function PatientDashboard() {
     setDoctorLoading(true);
     setDoctorError(null);
     try {
-      const res = await api.get(`/doctors/search/?q=${doctorSearch}`);
+      // Send both search text and category to API
+      const params = new URLSearchParams();
+      if (doctorSearch) params.append("q", doctorSearch);
+      if (selectedCategory && selectedCategory !== "All") params.append("category", selectedCategory);
+      const res = await api.get(`/doctors/search/?${params.toString()}`);
       setDoctorResults(res.data.results || []);
     } catch (err: any) {
       setDoctorError("Could not fetch doctors. Try again.");
@@ -167,7 +186,7 @@ export default function PatientDashboard() {
                   &times;
                 </button>
                 <h3 className="text-xl font-bold mb-4 text-green-700">Find a Doctor</h3>
-                <form onSubmit={handleDoctorSearch} className="flex gap-2 mb-4">
+                <form onSubmit={handleDoctorSearch} className="flex flex-col md:flex-row gap-2 mb-4">
                   <input
                     type="text"
                     value={doctorSearch}
@@ -175,6 +194,15 @@ export default function PatientDashboard() {
                     className="border rounded px-3 py-2 w-full"
                     placeholder="Search by name, specialty..."
                   />
+                  <select
+                    value={selectedCategory}
+                    onChange={e => setSelectedCategory(e.target.value)}
+                    className="border rounded px-3 py-2 w-full md:w-auto"
+                  >
+                    {illnessCategories.map(cat => (
+                      <option key={cat} value={cat}>{cat}</option>
+                    ))}
+                  </select>
                   <button
                     type="submit"
                     className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
