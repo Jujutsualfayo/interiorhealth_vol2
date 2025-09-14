@@ -2,17 +2,46 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import LogoutButton from '@/components/LogoutButton';
+import React, { useState } from 'react';
 
-export default function PatientLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function PatientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50">
+      <header className="flex items-center justify-between p-4 bg-gray-100 shadow">
+        <button
+          className="text-2xl p-2 rounded hover:bg-gray-200 focus:outline-none"
+          aria-label="Open sidebar"
+          onClick={() => setSidebarOpen(true)}
+        >
+          <span>&#9776;</span>
+        </button>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-green-400 flex items-center justify-center text-white font-bold text-lg">P</div>
+          <span className="font-semibold text-lg text-green-700">Patient</span>
+        </div>
+        <LogoutButton />
+      </header>
+
+      {/* Sidebar overlay */}
+      {sidebarOpen && (
+        <div className="fixed inset-0 z-40 bg-black bg-opacity-30" onClick={() => setSidebarOpen(false)} />
+      )}
+
       {/* Sidebar */}
-      <aside className="w-72 bg-gradient-to-b from-green-200 to-green-100 p-8 flex flex-col justify-between shadow-lg">
+      <aside
+        className={`fixed top-0 left-0 z-50 h-full w-56 bg-gradient-to-b from-green-200 to-green-100 p-8 flex flex-col justify-between shadow-lg transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        style={{ boxShadow: sidebarOpen ? '2px 0 8px rgba(0,0,0,0.08)' : 'none' }}
+      >
+        <button
+          className="text-xl text-green-700 mb-6 self-end p-1 hover:bg-green-300 rounded"
+          aria-label="Close sidebar"
+          onClick={() => setSidebarOpen(false)}
+        >
+          &times;
+        </button>
         <div>
           <div className="flex items-center mb-8">
             <div className="w-12 h-12 rounded-full bg-green-400 flex items-center justify-center text-white font-bold text-xl mr-3">P</div>
@@ -45,9 +74,7 @@ export default function PatientLayout({
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
-        <main className="p-10">{children}</main>
-      </div>
+      <main className="p-10 mt-4">{children}</main>
     </div>
   );
 }
