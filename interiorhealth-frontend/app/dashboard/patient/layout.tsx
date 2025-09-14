@@ -68,9 +68,7 @@ export default function PatientLayout({ children }: { children: React.ReactNode 
             </Link>
           </nav>
         </div>
-        <div className="mb-2">
-          <LogoutButton />
-        </div>
+        {/* Removed duplicate LogoutButton from sidebar */}
       </aside>
 
       {/* Main Content */}
