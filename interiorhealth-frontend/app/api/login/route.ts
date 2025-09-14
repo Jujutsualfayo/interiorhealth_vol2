@@ -5,49 +5,33 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { email, password } = body;
 
-    // Mock users
-    const mockUsers = [
-      {
-        email: 'admin@example.com',
-        password: 'admin123',
-        role: 'admin',
-        token: 'mock-admin-token-123',
-      },
-      {
-        email: 'healthworker@example.com',
-        password: 'health123',
-        role: 'healthworker',
-        token: 'mock-health-token-456',
-      },
-      {
-        email: 'patient@example.com',
-        password: 'patient123',
-        role: 'patient',
-        token: 'mock-patient-token-789',
-      },
-    ];
+    // Make a real request to the backend
+    const backendRes = await fetch('http://localhost:8000/api/users/login/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
 
-    // Find matching user
-    const user = mockUsers.find(
-      (u) => u.email === email && u.password === password
-    );
+    if (!backendRes.ok) {
+      const errorData = await backendRes.json();
+      return NextResponse.json({ error: errorData.message || 'Invalid credentials' }, { status: 401 });
+    }
 
-    if (user) {
-      const response = NextResponse.json({ success: true, role: user.role });
-
-      response.cookies.set('token', user.token, {
+    const data = await backendRes.json();
+    // Set JWT token and role in cookies
+    const response = NextResponse.json({ success: true, role: data.role });
+    if (data.token) {
+      response.cookies.set('token', data.token, {
         httpOnly: true,
         path: '/',
       });
-
-      response.cookies.set('role', user.role, {
+    }
+    if (data.role) {
+      response.cookies.set('role', data.role, {
         path: '/',
       });
-
-      return response;
     }
-
-    return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+    return response;
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
