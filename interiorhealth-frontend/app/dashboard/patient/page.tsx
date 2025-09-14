@@ -112,11 +112,19 @@ export default function PatientDashboard() {
     setHelpError(null);
     try {
       const res = await api.post("/patients/request-help/");
+      if (!res.data || !res.data.health_worker_id) {
+        throw new Error("No health worker assigned. Please try again later.");
+      }
       const hwId = res.data.health_worker_id;
-      // Redirect to health worker dashboard or chat (customize as needed)
       router.push(`/dashboard/healthworker/${hwId}`);
     } catch (err: any) {
-      setHelpError(err?.response?.data?.error || "Could not connect to a health worker. Try again.");
+      if (err?.response?.data?.error) {
+        setHelpError(`Server error: ${err.response.data.error}`);
+      } else if (err.message && err.message.includes('Network')) {
+        setHelpError("Network error. Please check your connection.");
+      } else {
+        setHelpError(err.message || "Could not connect to a health worker. Try again.");
+      }
     }
     setHelpLoading(false);
   };
