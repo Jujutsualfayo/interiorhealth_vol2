@@ -30,6 +30,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=150, blank=True)
     last_name = models.CharField(max_length=150, blank=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='patient')
+    specialty = models.CharField(max_length=150, blank=True, null=True)  # e.g. Pediatrics, Dermatology
+    illness_categories = models.CharField(max_length=300, blank=True, null=True)  # comma-separated categories
     is_verified = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

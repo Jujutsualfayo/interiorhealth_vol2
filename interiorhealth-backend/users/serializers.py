@@ -18,7 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'password', 'role']
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'password', 'role', 'specialty', 'illness_categories']
         extra_kwargs = {
             'role': {'write_only': True}  # Hide it from being publicly visible
         }
@@ -48,7 +48,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'username', 'first_name', 'last_name', 'role', 'is_verified']
+        fields = ['id', 'email', 'username', 'first_name', 'last_name', 'role', 'is_verified', 'specialty', 'illness_categories']
         read_only_fields = ['id', 'email', 'role', 'is_verified']
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
