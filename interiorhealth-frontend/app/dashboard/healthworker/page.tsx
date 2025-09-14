@@ -1,4 +1,5 @@
 import AuthGate from "@/components/AuthGate";
+import LocationsWidget from "../../components/LocationsWidget";
 
 export default function HealthworkerDashboard() {
   return (
@@ -8,6 +9,7 @@ export default function HealthworkerDashboard() {
           <h1 className="mb-8 text-3xl font-semibold text-slate-800">Healthworker Dashboard</h1>
 
           <div className="rounded-2xl bg-white p-8 shadow-md">
+            <LocationsWidget />
             <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
                 <h2 className="text-2xl font-semibold text-slate-800 mb-2">Welcome, Healthworker!</h2>

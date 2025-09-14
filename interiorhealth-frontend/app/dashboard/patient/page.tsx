@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/services/api";
 import AuthGate from "@/components/AuthGate";
+import LocationsWidget from "../../components/LocationsWidget";
 
 export default function PatientDashboard() {
   // Illness categories (static for now)
@@ -163,6 +164,9 @@ export default function PatientDashboard() {
               <p className="text-slate-500 text-sm text-center">Get advice for a healthier lifestyle.</p>
             </div>
           </div>
+
+          {/* Locations Widget */}
+          <LocationsWidget />
 
           {/* Recent Activity */}
           <div className="mt-12">
