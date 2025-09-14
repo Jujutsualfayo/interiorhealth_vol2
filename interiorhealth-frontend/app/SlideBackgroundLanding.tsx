@@ -11,29 +11,25 @@ export default function SlideBackgroundLanding() {
         <img
           src="/landing1.jpg"
           alt="Slide 1"
-          className="absolute top-1/4 left-0 w-1/4 h-2/3 object-cover rounded-2xl border-4 border-green-700 shadow-lg"
-          style={{ animation: "slide-x 12s ease-in-out infinite, slide-y 8s ease-in-out infinite" }}
+          className="absolute top-1/4 left-0 w-1/4 h-2/3 object-cover rounded-2xl border-4 border-green-700 shadow-lg animate-slide-x animate-slide-y"
         />
         {/* Slide 2 */}
         <img
           src="/landing2.jpg"
           alt="Slide 2"
-          className="absolute top-1/2 left-1/4 w-1/4 h-2/3 object-cover rounded-2xl border-4 border-green-900 shadow-lg"
-          style={{ animation: "slide-x 12s ease-in-out infinite, slide-y-reverse 10s ease-in-out infinite" }}
+          className="absolute top-1/2 left-1/4 w-1/4 h-2/3 object-cover rounded-2xl border-4 border-green-900 shadow-lg animate-slide-x animate-slide-y-reverse"
         />
         {/* Slide 3 */}
         <img
           src="/landing3.jpg"
           alt="Slide 3"
-          className="absolute top-1/3 left-2/4 w-1/4 h-2/3 object-cover rounded-2xl border-4 border-green-400 shadow-lg"
-          style={{ animation: "slide-x 12s ease-in-out infinite, slide-y 8s ease-in-out infinite" }}
+          className="absolute top-1/3 left-2/4 w-1/4 h-2/3 object-cover rounded-2xl border-4 border-green-400 shadow-lg animate-slide-x animate-slide-y"
         />
         {/* Slide 4 */}
         <img
           src="/landing4.jpg"
           alt="Slide 4"
-          className="absolute top-1/4 left-3/4 w-1/4 h-2/3 object-cover rounded-2xl border-4 border-green-500 shadow-lg"
-          style={{ animation: "slide-x 14s ease-in-out infinite, slide-y-reverse 12s ease-in-out infinite" }}
+          className="absolute top-1/4 left-3/4 w-1/4 h-2/3 object-cover rounded-2xl border-4 border-green-500 shadow-lg animate-slide-x animate-slide-y-reverse"
         />
       </div>
       {/* Content */}
