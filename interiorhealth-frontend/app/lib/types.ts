@@ -4,6 +4,11 @@ export type InventoryItem = {
   sku?: string | null;
   price?: number | null;
   description?: string | null;
+  category?: string | null;
+  dosage_form?: string | null;
+  strength?: string | null;
+  quantity_available?: number | null;
+  is_active?: boolean;
 };
 
 export type OrderItem = {
@@ -20,4 +25,12 @@ export type Order = {
   total_amount?: number | null;
   items: OrderItem[];
   created_at?: string | null;
+};
+
+export type Doctor = {
+  id: number | string;
+  name: string;
+  specialty?: string | null;
+  email?: string | null;
+  phone?: string | null;
 };

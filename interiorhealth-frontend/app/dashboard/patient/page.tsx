@@ -26,8 +26,8 @@ export default function PatientDashboard() {
   // Doctor search/chat modal state
   const [showDoctorModal, setShowDoctorModal] = useState(false);
   const [doctorSearch, setDoctorSearch] = useState("");
-  const [doctorResults, setDoctorResults] = useState<any[]>([]);
-  const [doctorLoading, setDoctorLoading] = useState(false);
+  const [doctorResults, setDoctorResults] = useState<import('@/app/lib/types').Doctor[]>([]);
+  const [doctorLoading, setDoctorLoading] = useState<boolean>(false);
   const [doctorError, setDoctorError] = useState<string | null>(null);
 
   // Open modal when Find a Doctor is clicked
@@ -51,7 +51,7 @@ export default function PatientDashboard() {
       const res = await api.get(`/doctors/search/?${params.toString()}`);
       setDoctorResults(res.data.results || []);
     } catch (err: any) {
-      setDoctorError("Could not fetch doctors. Try again.");
+      setDoctorError(err instanceof Error ? err.message : "Could not fetch doctors. Try again.");
     }
     setDoctorLoading(false);
   };

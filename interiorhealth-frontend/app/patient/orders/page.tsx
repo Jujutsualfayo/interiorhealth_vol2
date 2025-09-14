@@ -43,11 +43,13 @@ export default function OrderHistoryPage() {
           throw new Error('Unexpected response from server.');
         }
         setOrders(data);
-      } catch (err: any) {
-        if (err.message && err.message.includes('Network')) {
+      } catch (err: unknown) {
+        if (err instanceof Error && err.message.includes('Network')) {
           setError('Network error. Please check your connection.');
-        } else {
+        } else if (err instanceof Error) {
           setError(err.message || 'Could not load orders.');
+        } else {
+          setError('Could not load orders.');
         }
       } finally {
         setLoading(false);

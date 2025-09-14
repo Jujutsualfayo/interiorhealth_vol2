@@ -3,15 +3,7 @@
 import React, { useState, useEffect } from "react";
 import OrderProductCard from "./OrderProductCard";
 import api from "@/services/api";
-
-type InventoryItem = {
-  id: number;
-  name: string;
-  description: string;
-  category: string;
-  price: number;
-  [key: string]: any;
-};
+import type { InventoryItem } from "@/app/lib/types";
 
 export default function InventoryPage() {
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
@@ -25,7 +17,7 @@ export default function InventoryPage() {
       setError(null);
       try {
         const res = await api.get("/api/drugs/patients/inventory/");
-        let data = res.data;
+        const data = res.data as InventoryItem[];
         // Only use backend data; no static demo data fallback
         if (!data || data.length === 0) {
           setInventory([]);
@@ -34,11 +26,11 @@ export default function InventoryPage() {
           return;
         }
         setInventory(data);
-        if (data.length > 0) {
-          setSelectedCategory(data[0].category);
+        if (data.length > 0 && data[0].category) {
+          setSelectedCategory(String(data[0].category));
         }
-      } catch (err: any) {
-        setError("Could not fetch inventory.");
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : "Could not fetch inventory.");
       }
       setLoading(false);
     };
@@ -46,8 +38,8 @@ export default function InventoryPage() {
   }, []);
 
   // Group items by category
-  const categories = Array.from(new Set(inventory.map((item: InventoryItem) => item.category)));
-  const currentItems = inventory.filter((item: InventoryItem) => item.category === selectedCategory);
+  const categories = Array.from(new Set(inventory.map((item: InventoryItem) => item.category).filter((c) => !!c))) as string[];
+  const currentItems = inventory.filter((item: InventoryItem) => (item.category || "") === selectedCategory);
 
   return (
     <div className="max-w-4xl mx-auto p-8">
