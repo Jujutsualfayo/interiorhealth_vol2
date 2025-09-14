@@ -27,7 +27,7 @@ export default function RegisterPage() {
     setError('');
 
     try {
-      const res = await fetch('/api/auth/register', {
+      const res = await fetch('http://localhost:8000/api/users/register/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -38,15 +38,18 @@ export default function RegisterPage() {
         throw new Error(errorData.message || 'Registration failed');
       }
 
-      const { token, role } = await res.json();
-
-      // Set cookies
-      Cookies.set('token', token);
-      Cookies.set('role', role);
+      const data = await res.json();
+      // If backend returns JWT token, set it in cookies
+      if (data.token) {
+        Cookies.set('token', data.token);
+      }
+      if (data.role) {
+        Cookies.set('role', data.role);
+      }
 
       // Redirect based on role
-      if (role === 'admin') router.push('/dashboard/admin');
-      else if (role === 'healthworker') router.push('/dashboard/healthworker');
+      if (data.role === 'admin') router.push('/dashboard/admin');
+      else if (data.role === 'healthworker') router.push('/dashboard/healthworker');
       else router.push('/dashboard/patient');
     } catch (err: unknown) {
       if (err instanceof Error) {
