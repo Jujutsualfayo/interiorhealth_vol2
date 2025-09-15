@@ -33,7 +33,7 @@ export default function RegisterPage() {
       // Use server-side proxy `/api/register` when no public base is set. If a public API base
       // is provided (e.g. in deployed environment), call the backend origin directly.
       const url = base
-        ? `${base.replace(/\/$/, '')}/api/users/register/`
+        ? `${base.replace(/\/$/, '')}/api/patients/register/`
         : `/api/register`;
       const res = await fetch(url, {
         method: 'POST',

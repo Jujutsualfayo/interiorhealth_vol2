@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
     // Prefer a server-only env var for backend origin; fall back to public var or a known backend
     const serverBase = process.env.API_BASE_URL || process.env.NEXT_PUBLIC_API_BASE_URL || 'https://interiorhealth-backend.onrender.com'
-    const url = serverBase.replace(/\/$/, '') + '/api/users/register/'
+  const url = serverBase.replace(/\/$/, '') + '/api/patients/register/'
 
     let backendRes: Response
     try {
