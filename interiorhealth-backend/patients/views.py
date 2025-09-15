@@ -48,6 +48,7 @@ class PatientRegisterView(APIView):
                 },
                 status=status.HTTP_201_CREATED,
             )
+        print("Registration error:", serializer.errors)  # Log errors to stdout for Render
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
