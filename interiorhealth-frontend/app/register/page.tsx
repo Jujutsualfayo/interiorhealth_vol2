@@ -47,19 +47,8 @@ export default function RegisterPage() {
         throw new Error(errorData.message || 'Registration failed');
       }
 
-      const data = await res.json();
-      // If backend returns JWT token, set it in cookies
-      if (data.token) {
-        Cookies.set('token', data.token);
-      }
-      if (data.role) {
-        Cookies.set('role', data.role);
-      }
-
-      // Redirect based on role
-      if (data.role === 'admin') router.push('/dashboard/admin');
-      else if (data.role === 'healthworker') router.push('/dashboard/healthworker');
-      else router.push('/dashboard/patient');
+      // Registration successful, redirect to login page
+      router.push('/auth/login');
     } catch (err: unknown) {
       // Network errors (like CORS or DNS) surface as TypeError("Failed to fetch") in browsers
       if (err instanceof TypeError) {
