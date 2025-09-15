@@ -2,29 +2,26 @@ from django.db.models import Q
 from users.models import User
 from rest_framework.views import APIView
 from rest_framework import status, permissions
+from users.serializers import UserSerializer
+from rest_framework.response import Response
 
 class PatientRequestHelpView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
-        # Find an available health worker (simple round-robin or first available)
-        health_worker = User.objects.filter(role="health_worker").order_by('id').first()
-        if not health_worker:
-            return Response({"error": "No health worker available."}, status=status.HTTP_404_NOT_FOUND)
+        # ...existing code...
 
-        # Assign patient to health worker if not already assigned
-        patient = request.user
-        assignment, created = PatientAssignment.objects.get_or_create(patient=patient, defaults={"health_worker": health_worker})
-        if not created and assignment.health_worker != health_worker:
-            assignment.health_worker = health_worker
-            assignment.save()
 
-        # Return health worker info for frontend redirection
-        return Response({
-            "health_worker_id": health_worker.id,
-            "health_worker_email": health_worker.email,
-            "health_worker_name": getattr(health_worker, "full_name", "Health Worker"),
-        }, status=status.HTTP_200_OK)
+# Patient registration view
+class PatientRegisterView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save(role="patient")
+            return Response({"message": "Patient registered successfully. Please verify your email.", "user_id": user.id}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 from rest_framework import generics, permissions
 from rest_framework.views import APIView
 from patients.models import PatientAssignment

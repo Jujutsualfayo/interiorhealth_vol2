@@ -5,10 +5,12 @@ from patients.views import (
     PatientProfileListCreateView, PatientProfileRetrieveUpdateView,
     MedicalHistoryListCreateView, MedicalHistoryRetrieveUpdateView,
     PatientInteractionListCreateView, PatientInteractionRetrieveUpdateView,
-    PatientDashboardView
+    PatientDashboardView,
+    PatientRegisterView
 )
 
 urlpatterns = [
+    path('register/', PatientRegisterView.as_view(), name='patient-register'),
     path('assign/', AssignPatientView.as_view(), name='assign-patient'),
     path('assigned/', AssignedPatientsListView.as_view(), name='assigned-patients'),
     path('request-help/', PatientRequestHelpView.as_view(), name='patient-request-help'),
