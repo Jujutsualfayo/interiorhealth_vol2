@@ -8,7 +8,8 @@ export default function RegisterPage() {
   const router = useRouter();
 
   const [formData, setFormData] = useState({
-    name: '',
+    first_name: '',
+    last_name: '',
     email: '',
     password: '',
     role: 'patient', // default, but could be a dropdown
@@ -78,9 +79,18 @@ export default function RegisterPage() {
       <form onSubmit={handleSubmit} className="space-y-5">
         <input
           type="text"
-          name="name"
-          placeholder="Full Name"
-          value={formData.name}
+          name="first_name"
+          placeholder="First Name"
+          value={formData.first_name}
+          onChange={handleChange}
+          required
+          className="w-full px-4 py-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+        />
+        <input
+          type="text"
+          name="last_name"
+          placeholder="Last Name"
+          value={formData.last_name}
           onChange={handleChange}
           required
           className="w-full px-4 py-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
@@ -110,7 +120,7 @@ export default function RegisterPage() {
           className="w-full px-4 py-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
         >
             <option value="patient">Patient</option>
-            <option value="healthworker">Health Worker</option>
+            <option value="health_worker">Health Worker</option>
         </select>
         <button
           type="submit"
