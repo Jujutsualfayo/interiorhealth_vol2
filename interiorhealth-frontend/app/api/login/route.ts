@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: data.message || 'Invalid credentials' }, { status: backendRes.status });
     }
 
-    if (!data.token || !data.role) {
+    if (!data.access || !data.user || !data.user.role) {
       return NextResponse.json({ error: 'Authentication failed: missing token or role.' }, { status: 500 });
     }
 
@@ -55,11 +55,11 @@ export async function POST(req: NextRequest) {
       maxAge: 60 * 60 * 24 * 7,
     };
 
-    const response = NextResponse.json({ success: true, role: data.role });
+    const response = NextResponse.json({ success: true, role: data.user.role });
     // httpOnly token
-    response.cookies.set('token', data.token, cookieOptions);
+    response.cookies.set('token', data.access, cookieOptions);
     // non-httpOnly role (client-side code may read it)
-    response.cookies.set('role', data.role, { ...cookieOptions, httpOnly: false });
+    response.cookies.set('role', data.user.role, { ...cookieOptions, httpOnly: false });
     return response;
   } catch (error) {
     console.error('Login error:', error);
