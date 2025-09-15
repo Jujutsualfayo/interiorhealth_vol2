@@ -16,6 +16,7 @@ export default function RegisterPage() {
   });
 
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -26,13 +27,10 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
 
     try {
       const base = process.env.NEXT_PUBLIC_API_BASE_URL || '';
-      // If NEXT_PUBLIC_API_BASE_URL is set to backend origin (e.g. https://api.example.com),
-      // ensure the path joins correctly. If empty, use relative path which will proxy to same origin.
-      // Use server-side proxy `/api/register` when no public base is set. If a public API base
-      // is provided (e.g. in deployed environment), call the backend origin directly.
       const url = base
         ? `${base.replace(/\/$/, '')}/api/patients/register/`
         : `/api/register`;
@@ -47,8 +45,10 @@ export default function RegisterPage() {
         throw new Error(errorData.message || 'Registration failed');
       }
 
-      // Registration successful, redirect to login page
-      router.push('/auth/login');
+      setSuccess('Registration was successful! Redirecting to login...');
+      setTimeout(() => {
+        router.push('/auth/login');
+      }, 2000);
     } catch (err: unknown) {
       // Network errors (like CORS or DNS) surface as TypeError("Failed to fetch") in browsers
       if (err instanceof TypeError) {
@@ -65,6 +65,7 @@ export default function RegisterPage() {
     <div className="max-w-md mx-auto mt-20 p-8 rounded-xl shadow-lg bg-gray-900 border border-gray-800">
       <h1 className="text-3xl font-extrabold mb-6 text-white text-center">Create Account</h1>
       {error && <p className="text-red-400 text-sm mb-4 text-center">{error}</p>}
+      {success && <p className="text-green-400 text-sm mb-4 text-center">{success}</p>}
       <form onSubmit={handleSubmit} className="space-y-5">
         <input
           type="text"
