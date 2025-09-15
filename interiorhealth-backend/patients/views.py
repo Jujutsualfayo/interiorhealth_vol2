@@ -1,44 +1,65 @@
 from django.db.models import Q
-from users.models import User
-from rest_framework.views import APIView
-from rest_framework import status, permissions
-from users.serializers import UserSerializer
+from rest_framework import generics, permissions, status
 from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from users.models import User
+from users.serializers import UserSerializer
+from users.permissions import IsAdminUser, IsHealthWorker
+
+from patients.models import (
+    PatientAssignment,
+    PatientProfile,
+    MedicalHistory,
+    PatientInteraction,
+)
+from patients.serializers import (
+    PatientAssignmentSerializer,
+    PatientProfileSerializer,
+    MedicalHistorySerializer,
+    PatientInteractionSerializer,
+)
+
 
 class PatientRequestHelpView(APIView):
+    """Endpoint for a patient to request help (implementation placeholder)."""
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
-        # ...existing code...
+        # TODO: Add actual help-request logic
+        pass
 
 
-# Patient registration view
 class PatientRegisterView(APIView):
+    """Registers a new patient user."""
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save(role="patient")
-            return Response({"message": "Patient registered successfully. Please verify your email.", "user_id": user.id}, status=status.HTTP_201_CREATED)
+            return Response(
+                {
+                    "message": (
+                        "Patient registered successfully. "
+                        "Please verify your email."
+                    ),
+                    "user_id": user.id,
+                },
+                status=status.HTTP_201_CREATED,
+            )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-from rest_framework import generics, permissions
-from rest_framework.views import APIView
-from patients.models import PatientAssignment
-from patients.models import PatientProfile, MedicalHistory, PatientInteraction
-from patients.serializers import PatientAssignmentSerializer, PatientProfileSerializer, MedicalHistorySerializer, PatientInteractionSerializer
-from users.permissions import IsAdminUser, IsHealthWorker
 
 
-# Admin-only view to assign patients to a health worker
 class AssignPatientView(generics.CreateAPIView):
+    """Admin-only view to assign patients to a health worker."""
     queryset = PatientAssignment.objects.all()
     serializer_class = PatientAssignmentSerializer
     permission_classes = [permissions.IsAuthenticated, IsAdminUser]
 
 
-# Health worker-only view to list their assigned patients
 class AssignedPatientsListView(generics.ListAPIView):
+    """Health worker-only view to list their assigned patients."""
     serializer_class = PatientAssignmentSerializer
     permission_classes = [permissions.IsAuthenticated, IsHealthWorker]
 
@@ -46,44 +67,50 @@ class AssignedPatientsListView(generics.ListAPIView):
         return PatientAssignment.objects.filter(health_worker=self.request.user)
 
 
-# Patient profile CRUD views
 class PatientProfileListCreateView(generics.ListCreateAPIView):
+    """List or create patient profiles."""
     queryset = PatientProfile.objects.all()
     serializer_class = PatientProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
+
 
 class PatientProfileRetrieveUpdateView(generics.RetrieveUpdateAPIView):
+    """Retrieve or update a specific patient profile."""
     queryset = PatientProfile.objects.all()
     serializer_class = PatientProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-# Medical history CRUD views
+
 class MedicalHistoryListCreateView(generics.ListCreateAPIView):
+    """List or create medical histories."""
     queryset = MedicalHistory.objects.all()
     serializer_class = MedicalHistorySerializer
     permission_classes = [permissions.IsAuthenticated]
+
 
 class MedicalHistoryRetrieveUpdateView(generics.RetrieveUpdateAPIView):
+    """Retrieve or update a medical history record."""
     queryset = MedicalHistory.objects.all()
     serializer_class = MedicalHistorySerializer
     permission_classes = [permissions.IsAuthenticated]
 
-# Patient interaction CRUD views
+
 class PatientInteractionListCreateView(generics.ListCreateAPIView):
+    """List or create patient interactions."""
     queryset = PatientInteraction.objects.all()
     serializer_class = PatientInteractionSerializer
     permission_classes = [permissions.IsAuthenticated]
+
 
 class PatientInteractionRetrieveUpdateView(generics.RetrieveUpdateAPIView):
+    """Retrieve or update a patient interaction."""
     queryset = PatientInteraction.objects.all()
     serializer_class = PatientInteractionSerializer
     permission_classes = [permissions.IsAuthenticated]
 
-# Patient dashboard view (fetch profile, history, interactions for logged-in patient)
-from rest_framework.response import Response
-from rest_framework.views import APIView
 
 class PatientDashboardView(APIView):
+    """Fetch the logged-in patient’s profile, history, and interactions."""
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
@@ -91,8 +118,10 @@ class PatientDashboardView(APIView):
             profile = PatientProfile.objects.get(user=request.user)
         except PatientProfile.DoesNotExist:
             return Response({"error": "Profile not found."}, status=404)
+
         history = MedicalHistory.objects.filter(patient=profile)
         interactions = PatientInteraction.objects.filter(patient=profile)
+
         return Response({
             "profile": PatientProfileSerializer(profile).data,
             "medical_history": MedicalHistorySerializer(history, many=True).data,
