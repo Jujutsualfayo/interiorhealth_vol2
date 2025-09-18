@@ -70,49 +70,45 @@ def mpesa_callback(request):
             elif item.get("Name") == "PhoneNumber":
                 phone_number = str(item.get("Value"))
 
-        # Find the payment record
+        # Find the payment record strictly by CheckoutRequestID
         from .models import MpesaPayment
         payment = MpesaPayment.objects.filter(checkout_request_id=checkout_request_id).first()
         if not payment:
-            # Optionally, try to match by phone and amount if checkout_request_id missing
-            payment = MpesaPayment.objects.filter(phone_number=phone_number, amount=amount, payment_status="pending").order_by("-timestamp").first()
-
-        if payment:
-            # Idempotency: Only update if still pending
-            if payment.payment_status in ["successful", "failed"]:
-                logger.info(f"Duplicate callback for payment {payment.id} with status {payment.payment_status}")
-                return Response({"ResultCode": 0, "ResultDesc": "Already processed"})
-
-            payment.payment_status = "successful" if result_code == 0 else "failed"
-            payment.checkout_request_id = checkout_request_id or payment.checkout_request_id
-            payment.save()
-            logger.info(f"Payment {payment.id} updated to {payment.payment_status}")
-
-            # Notification logic
-            try:
-                user = payment.patient
-                if user and user.email:
-                    from django.core.mail import send_mail
-                    subject = f"Mpesa Payment {'Success' if payment.payment_status == 'successful' else 'Failure'}"
-                    message = (
-                        f"Dear {user.first_name or user.username},\n\n"
-                        f"Your Mpesa payment of KES {payment.amount} has been marked as {payment.payment_status}.\n"
-                        f"If you have any questions, contact support.\n\n"
-                        f"Regards,\nInteriorHealth Team"
-                    )
-                    send_mail(
-                        subject,
-                        message,
-                        settings.DEFAULT_FROM_EMAIL,
-                        [user.email],
-                        fail_silently=True
-                    )
-                    logger.info(f"Payment notification sent to {user.email}")
-            except Exception as notify_err:
-                logger.error(f"Failed to send payment notification: {notify_err}")
-        else:
-            logger.error(f"No matching payment found for callback: checkout_request_id={checkout_request_id}, phone={phone_number}, amount={amount}")
+            logger.error(f"No matching payment found for callback: checkout_request_id={checkout_request_id}")
             return Response({"ResultCode": 1, "ResultDesc": "Payment record not found"}, status=404)
+
+        # Idempotency: Only update if still pending
+        if payment.payment_status in ["successful", "failed"]:
+            logger.info(f"Duplicate callback for payment {payment.id} with status {payment.payment_status}")
+            return Response({"ResultCode": 0, "ResultDesc": "Already processed"})
+
+        payment.payment_status = "successful" if result_code == 0 else "failed"
+        payment.checkout_request_id = checkout_request_id or payment.checkout_request_id
+        payment.save()
+        logger.info(f"Payment {payment.id} updated to {payment.payment_status}")
+
+        # Notification logic
+        try:
+            user = payment.patient
+            if user and user.email:
+                from django.core.mail import send_mail
+                subject = f"Mpesa Payment {'Success' if payment.payment_status == 'successful' else 'Failure'}"
+                message = (
+                    f"Dear {user.first_name or user.username},\n\n"
+                    f"Your Mpesa payment of KES {payment.amount} has been marked as {payment.payment_status}.\n"
+                    f"If you have any questions, contact support.\n\n"
+                    f"Regards,\nInteriorHealth Team"
+                )
+                send_mail(
+                    subject,
+                    message,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [user.email],
+                    fail_silently=True
+                )
+                logger.info(f"Payment notification sent to {user.email}")
+        except Exception as notify_err:
+            logger.error(f"Failed to send payment notification: {notify_err}")
 
         return Response({"ResultCode": 0, "ResultDesc": "Accepted"})
     except Exception as e:

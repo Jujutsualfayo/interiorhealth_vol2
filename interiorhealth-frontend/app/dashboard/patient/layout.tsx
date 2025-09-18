@@ -9,9 +9,12 @@ export default function PatientLayout({ children }: { children: React.ReactNode 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
 
+  // Old background:
+  // <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700">
+  // <header className="flex items-center justify-between p-4 bg-gray-900 shadow-lg border-b border-gray-800">
   return (
-  <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700">
-  <header className="flex items-center justify-between p-4 bg-gray-900 shadow-lg border-b border-gray-800">
+    <div className="min-h-screen bg-white">
+      <header className="flex items-center justify-between p-4 bg-green-600 shadow-lg border-b border-green-700">
         <button
           className="text-2xl p-2 rounded hover:bg-gray-700 focus:outline-none text-gray-200 border border-gray-700"
           aria-label="Open sidebar"
@@ -27,7 +30,7 @@ export default function PatientLayout({ children }: { children: React.ReactNode 
           >
             P
           </button>
-          <span className="font-semibold text-lg text-gray-200">Patient</span>
+    <span className="font-semibold text-lg text-white">Patient</span>
           {profileOpen && (
             <div className="absolute top-12 right-0 bg-white rounded-lg shadow-xl p-6 min-w-[220px] z-50 border border-gray-200">
               <div className="mb-2 text-gray-900 font-bold text-lg">Benjamin Alfayo</div>
@@ -47,12 +50,19 @@ export default function PatientLayout({ children }: { children: React.ReactNode 
       )}
 
       {/* Sidebar */}
+      {/* Old sidebar:
       <aside
         className={`fixed top-0 left-0 z-50 h-full w-56 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-700 p-8 flex flex-col justify-between shadow-2xl transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
-        style={{ boxShadow: sidebarOpen ? '2px 0 8px rgba(0,0,0,0.18)' : 'none' }}
+        style={{ boxShadow: sidebarOpen ? '2px 0 8px rgba(0,0,0,0.18)' : 'none' }}>
+      ...
+      </aside>
+      */}
+      <aside
+        className={`fixed top-0 left-0 z-50 h-full w-56 bg-green-50 border-r border-green-200 p-8 flex flex-col justify-between shadow-2xl transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        style={{ boxShadow: sidebarOpen ? '2px 0 8px rgba(0,128,0,0.18)' : 'none' }}
       >
         <button
-          className="text-xl text-gray-300 mb-6 self-end p-1 hover:bg-gray-800 rounded"
+          className="text-xl text-green-700 mb-6 self-end p-1 hover:bg-green-200 rounded"
           aria-label="Close sidebar"
           onClick={() => setSidebarOpen(false)}
         >
@@ -60,27 +70,30 @@ export default function PatientLayout({ children }: { children: React.ReactNode 
         </button>
         <div>
           <div className="flex items-center mb-8">
-            <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center text-white font-bold text-xl mr-3">P</div>
+            <div className="w-12 h-12 rounded-full bg-green-600 flex items-center justify-center text-white font-bold text-xl mr-3">P</div>
             <div>
-              <div className="font-semibold text-lg text-gray-200">Patient</div>
-              <div className="text-xs text-gray-400">Welcome!</div>
+              <div className="font-semibold text-lg text-green-700">Patient</div>
+              <div className="text-xs text-green-600">Welcome!</div>
             </div>
           </div>
           <nav className="flex flex-col space-y-4">
-            <Link href="/dashboard/patient" className={`flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-800 transition cursor-pointer font-medium ${pathname === "/dashboard/patient" ? "text-gray-100 font-bold" : "text-gray-300"}`}> 
+            <Link href="/dashboard/patient" className={`flex items-center gap-2 px-3 py-2 rounded hover:bg-green-100 transition cursor-pointer font-medium ${pathname === "/dashboard/patient" ? "text-green-900 font-bold" : "text-green-700"}`}> 
               <span>🏠</span> Home
             </Link>
-            <Link href="/dashboard/patient/orders" className={`px-3 py-2 rounded hover:bg-gray-800 transition cursor-pointer font-medium ${pathname === "/dashboard/patient/orders" ? "text-gray-100 font-bold" : "text-gray-300"}`}> 
+            <Link href="/dashboard/patient/orders" className={`px-3 py-2 rounded hover:bg-green-100 transition cursor-pointer font-medium ${pathname === "/dashboard/patient/orders" ? "text-green-900 font-bold" : "text-green-700"}`}> 
               My Orders
             </Link>
-            <Link href="/dashboard/patient/account" className={`px-3 py-2 rounded hover:bg-gray-800 transition cursor-pointer font-medium ${pathname === "/dashboard/patient/account" ? "text-gray-100 font-bold" : "text-gray-300"}`}> 
+            <Link href="/dashboard/patient/account" className={`px-3 py-2 rounded hover:bg-green-100 transition cursor-pointer font-medium ${pathname === "/dashboard/patient/account" ? "text-green-900 font-bold" : "text-green-700"}`}> 
               My Account
             </Link>
-            <Link href="/dashboard/patient/health-tips" className={`px-3 py-2 rounded hover:bg-gray-800 transition cursor-pointer font-medium ${pathname === "/dashboard/patient/health-tips" ? "text-gray-100 font-bold" : "text-gray-300"}`}> 
+            <Link href="/dashboard/patient/health-tips" className={`px-3 py-2 rounded hover:bg-green-100 transition cursor-pointer font-medium ${pathname === "/dashboard/patient/health-tips" ? "text-green-900 font-bold" : "text-green-700"}`}> 
               Health Tips
             </Link>
-            <Link href="/dashboard/patient/drugs" className={`px-3 py-2 rounded hover:bg-gray-800 transition cursor-pointer font-medium ${pathname === "/dashboard/patient/drugs" ? "text-gray-100 font-bold" : "text-gray-300"}`}> 
+            <Link href="/dashboard/patient/drugs" className={`px-3 py-2 rounded hover:bg-green-100 transition cursor-pointer font-medium ${pathname === "/dashboard/patient/drugs" ? "text-green-900 font-bold" : "text-green-700"}`}> 
               Drug Catalog
+            </Link>
+            <Link href="/dashboard/patient/documentation" className={`px-3 py-2 rounded hover:bg-green-100 transition cursor-pointer font-medium ${pathname === "/dashboard/patient/documentation" ? "text-green-900 font-bold" : "text-green-700"}`}> 
+              Documentation
             </Link>
           </nav>
         </div>
@@ -88,7 +101,7 @@ export default function PatientLayout({ children }: { children: React.ReactNode 
       </aside>
 
       {/* Main Content */}
-  <main className="p-10 mt-4">{children}</main>
+      <main className="p-10 mt-4 bg-white">{children}</main>
     </div>
   );
 }

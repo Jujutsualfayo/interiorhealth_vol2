@@ -1,63 +1,58 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import Image from "next/image"; // ✅ import Next.js Image
+import Image from "next/image";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import { Pagination, Autoplay } from "swiper/modules";
 
-export default function SlideBackgroundLanding() {
   return (
     <main className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden bg-gradient-to-br from-green-100 via-white to-green-200">
-      {/* Animated Slides Background */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        {/* Slide 1 */}
-        <Image
-          src="/landing1.jpg"
-          alt="Slide 1"
-          width={400} // ✅ required
-          height={600} // ✅ required
-          className="absolute top-1/4 left-0 w-1/4 h-2/3 object-cover rounded-2xl border-4 border-green-700 shadow-lg animate-slide-x animate-slide-y"
-        />
-        {/* Slide 2 */}
-        <Image
-          src="/landing2.jpg"
-          alt="Slide 2"
-          width={400}
-          height={600}
-          className="absolute top-1/2 left-1/4 w-1/4 h-2/3 object-cover rounded-2xl border-4 border-green-900 shadow-lg animate-slide-x animate-slide-y-reverse"
-        />
-        {/* Slide 3 */}
-        <Image
-          src="/landing3.jpg"
-          alt="Slide 3"
-          width={400}
-          height={600}
-          className="absolute top-1/3 left-2/4 w-1/4 h-2/3 object-cover rounded-2xl border-4 border-green-400 shadow-lg animate-slide-x animate-slide-y"
-        />
-        {/* Slide 4 */}
-        <Image
-          src="/landing4.jpg"
-          alt="Slide 4"
-          width={400}
-          height={600}
-          className="absolute top-1/4 left-3/4 w-1/4 h-2/3 object-cover rounded-2xl border-4 border-green-500 shadow-lg animate-slide-x animate-slide-y-reverse"
-        />
+      {/* Responsive Swiper Slider */}
+      <div className="w-full max-w-2xl mx-auto mt-8 z-0">
+        <Swiper
+          modules={[Pagination, Autoplay]}
+          pagination={{ clickable: true }}
+          autoplay={{ delay: 3500, disableOnInteraction: false }}
+          loop={true}
+          spaceBetween={20}
+          slidesPerView={1}
+          className="rounded-2xl shadow-lg"
+        >
+          {["/landing1.jpg", "/landing2.jpg", "/landing3.jpg", "/landing4.jpg"].map((src, idx) => (
+            <SwiperSlide key={src}>
+              <div className="flex justify-center items-center w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px]">
+                <Image
+                  src={src}
+                  alt={`Slide ${idx + 1}`}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 600px"
+                  className="object-cover rounded-2xl border-4 border-green-600 shadow-lg"
+                  priority={idx === 0}
+                />
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
       {/* Content */}
-      <div className="relative z-10 text-center max-w-2xl px-6 py-12 bg-white/80 rounded-xl shadow-xl backdrop-blur-md">
-        <h1 className="text-5xl font-extrabold mb-4 text-green-700 drop-shadow-lg">Welcome to Interior Health</h1>
-        <p className="text-lg text-gray-700 mb-8">
+      <div className="relative z-10 text-center max-w-2xl px-6 py-12 bg-white/80 rounded-xl shadow-xl backdrop-blur-md mt-8">
+        <h1 className="text-4xl md:text-5xl font-extrabold mb-4 text-green-700 drop-shadow-lg">Welcome to Interior Health</h1>
+        <p className="text-base md:text-lg text-gray-700 mb-8">
           Bridging the gap in healthcare access for interior communities.<br />
           Affordable, accessible, and essential medical support at your fingertips.
         </p>
-        <div className="flex justify-center space-x-6 mb-8">
+        <div className="flex flex-col md:flex-row justify-center items-center md:space-x-6 space-y-4 md:space-y-0 mb-8">
           <Link
             href="/auth/login"
-            className="bg-green-600 text-white px-6 py-3 rounded-lg shadow hover:bg-green-700 transition"
+            className="bg-green-600 text-white px-6 py-3 rounded-lg shadow hover:bg-green-700 transition w-full md:w-auto"
           >
             Login
           </Link>
           <Link
             href="/register"
-            className="border border-green-600 text-green-700 px-6 py-3 rounded-lg hover:bg-green-50 transition"
+            className="border border-green-600 text-green-700 px-6 py-3 rounded-lg hover:bg-green-50 transition w-full md:w-auto"
           >
             Register
           </Link>
@@ -66,33 +61,6 @@ export default function SlideBackgroundLanding() {
           &copy; {new Date().getFullYear()} Interior Health. All rights reserved.
         </div>
       </div>
-      {/* Keyframes for slide animation */}
-      <style jsx>{`
-        @keyframes slide-x {
-          0% { transform: translateX(-10%); }
-          50% { transform: translateX(10%); }
-          100% { transform: translateX(-10%); }
-        }
-        @keyframes slide-y {
-          0% { transform: translateY(-10%); }
-          50% { transform: translateY(10%); }
-          100% { transform: translateY(-10%); }
-        }
-        @keyframes slide-y-reverse {
-          0% { transform: translateY(10%); }
-          50% { transform: translateY(-10%); }
-          100% { transform: translateY(10%); }
-        }
-        .animate-slide-x {
-          animation: slide-x 12s ease-in-out infinite;
-        }
-        .animate-slide-y {
-          animation: slide-y 8s ease-in-out infinite;
-        }
-        .animate-slide-y-reverse {
-          animation: slide-y-reverse 10s ease-in-out infinite;
-        }
-      `}</style>
     </main>
   );
 }
