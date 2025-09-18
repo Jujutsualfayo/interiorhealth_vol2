@@ -22,7 +22,7 @@ import { Pagination, Autoplay } from "swiper/modules";
         >
           {["/landing1.jpg", "/landing2.jpg", "/landing3.jpg", "/landing4.jpg"].map((src, idx) => (
             <SwiperSlide key={src}>
-              <div className="flex justify-center items-center w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px]">
+              <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] flex justify-center items-center">
                 <Image
                   src={src}
                   alt={`Slide ${idx + 1}`}
