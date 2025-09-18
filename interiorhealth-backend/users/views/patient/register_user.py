@@ -6,7 +6,11 @@ from users.serializers import UserSerializer
 class RegisterUserView(APIView):
     def post(self, request):
         data = request.data.copy()
-        data['role'] = 'patient'
+        # Respect submitted role if valid, else default to 'patient'
+        submitted_role = data.get('role', 'patient')
+        if submitted_role not in ['patient', 'health_worker']:
+            submitted_role = 'patient'
+        data['role'] = submitted_role
         serializer = UserSerializer(data=data, context={'request': request})
         if serializer.is_valid():
             serializer.save()

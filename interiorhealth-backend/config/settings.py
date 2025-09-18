@@ -105,6 +105,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ],
@@ -132,11 +133,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CORS
 CORS_ALLOWED_ORIGINS = [
     "https://interiorhealth-vol2-2.onrender.com",
+    "http://localhost:3000",
+    "https://psychic-journey-x55p7j9qq75vh645x-3000.app.github.dev",
 ]
 
 # Allow cookies/credentials to be included in cross-origin requests (if using cookie-based auth)
 CORS_ALLOW_CREDENTIALS = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 
 # Email (Gmail SMTP)
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
@@ -146,6 +150,9 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config("EMAIL_HOST_USER")  
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")  
 DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default=EMAIL_HOST_USER)
+
+# Frontend base URL for email verification links
+FRONTEND_BASE_URL = config("FRONTEND_BASE_URL", default="https://yourfrontend.com")
 
 #Mpesa settings
 MPESA_ENV = os.getenv("MPESA_ENV", "sandbox")

@@ -32,17 +32,27 @@ export default function RegisterPage() {
     try {
       const base = process.env.NEXT_PUBLIC_API_BASE_URL || '';
       const url = base
-        ? `${base.replace(/\/$/, '')}/api/patients/register/`
-        : `/api/register`;
+        ? `${base.replace(/\/$/, '')}/api/users/register/`
+        : `/api/users/register`;
       const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
+      let data = null;
+      try {
+        data = await res.json();
+      } catch (jsonErr) {
+        // If response is not JSON, treat as error
+        setError('Registration failed: Invalid server response.');
+        return;
+      }
+
       if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || 'Registration failed');
+        // Show detailed error if available
+        setError(data?.detail || data?.message || 'Registration failed');
+        return;
       }
 
       setSuccess('Registration was successful! Redirecting to login...');
@@ -50,7 +60,6 @@ export default function RegisterPage() {
         router.push('/auth/login');
       }, 2000);
     } catch (err: unknown) {
-      // Network errors (like CORS or DNS) surface as TypeError("Failed to fetch") in browsers
       if (err instanceof TypeError) {
         setError(`Network error: ${err.message}. Check backend URL, CORS, and network connectivity.`);
       } else if (err instanceof Error) {
@@ -66,7 +75,7 @@ export default function RegisterPage() {
       <h1 className="text-3xl font-extrabold mb-6 text-white text-center">Create Account</h1>
       {error && <p className="text-red-400 text-sm mb-4 text-center">{error}</p>}
       {success && <p className="text-green-400 text-sm mb-4 text-center">{success}</p>}
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form method="POST" action="#" onSubmit={handleSubmit} className="space-y-5" autoComplete="off">
         <input
           type="text"
           name="first_name"
@@ -74,6 +83,7 @@ export default function RegisterPage() {
           value={formData.first_name}
           onChange={handleChange}
           required
+          autoComplete="off"
           className="w-full px-4 py-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
         />
         <input
@@ -83,6 +93,7 @@ export default function RegisterPage() {
           value={formData.last_name}
           onChange={handleChange}
           required
+          autoComplete="off"
           className="w-full px-4 py-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
         />
         <input
@@ -92,6 +103,7 @@ export default function RegisterPage() {
           value={formData.email}
           onChange={handleChange}
           required
+          autoComplete="off"
           className="w-full px-4 py-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
         />
         <input
@@ -101,6 +113,7 @@ export default function RegisterPage() {
           value={formData.password}
           onChange={handleChange}
           required
+          autoComplete="off"
           className="w-full px-4 py-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
         />
         <select

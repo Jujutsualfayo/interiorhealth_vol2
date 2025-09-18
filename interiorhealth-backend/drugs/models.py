@@ -1,5 +1,14 @@
 from django.db import models
+from users.models import User
+class DrugRequest(models.Model):
+    healthworker = models.ForeignKey(User, on_delete=models.CASCADE)
+    drug_name = models.CharField(max_length=255)
+    quantity = models.PositiveIntegerField()
+    notes = models.TextField(blank=True)
+    requested_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"{self.drug_name} x{self.quantity} by {self.healthworker.email}"
 class InventoryItem(models.Model):
     CATEGORY_CHOICES = [
         ("drug", "Medical Drug"),

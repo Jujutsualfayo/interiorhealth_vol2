@@ -17,6 +17,7 @@ export default function InventoryPage() {
       setError(null);
       try {
         const res = await api.get("/api/drugs/patients/inventory/");
+        console.log("API response:", res);
         const data = res.data as InventoryItem[];
         // Only use backend data; no static demo data fallback
         if (!data || data.length === 0) {
@@ -29,8 +30,13 @@ export default function InventoryPage() {
         if (data.length > 0 && data[0].category) {
           setSelectedCategory(String(data[0].category));
         }
-      } catch (err: unknown) {
-        setError(err instanceof Error ? err.message : "Could not fetch inventory.");
+      } catch (err: any) {
+        if (err.response && err.response.status === 401) {
+          setError("You must be logged in as a patient to view inventory.");
+        } else {
+          setError(err instanceof Error ? err.message : "Could not fetch inventory.");
+        }
+        console.error("API error:", err);
       }
       setLoading(false);
     };
@@ -42,7 +48,8 @@ export default function InventoryPage() {
   const currentItems = inventory.filter((item: InventoryItem) => (item.category || "") === selectedCategory);
 
   return (
-    <div className="max-w-4xl mx-auto p-8">
+    <div className="min-h-screen w-full bg-white">
+      <div className="max-w-4xl mx-auto p-8">
       <h2 className="text-3xl font-bold text-green-700 mb-6">Order Products & Inventory</h2>
       {loading && <p>Loading inventory...</p>}
       {error && <p className="text-red-500">{error}</p>}
@@ -66,6 +73,7 @@ export default function InventoryPage() {
           </div>
         </>
       )}
+      </div>
     </div>
   );
 }

@@ -6,6 +6,7 @@ import api from "@/services/api";
 import AuthGate from "@/components/AuthGate";
 import LocationsWidget from "../../components/LocationsWidget";
 import TrackOrderWidget from "../../components/TrackOrderWidget";
+import ProductListWidget from "./ProductListWidget";
 import { extractErrorMessage } from "@/app/lib/error";
 
 export default function PatientDashboard() {
@@ -117,45 +118,43 @@ export default function PatientDashboard() {
   return (
     <AuthGate allowedRoles={["patient"]}>
 
-      <div className="min-h-screen bg-gray-100 flex flex-col">
+  <div className="min-h-screen bg-gradient-to-br from-green-950 via-green-900 to-green-800 flex flex-col">
         <div className="p-8 md:p-12 lg:p-16">
-          <h1 className="text-3xl font-semibold text-slate-800 mb-4">How can we help you today?</h1>
-          <p className="text-slate-600 mb-8 text-lg">We&apos;re here to support your health. Please choose an option below:</p>
+          <div className="mb-6 flex items-center justify-between">
+            <span className="text-lg font-bold text-green-500 tracking-wide drop-shadow-lg">Interior Health</span>
+          </div>
+          <h1 className="text-3xl font-semibold text-gray-100 mb-4">How can we help you today?</h1>
+          <p className="text-gray-300 mb-8 text-lg">We&apos;re here to support your health. Please choose an option below:</p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
             {/* Virtual Clinic Widget */}
-            <div className="bg-white rounded-2xl shadow-md p-8 flex flex-col items-center md:col-span-2">
-              <span className="text-5xl mb-4">🏥</span>
-              <div className="text-xl font-medium text-slate-700 mb-2">Virtual Clinic</div>
+            <div className="bg-green-900 rounded-2xl shadow-xl p-8 flex flex-col items-center md:col-span-2 border border-green-950">
+              <span className="text-5xl mb-4">🩺</span>
+              <div className="text-xl font-medium text-green-200 mb-2">Virtual Clinic</div>
               <button
-                className="bg-slate-800 text-white px-6 py-3 rounded-lg hover:bg-slate-700 font-medium mb-2 text-lg transition"
+                className="bg-green-700 text-white px-6 py-3 rounded-lg hover:bg-green-800 font-medium mb-2 text-lg transition"
                 onClick={handleOpenDoctorModal}
               >
                 Find a Doctor
               </button>
               <button
-                className="bg-slate-600 text-white px-4 py-2 rounded-lg hover:bg-slate-700 font-medium mb-2 text-base transition"
+                className="bg-green-800 text-white px-4 py-2 rounded-lg hover:bg-green-900 font-medium mb-2 text-base transition"
                 onClick={handleRequestHelp}
                 disabled={helpLoading}
               >
                 {helpLoading ? "Connecting..." : "Request Help"}
               </button>
               {helpError && <p className="text-red-500 text-sm mt-2">{helpError}</p>}
-              <p className="text-slate-500 text-base text-center mt-2">Search for a doctor, request help, or start a chat with a medical professional all in one place.</p>
+              <p className="text-green-200 text-base text-center mt-2">Search for a doctor, request help, or start a chat with a medical professional all in one place.</p>
             </div>
             {/* Inventory Widget */}
-            <div className="bg-white rounded-2xl shadow-md p-8 flex flex-col items-center">
-              <span className="text-4xl mb-4">🧪</span>
-              <div className="text-lg font-medium text-slate-700 mb-2">Inventory</div>
-              <a href="/dashboard/patient/drugs" className="bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700 font-medium mb-2 transition">View Products</a>
-              <p className="text-slate-500 text-sm text-center">Browse and order from our inventory: medical drugs, health supplies, and more.</p>
-            </div>
+            <ProductListWidget />
             {/* Health Tips Widget */}
-            <div className="bg-white rounded-2xl shadow-md p-8 flex flex-col items-center">
-              <span className="text-4xl mb-4">💡</span>
-              <div className="text-lg font-medium text-slate-700 mb-2">Health Tips</div>
-              <a href="/dashboard/patient/health-tips" className="bg-slate-600 text-white px-4 py-2 rounded-lg hover:bg-slate-700 font-medium mb-2 transition">View Tips</a>
-              <p className="text-slate-500 text-sm text-center">Get advice for a healthier lifestyle.</p>
+            <div className="bg-green-900 rounded-2xl shadow-xl p-8 flex flex-col items-center border border-green-950">
+              <span className="text-4xl mb-4">🩹</span>
+              <div className="text-lg font-medium text-green-200 mb-2">Health Tips</div>
+              <a href="/dashboard/patient/health-tips" className="bg-green-800 text-white px-4 py-2 rounded-lg hover:bg-green-900 font-medium mb-2 transition">View Tips</a>
+              <p className="text-green-200 text-sm text-center">Get advice for a healthier lifestyle.</p>
             </div>
           </div>
 
@@ -168,9 +167,9 @@ export default function PatientDashboard() {
 
           {/* Recent Activity */}
           <div className="mt-12">
-            <h2 className="text-xl font-semibold text-slate-800 mb-4">Recent Activity</h2>
-            <div className="bg-white rounded-2xl shadow-md p-6">
-              <ul className="text-slate-600 text-sm list-disc list-inside">
+            <h2 className="text-xl font-semibold text-green-200 mb-4">Recent Activity</h2>
+            <div className="bg-green-900 rounded-2xl shadow-xl p-6 border border-green-950">
+              <ul className="text-green-200 text-sm list-disc list-inside">
                 <li>Order #1234 placed</li>
                 <li>Payment of KES 500 successful</li>
                 <li>Order #1233 delivered</li>

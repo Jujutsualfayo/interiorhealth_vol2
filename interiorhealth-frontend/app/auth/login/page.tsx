@@ -40,7 +40,12 @@ export default function LoginPage() {
             router.push('/unauthorized');
         }
       } else {
-        setError(data.message || 'Login failed');
+        // Show activation message if account is inactive
+        if (data.detail && data.detail.toLowerCase().includes('inactive')) {
+          setError('Your account is not activated. Please check your email for a verification link or contact support.');
+        } else {
+          setError(data.message || data.detail || 'Login failed');
+        }
       }
     } catch (err) {
       console.error('Login error:', err);

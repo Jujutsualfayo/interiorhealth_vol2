@@ -18,6 +18,7 @@ urlpatterns = [
     # Registration
     path('register/', RegisterUserView.as_view(), name='register'),
     path('register/healthworker/', register_healthworker, name='register_health_worker'),
+    path('register/by-healthworker/', __import__('users.views.patient.register_by_healthworker').views.patient.register_by_healthworker.RegisterPatientByHealthworkerView.as_view(), name='register-by-healthworker'),
 
     # ✅ Replaced login
     path('login/', CustomLoginView.as_view(), name='custom-login'),

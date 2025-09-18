@@ -7,4 +7,5 @@ from drugs.serializers import InventoryItemSerializer
 class PatientInventoryListView(generics.ListAPIView):
     queryset = InventoryItem.objects.all()
     serializer_class = InventoryItemSerializer
-    permission_classes = [IsAuthenticated]
+    from users.permissions import IsPatient
+    permission_classes = [IsAuthenticated, IsPatient]

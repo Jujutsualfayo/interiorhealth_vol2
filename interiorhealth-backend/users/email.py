@@ -10,9 +10,8 @@ def send_verification_email(user, request):
     from datetime import datetime
 
     token = generate_email_verification_token(user)
-    verification_url = request.build_absolute_uri(
-        reverse('verify-email') + f'?token={token}'
-    )
+    from django.conf import settings
+    verification_url = f"{settings.FRONTEND_BASE_URL}/verify-email?token={token}"
 
     subject = 'Verify your InteriorHealth account'
     year = datetime.now().year

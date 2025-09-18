@@ -7,8 +7,8 @@ export default function HealthworkerLayout({ children }: { children: React.React
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header className="flex items-center justify-between p-4 bg-gray-100 shadow">
+  <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-800">
+  <header className="flex items-center justify-between p-4 bg-gray-900 shadow-lg border-b border-blue-900">
         <button
           className="text-2xl p-2 rounded hover:bg-gray-200 focus:outline-none"
           aria-label="Open sidebar"
@@ -27,7 +27,7 @@ export default function HealthworkerLayout({ children }: { children: React.React
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-50 h-full w-40 bg-blue-900 p-4 flex flex-col transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+  className={`fixed top-0 left-0 z-50 h-full w-48 bg-gradient-to-b from-blue-900 to-gray-900 p-6 flex flex-col transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
         style={{ boxShadow: sidebarOpen ? '2px 0 8px rgba(0,0,0,0.08)' : 'none' }}
       >
         <button
@@ -39,7 +39,7 @@ export default function HealthworkerLayout({ children }: { children: React.React
         </button>
         <h2 className="text-base font-semibold mb-6 text-blue-100">Healthworker</h2>
         <nav className="flex flex-col space-y-2">
-          <Link href="/dashboard/healthworker" className="px-3 py-2 rounded text-black hover:bg-blue-800 hover:text-blue-100 transition">
+          <Link href="/dashboard/healthworker" className="px-3 py-2 rounded text-blue-100 hover:bg-blue-800 hover:text-white transition font-medium">
             Home
           </Link>
           <Link href="/dashboard/healthworker/orders" className="px-3 py-2 rounded text-black hover:bg-blue-800 hover:text-blue-100 transition">
@@ -51,7 +51,7 @@ export default function HealthworkerLayout({ children }: { children: React.React
         </nav>
       </aside>
 
-      <main className="p-6 mt-4">{children}</main>
+  <main className="p-8 mt-6">{children}</main>
     </div>
   );
 }
