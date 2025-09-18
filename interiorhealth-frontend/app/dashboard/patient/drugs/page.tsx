@@ -30,13 +30,14 @@ export default function InventoryPage() {
         if (data.length > 0 && data[0].category) {
           setSelectedCategory(String(data[0].category));
         }
-      } catch (err: any) {
-        if (err.response && err.response.status === 401) {
+      } catch (err: unknown) {
+        if (typeof err === "object" && err !== null && "response" in err && (err as any).response?.status === 401) {
           setError("You must be logged in as a patient to view inventory.");
+        } else if (err instanceof Error) {
+          setError(err.message);
         } else {
-          setError(err instanceof Error ? err.message : "Could not fetch inventory.");
+          setError("Could not fetch inventory.");
         }
-        console.error("API error:", err);
       }
       setLoading(false);
     };

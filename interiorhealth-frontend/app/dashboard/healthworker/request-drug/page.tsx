@@ -27,7 +27,7 @@ export default function RequestDrugPage() {
       } else {
         setMessage(data.detail || "Error submitting request.");
       }
-    } catch (err) {
+    } catch {
       setMessage("Network error.");
     }
     setLoading(false);

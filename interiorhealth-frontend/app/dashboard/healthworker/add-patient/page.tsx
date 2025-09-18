@@ -27,7 +27,7 @@ export default function AddPatientPage() {
       } else {
         setMessage(data.detail || "Error adding patient.");
       }
-    } catch (err) {
+    } catch {
       setMessage("Network error.");
     }
     setLoading(false);

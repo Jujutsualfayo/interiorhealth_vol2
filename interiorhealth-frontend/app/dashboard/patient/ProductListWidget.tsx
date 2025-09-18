@@ -1,21 +1,6 @@
 "use client";
 import Link from "next/link";
 
-const products = [
-  { name: "Paracetamol Tablets", price: 200, type: "Medical" },
-  { name: "Amoxicillin Capsules", price: 350, type: "Medical" },
-  { name: "Insulin Injections", price: 1200, type: "Medical" },
-  { name: "Blood Pressure Monitor", price: 2500, type: "Medical" },
-  { name: "Asthma Inhaler", price: 800, type: "Medical" },
-  { name: "Bandages & Dressings", price: 150, type: "Medical" },
-  { name: "Thermometer", price: 400, type: "Medical" },
-  { name: "Hand Sanitizer", price: 180, type: "Non-Medical" },
-  { name: "Face Masks", price: 100, type: "Non-Medical" },
-  { name: "Reusable Water Bottle", price: 600, type: "Non-Medical" },
-  { name: "Vitamin Supplements", price: 900, type: "Non-Medical" },
-  { name: "Personal Hygiene Kits", price: 700, type: "Non-Medical" },
-  { name: "Healthy Snacks", price: 250, type: "Non-Medical" },
-];
 
 export default function ProductListWidget() {
   return (
