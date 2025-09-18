@@ -1,3 +1,4 @@
+
 "use client";
 import React from "react";
 import Link from "next/link";
@@ -7,6 +8,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination, Autoplay } from "swiper/modules";
 
+export default function SlideBackgroundLanding() {
   return (
     <main className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden bg-gradient-to-br from-green-100 via-white to-green-200">
       {/* Responsive Swiper Slider */}
