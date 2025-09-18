@@ -31,7 +31,12 @@ export default function InventoryPage() {
           setSelectedCategory(String(data[0].category));
         }
       } catch (err: unknown) {
-        if (typeof err === "object" && err !== null && "response" in err && (err as any).response?.status === 401) {
+        if (
+          typeof err === "object" &&
+          err !== null &&
+          "response" in err &&
+          (err as { response?: { status?: number } }).response?.status === 401
+        ) {
           setError("You must be logged in as a patient to view inventory.");
         } else if (err instanceof Error) {
           setError(err.message);

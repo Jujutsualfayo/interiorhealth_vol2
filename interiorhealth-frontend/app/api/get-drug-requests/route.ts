@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
 export async function GET() {
@@ -14,7 +14,7 @@ export async function GET() {
     });
     const data = await backendRes.json();
     return NextResponse.json(data, { status: backendRes.status });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ detail: "Server error." }, { status: 500 });
   }
 }
