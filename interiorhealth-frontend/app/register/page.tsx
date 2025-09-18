@@ -42,7 +42,7 @@ export default function RegisterPage() {
       let data = null;
       try {
         data = await res.json();
-      } catch (jsonErr) {
+            } catch {
         // If response is not JSON, treat as error
         setError('Registration failed: Invalid server response.');
         return;
