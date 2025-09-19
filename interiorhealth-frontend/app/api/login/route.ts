@@ -29,15 +29,32 @@ export async function POST(req: NextRequest) {
     }
 
     let data;
+    let isJson = false;
     try {
-      data = await backendRes.json();
+      const contentType = backendRes.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        data = await backendRes.json();
+        isJson = true;
+      } else {
+        // Try to parse as text for HTML error pages
+        const text = await backendRes.text();
+        data = { message: text };
+      }
     } catch (jsonError) {
       console.error('Backend response JSON error:', jsonError);
       return NextResponse.json({ error: 'Invalid response from authentication server.' }, { status: 502 });
     }
 
     if (!backendRes.ok) {
-      return NextResponse.json({ error: data.message || 'Invalid credentials' }, { status: backendRes.status });
+      // Handle rate limiting (429) and server errors
+      if (backendRes.status === 429) {
+        return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 });
+      }
+      if (backendRes.status >= 500) {
+        return NextResponse.json({ error: 'Server error. Please try again later.' }, { status: backendRes.status });
+      }
+      // Fallback for other errors
+      return NextResponse.json({ error: (isJson ? data.message : undefined) || 'Invalid credentials' }, { status: backendRes.status });
     }
 
     if (!data.access || !data.user || !data.user.role) {
