@@ -1,3 +1,16 @@
 {
+    // Use the project's virtualenv Python so Pylance can resolve installed packages
+    "python.defaultInterpreterPath": "/workspaces/interiorhealth_vol2/.venv/bin/python",
+    // Backwards-compatible setting for some older extensions
+    "python.pythonPath": "/workspaces/interiorhealth_vol2/.venv/bin/python",
+    // Help Pylance find local Django apps/modules
+    "python.analysis.extraPaths": [
+        "./interiorhealth-backend",
+        "./interiorhealth-backend/apps"
+    ],
+    // Optionally increase package index depth for better resolution
+    "python.analysis.packageIndexDepth": 3
+}
+{
   "python.defaultInterpreterPath": "/home/codespace/.python/current/bin/python"
 }

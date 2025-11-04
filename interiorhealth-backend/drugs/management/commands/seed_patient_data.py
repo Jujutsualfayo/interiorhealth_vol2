@@ -74,7 +74,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(f"Created {len(items)} inventory items."))
 
         # Create Orders and OrderItems
-        status_choices = ["pending", "confirmed", "delivered"]
+        status_choices = ["pending", "dispatched", "delivered"]
         for patient in patients:
             for _ in range(2):
                 order = Order.objects.create(

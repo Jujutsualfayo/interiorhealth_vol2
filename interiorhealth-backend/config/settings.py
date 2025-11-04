@@ -90,6 +90,16 @@ DATABASES = {
     )
 }
 
+# Use in-memory SQLite when running tests to avoid depending on external DB
+import sys
+if any(arg in sys.argv for arg in ("test", "--testrunner")):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+        }
+    }
+
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
