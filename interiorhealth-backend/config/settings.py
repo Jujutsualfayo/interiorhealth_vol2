@@ -53,6 +53,10 @@ AUTH_USER_MODEL = 'users.User'
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # CORS should be at the top
     'django.middleware.security.SecurityMiddleware',
+    # WhiteNoise middleware serves static files efficiently and supports
+    # compressed (gz/br) and cached static assets without needing a separate
+    # static file server. It should come after SecurityMiddleware.
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -133,6 +137,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+
+# Use WhiteNoise's compressed manifest storage so collected static files
+# will be stored with compressed (.gz/.br) variants and a hashed manifest
+# for long-lived cache headers. Requires 'whitenoise' in requirements.txt.
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files
 MEDIA_URL = '/media/'
